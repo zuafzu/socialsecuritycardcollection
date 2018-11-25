@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">社保卡采集</string>
+
+    <string name="tab1_fragment">业务经办</string>
+    <string name="tab2_fragment">政策指南</string>
+    <string name="tab3_fragment">个人中心</string>
+
+</resources>
