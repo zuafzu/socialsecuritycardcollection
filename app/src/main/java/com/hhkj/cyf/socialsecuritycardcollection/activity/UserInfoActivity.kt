@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
-import android.view.View
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_user_info.*
@@ -28,16 +27,11 @@ class UserInfoActivity : BaseActivity() {
     }
 
     private fun initClick() {
-        iv_img.setOnClickListener {
+        ll_img.setOnClickListener {
             showImgDialog()
         }
-        iv_delete.setOnClickListener {
-            imgPath = ""
-            iv_delete.visibility = View.GONE
-            iv_img.setImageResource(R.mipmap.ic_shenfenzheng)
-        }
-        ll_area.setOnClickListener {
-
+        ll_name.setOnClickListener {
+            startActivity(Intent(this, EditUserNameActivity::class.java))
         }
     }
 
@@ -63,7 +57,6 @@ class UserInfoActivity : BaseActivity() {
             //TODO，将裁剪的bitmap显示在imageview控件上
             imgPath = getRealFilePath(mUritempFile)
             iv_img.setImageBitmap(bitmap)
-            iv_delete.visibility = View.VISIBLE
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
@@ -75,10 +68,10 @@ class UserInfoActivity : BaseActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 requestCode_SysAlbum -> {
-                    cropPic(data!!.data, 1, 2, 320, 640)
+                    cropPic(data!!.data, 1, 1, 512, 512)
                 }
                 requestCode_SysCamera -> {
-                    cropPic(mUriphotoFile, 1, 2, 320, 640)
+                    cropPic(mUriphotoFile, 1, 1, 512, 512)
                 }
                 requestCode_CropPic -> {
                     getImg()

@@ -1,6 +1,7 @@
 package com.hhkj.cyf.socialsecuritycardcollection.adapter;
 
-import android.content.Context;
+import android.app.Activity;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.hhkj.cyf.socialsecuritycardcollection.R;
 import com.hhkj.cyf.socialsecuritycardcollection.bean.HomeBean;
 
@@ -24,12 +24,16 @@ import java.util.List;
 public class HomeAdapter extends BaseAdapter {
 
     private List<HomeBean> homeModels;
-    private Context context;
+    private Activity activity;
+    private int width;
 
-    public HomeAdapter(List<HomeBean> homeModels, Context context) {
+    public HomeAdapter(List<HomeBean> homeModels, Activity activity) {
+
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        width = display.getWidth() / 3;
 
         this.homeModels = homeModels;
-        this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -52,7 +56,7 @@ public class HomeAdapter extends BaseAdapter {
         Holder holder = null;
         if (convertView == null) {
             holder = new Holder();
-            convertView = LayoutInflater.from(context).inflate(
+            convertView = LayoutInflater.from(activity).inflate(
                     R.layout.item_home, parent, false);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
             holder.textView = (TextView) convertView.findViewById(R.id.textView);
@@ -62,20 +66,12 @@ public class HomeAdapter extends BaseAdapter {
         } else {
             holder = (Holder) convertView.getTag();
         }
-//        Glide.with(context).load(homeModels.get(position).getImageUrl()).into(holder.imageView);
-
         holder.imageView.setImageResource(homeModels.get(position).getImageUrl());
 
         holder.l1 = (LinearLayout) convertView.findViewById(R.id.l1);
-        final Holder finalHolder = holder;
-        holder.l1.post(new Runnable() {
-            @Override
-            public void run() {
-                AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) finalHolder.l1.getLayoutParams();
-                layoutParams.height = finalHolder.l1.getWidth();
-                finalHolder.l1.setLayoutParams(layoutParams);
-            }
-        });
+        AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) holder.l1.getLayoutParams();
+        layoutParams.height = width;
+        holder.l1.setLayoutParams(layoutParams);
 
         holder.textView.setText(homeModels.get(position).getModelName());
         return convertView;

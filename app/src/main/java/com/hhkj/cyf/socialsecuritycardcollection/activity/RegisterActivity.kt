@@ -1,7 +1,6 @@
 package com.hhkj.cyf.socialsecuritycardcollection.activity
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
@@ -23,9 +22,8 @@ class RegisterActivity : BaseActivity() {
     }
 
     private fun initClick() {
-        btn_next.setOnClickListener {
-            startActivity(Intent(this,Register2Activity::class.java))
-            finish()
+        btn_register.setOnClickListener {
+
         }
         tv_agreement.setOnClickListener {
             val mIntent = Intent(this,WebActivity::class.java)

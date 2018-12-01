@@ -7,30 +7,26 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.request.RequestOptions;
 import com.hhkj.cyf.socialsecuritycardcollection.R;
-import com.hhkj.cyf.socialsecuritycardcollection.activity.CollectActivity;
-import com.hhkj.cyf.socialsecuritycardcollection.activity.QueryListActivity;
+import com.hhkj.cyf.socialsecuritycardcollection.activity.SelectCollectActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.WebActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.adapter.HomeAdapter;
-import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.bean.HomeBean;
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls;
+import com.hhkj.cyf.socialsecuritycardcollection.view.SlideShowView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Tab1Fragment extends Fragment implements View.OnClickListener {
 
-    private ImageView iv_head;
-    private LinearLayout ll1, ll2, ll3, ll4;
+    private SlideShowView slideShowView;
+    private GridView gridView;
+    private List<HomeBean> homeModel;
 
     @Nullable
     @Override
@@ -43,60 +39,68 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
 
     private void initView(final View mView) {
         ((TextView) mView.findViewById(R.id.tv_toolsbar_title)).setText(getString(R.string.tab1_fragment));
-        iv_head = mView.findViewById(R.id.iv_head);
-        ll1 = mView.findViewById(R.id.ll1);
-        ll2 = mView.findViewById(R.id.ll2);
-        ll3 = mView.findViewById(R.id.ll3);
-        ll4 = mView.findViewById(R.id.ll4);
-        ll1.setOnClickListener(this);
-        ll2.setOnClickListener(this);
-        ll3.setOnClickListener(this);
-        ll4.setOnClickListener(this);
-        ll1.post(new Runnable() {
+        slideShowView = (SlideShowView) mView.findViewById(R.id.slideShowView);
+        // 轮播Banner
+        slideShowView.setTimeInterval(5);
+        slideShowView.setOnItemClickListener(new SlideShowView.OnSlideShowViewItemClickListener() {
             @Override
-            public void run() {
-                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) ll1.getLayoutParams();
-                layoutParams.height = ll1.getWidth();
-                ll1.setLayoutParams(layoutParams);
-                ll2.setLayoutParams(layoutParams);
-                ll3.setLayoutParams(layoutParams);
-                ll4.setLayoutParams(layoutParams);
+            public void onItemClick(View view, int position) {
+
+            }
+        });
+        int[] imgs = {R.mipmap.baaner1, R.mipmap.baaner2, R.mipmap.baaner3};
+        slideShowView.initUI(getActivity(), 2f, imgs);
+        gridView = (GridView) mView.findViewById(R.id.gridView);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i) {
+                    case 0:
+                        Intent intent1 = new Intent(getActivity(), SelectCollectActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case 1:
+                        Intent intent2 = new Intent(getActivity(), WebActivity.class);
+                        intent2.putExtra("title", "制卡进度查询");
+                        intent2.putExtra("url", Urls.url_zkjdcx);
+                        startActivity(intent2);
+                        break;
+                    case 2:
+                        Intent intent3 = new Intent(getActivity(), WebActivity.class);
+                        intent3.putExtra("title", "社保查询");
+                        intent3.putExtra("url", Urls.url_ccshbx);
+                        startActivity(intent3);
+                        break;
+                    case 3:
+                        Intent intent4 = new Intent(getActivity(), WebActivity.class);
+                        intent4.putExtra("title", "医保查询");
+                        intent4.putExtra("url", Urls.url_ccyb);
+                        startActivity(intent4);
+                        break;
+                }
             }
         });
     }
 
     private void setData() {
-        Glide.with(getActivity())
-                .load("http://images.liqucn.com/img/h1/h973/img201709231534150_info300X300.jpg").apply(
-                RequestOptions.bitmapTransform(new CircleCrop())
-        ).into(iv_head);
+        homeModel = new ArrayList<>();
+        HomeBean homeBean1 = new HomeBean(R.mipmap.ic_tab2_1, "1", "社会保障卡信息采集");
+        HomeBean homeBean2 = new HomeBean(R.mipmap.ic_tab2_2, "2", "制卡进度查询");
+        HomeBean homeBean3 = new HomeBean(R.mipmap.ic_tab2_3, "3", "社保查询");
+        HomeBean homeBean4 = new HomeBean(R.mipmap.ic_tab2_4, "4", "医保查询");
+        homeModel.add(homeBean1);
+        homeModel.add(homeBean2);
+        homeModel.add(homeBean3);
+        homeModel.add(homeBean4);
+        gridView.setAdapter(new HomeAdapter(homeModel, getActivity()));
     }
 
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ll1:
-                Intent intent1 = new Intent(getActivity(), CollectActivity.class);
-                intent1.putExtra("title","采集");
-                startActivity(intent1);
-                break;
-            case R.id.ll2:
-                Intent intent2 = new Intent(getActivity(), QueryListActivity.class);
-                startActivity(intent2);
-                break;
-            case R.id.ll3:
-                Intent intent3 = new Intent(getActivity(), WebActivity.class);
-                intent3.putExtra("title", "社保查询");
-                intent3.putExtra("url", Urls.url_ccshbx);
-                startActivity(intent3);
-                break;
-            case R.id.ll4:
-                Intent intent4 = new Intent(getActivity(), WebActivity.class);
-                intent4.putExtra("title", "医保查询");
-                intent4.putExtra("url", Urls.url_ccyb);
-                startActivity(intent4);
-                break;
+
         }
     }
+
 }

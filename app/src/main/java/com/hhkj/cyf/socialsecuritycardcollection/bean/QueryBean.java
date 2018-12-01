@@ -7,21 +7,17 @@ public class QueryBean {
     private String identity;//身份证号
     private String state;// 状态
     private String stateStr;// 状态描述
-    private String cardState;// 制卡进度
-    private String cardStateStr;// 制卡进度描述
 
     public QueryBean() {
         super();
     }
 
-    public QueryBean(String id, String name, String identity, String state, String stateStr, String cardState, String cardStateStr) {
+    public QueryBean(String id, String name, String identity, String state, String stateStr) {
         this.id = id;
         this.name = name;
         this.identity = identity;
         this.state = state;
         this.stateStr = stateStr;
-        this.cardState = cardState;
-        this.cardStateStr = cardStateStr;
     }
 
     public String getId() {
@@ -64,22 +60,6 @@ public class QueryBean {
         this.stateStr = stateStr;
     }
 
-    public String getCardState() {
-        return cardState;
-    }
-
-    public void setCardState(String cardState) {
-        this.cardState = cardState;
-    }
-
-    public String getCardStateStr() {
-        return cardStateStr;
-    }
-
-    public void setCardStateStr(String cardStateStr) {
-        this.cardStateStr = cardStateStr;
-    }
-
     @Override
     public String toString() {
         return "QueryBean{" +
@@ -88,8 +68,6 @@ public class QueryBean {
                 ", identity='" + identity + '\'' +
                 ", state='" + state + '\'' +
                 ", stateStr='" + stateStr + '\'' +
-                ", cardState='" + cardState + '\'' +
-                ", cardStateStr='" + cardStateStr + '\'' +
                 '}';
     }
 }
