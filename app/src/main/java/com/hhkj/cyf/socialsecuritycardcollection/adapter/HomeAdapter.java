@@ -1,6 +1,9 @@
 package com.hhkj.cyf.socialsecuritycardcollection.adapter;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,14 +64,13 @@ public class HomeAdapter extends BaseAdapter {
             holder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
             holder.textView = (TextView) convertView.findViewById(R.id.textView);
             holder.l1 = (LinearLayout) convertView.findViewById(R.id.l1);
-
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
         }
+
         holder.imageView.setImageResource(homeModels.get(position).getImageUrl());
 
-        holder.l1 = (LinearLayout) convertView.findViewById(R.id.l1);
         AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) holder.l1.getLayoutParams();
         layoutParams.height = width;
         holder.l1.setLayoutParams(layoutParams);

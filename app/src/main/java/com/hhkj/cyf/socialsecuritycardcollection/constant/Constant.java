@@ -1,54 +1,104 @@
 package com.hhkj.cyf.socialsecuritycardcollection.constant;
 
+import android.content.Context;
+
 import com.hhkj.cyf.socialsecuritycardcollection.bean.SelectItemBean;
+import com.hhkj.cyf.socialsecuritycardcollection.tools.AssetsTools;
 
 import java.util.ArrayList;
 
 public class Constant {
 
+    public static final String phone = "18743044258";//联系我们 帮助电话
+
     /**
      * 性别
+     *
      * @return
      */
-    public static ArrayList<SelectItemBean> getSexs() {
-        ArrayList<SelectItemBean> list = new ArrayList<>();
-        list.add(new SelectItemBean("男", "1"));
-        list.add(new SelectItemBean("女", "2"));
-        list.add(new SelectItemBean("未说明性别", "9"));
-        return list;
+    public static ArrayList<SelectItemBean> getXb(Context context) {
+        return new ArrayList<>(AssetsTools.getSelectItemBeans(context, "xb"));
     }
 
     /**
      * 证件类型
+     *
      * @return
      */
-    public static ArrayList<SelectItemBean> getCardType() {
-        ArrayList<SelectItemBean> list = new ArrayList<>();
-        list.add(new SelectItemBean("身份证", "A"));
-        list.add(new SelectItemBean("临时身份证", "B"));
-        list.add(new SelectItemBean("户口本", "C"));
-        list.add(new SelectItemBean("军官证", "D"));
-        list.add(new SelectItemBean("士兵证", "E"));
-        list.add(new SelectItemBean("警官证", "F"));
-        list.add(new SelectItemBean("港澳台通行证", "G"));
-        list.add(new SelectItemBean("护照", "H"));
-        list.add(new SelectItemBean("未确定证件", "J"));
-        return list;
+    public static ArrayList<SelectItemBean> getZjlx(Context context) {
+        return new ArrayList<>(AssetsTools.getSelectItemBeans(context, "zjlx"));
     }
 
     /**
      * 民族
+     *
      * @return
      */
-    public static ArrayList<SelectItemBean> getNationality() {
-        ArrayList<SelectItemBean> list = new ArrayList<>();
-        list.add(new SelectItemBean("汉族", "01"));
-        list.add(new SelectItemBean("蒙古族", "02"));
-        list.add(new SelectItemBean("回族", "03"));
-        list.add(new SelectItemBean("藏族", "04"));
-        list.add(new SelectItemBean("维吾尔族", "05"));
-        list.add(new SelectItemBean("苗族", "06"));
-        return list;
+    public static ArrayList<SelectItemBean> getMz(Context context) {
+        return new ArrayList<>(AssetsTools.getSelectItemBeans(context, "ymz"));
+    }
+
+    /**
+     * 人员状态
+     *
+     * @return
+     */
+    public static ArrayList<SelectItemBean> getRyzt(Context context) {
+        return new ArrayList<>(AssetsTools.getSelectItemBeans(context, "ryzt"));
+    }
+
+    /**
+     * 国籍
+     *
+     * @return
+     */
+    public static ArrayList<SelectItemBean> getGj(Context context) {
+        return new ArrayList<>(AssetsTools.getSelectItemBeans(context, "gj"));
+    }
+
+    /**
+     * 户籍性质
+     *
+     * @return
+     */
+    public static ArrayList<SelectItemBean> getHjxz(Context context) {
+        return new ArrayList<>(AssetsTools.getSelectItemBeans(context, "hjxz"));
+    }
+
+    /**
+     * 卡联名银行
+     *
+     * @return
+     */
+    public static ArrayList<SelectItemBean> getKlmyh(Context context) {
+        return new ArrayList<>(AssetsTools.getSelectItemBeans(context, "klmyh"));
+    }
+
+    /**
+     * 专属职业
+     *
+     * @return
+     */
+    public static ArrayList<SelectItemBean> getZszy(Context context) {
+        return new ArrayList<>(AssetsTools.getSelectItemBeans(context, "zszy"));
+    }
+
+    /**
+     * 专属行业
+     *
+     * @return
+     */
+    public static ArrayList<SelectItemBean> getZshy(Context context) {
+        return new ArrayList<>(AssetsTools.getSelectItemBeans(context, "zshy"));
+    }
+
+    /**
+     * 监护人证件类型
+     *
+     * @return
+     */
+    public static ArrayList<SelectItemBean> getJhrzjlx(Context context) {
+        return new ArrayList<>(AssetsTools.getSelectItemBeans(context, "jhrzjlx"));
     }
 
 }

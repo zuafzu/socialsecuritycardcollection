@@ -19,7 +19,7 @@
             android:layout_height="44dp"
             android:layout_margin="16dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_register_gary"
+            android:background="@drawable/shape_other_white"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -54,7 +54,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/shape_btn_blue"
-        android:text="验证"
+        android:text="查询"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 

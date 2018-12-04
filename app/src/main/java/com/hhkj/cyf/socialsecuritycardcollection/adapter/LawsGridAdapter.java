@@ -57,11 +57,10 @@ public class LawsGridAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new Holder();
             convertView = LayoutInflater.from(activity).inflate(
-                    R.layout.item_home, parent, false);
+                    R.layout.item_grid_laws, parent, false);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
             holder.textView = (TextView) convertView.findViewById(R.id.textView);
             holder.l1 = (LinearLayout) convertView.findViewById(R.id.l1);
-
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -70,7 +69,6 @@ public class LawsGridAdapter extends BaseAdapter {
 
         holder.imageView.setImageResource(homeModels.get(position).getImageUrl());
 
-        holder.l1 = (LinearLayout) convertView.findViewById(R.id.l1);
         AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) holder.l1.getLayoutParams();
         layoutParams.height = width;
         holder.l1.setLayoutParams(layoutParams);

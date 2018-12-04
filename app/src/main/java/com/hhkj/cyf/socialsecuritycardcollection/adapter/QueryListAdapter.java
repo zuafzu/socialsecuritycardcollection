@@ -67,35 +67,34 @@ public class QueryListAdapter extends BaseAdapter {
         // 0保存成功，1上传成功，2上传失败，3异地
         switch (queryList.get(position).getState()) {
             case "0":
+                holder.btn_edit.setVisibility(View.VISIBLE);
+                holder.btn_edit.setText("修改");
                 holder.tv_state.setText("保存成功");
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light));
                 break;
             case "1":
-                holder.tv_state.setText("上传成功");
+                holder.btn_edit.setVisibility(View.VISIBLE);
+                holder.btn_edit.setText("查看");
+                holder.tv_state.setText("上传成功——请在主界面中点击“制卡进度查询”查看相关进度");
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light));
                 break;
             case "2":
                 holder.btn_edit.setVisibility(View.VISIBLE);
                 holder.btn_edit.setText("修改");
-                holder.tv_state.setText("上传失败");
+                holder.tv_state.setText("上传失败——失败原因");
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_light));
                 break;
             case "3":
                 holder.btn_edit.setVisibility(View.VISIBLE);
                 holder.btn_edit.setText("查看");
-                holder.tv_state.setText("异地上报");
+                holder.tv_state.setText("异地上报——您已在XX地上报");
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_light));
                 break;
         }
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (queryList.get(position).getState().equals("2")) {
-                    onMyClickListener.clickEdit(position);
-                } else if (queryList.get(position).getState().equals("3")) {
-                    onMyClickListener.clickLook(position);
-                }
-
+                onMyClickListener.clickBtn(position);
             }
         });
         return convertView;
@@ -106,9 +105,7 @@ public class QueryListAdapter extends BaseAdapter {
     }
 
     public interface OnMyClickListener {
-        void clickEdit(int index);
-
-        void clickLook(int index);
+        void clickBtn(int index);
     }
 
 }

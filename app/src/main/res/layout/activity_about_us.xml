@@ -34,7 +34,7 @@
             android:layout_margin="24dp"
             android:layout_marginTop="16dp"
             android:text="人力资源和社会保障局数据采集|纵横软件开发支持"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp" />
 
     </RelativeLayout>

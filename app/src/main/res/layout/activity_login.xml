@@ -59,7 +59,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorAccent" />
+            android:background="@color/colorPrimary" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -119,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="忘记密码"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp" />
 
 
@@ -143,7 +143,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
         android:text="创建账号"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
     <View
@@ -157,7 +157,7 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginTop="16dp"
         android:text="人力资源和社会保障局数据采集|纵横软件开发支持"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp" />
 
 </LinearLayout>

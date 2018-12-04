@@ -84,10 +84,10 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
 
     private void setData() {
         homeModel = new ArrayList<>();
-        HomeBean homeBean1 = new HomeBean(R.mipmap.ic_tab2_1, "1", "社会保障卡信息采集");
-        HomeBean homeBean2 = new HomeBean(R.mipmap.ic_tab2_2, "2", "制卡进度查询");
-        HomeBean homeBean3 = new HomeBean(R.mipmap.ic_tab2_3, "3", "社保查询");
-        HomeBean homeBean4 = new HomeBean(R.mipmap.ic_tab2_4, "4", "医保查询");
+        HomeBean homeBean1 = new HomeBean(R.mipmap.ic_launcher, "1", "社会保障卡信息采集");
+        HomeBean homeBean2 = new HomeBean(R.mipmap.ic_launcher, "2", "制卡进度查询");
+        HomeBean homeBean3 = new HomeBean(R.mipmap.ic_launcher, "3", "社保查询");
+        HomeBean homeBean4 = new HomeBean(R.mipmap.ic_launcher, "4", "医保查询");
         homeModel.add(homeBean1);
         homeModel.add(homeBean2);
         homeModel.add(homeBean3);

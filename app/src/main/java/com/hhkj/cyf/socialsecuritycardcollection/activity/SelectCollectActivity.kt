@@ -46,9 +46,9 @@ class SelectCollectActivity : BaseActivity() {
 
     private fun setData() {
         homeModel = ArrayList<HomeBean>()
-        val homeBean1 = HomeBean(R.mipmap.ic_tab2_1, "1", "个人办理")
-        val homeBean2 = HomeBean(R.mipmap.ic_tab2_2, "2", "亲属代办")
-        val homeBean3 = HomeBean(R.mipmap.ic_tab2_3, "3", "采集进度查询")
+        val homeBean1 = HomeBean(R.mipmap.ic_launcher, "1", "个人办理")
+        val homeBean2 = HomeBean(R.mipmap.ic_launcher, "2", "亲属代办")
+        val homeBean3 = HomeBean(R.mipmap.ic_launcher, "3", "采集进度查询")
         homeModel!!.add(homeBean1)
         homeModel!!.add(homeBean2)
         homeModel!!.add(homeBean3)

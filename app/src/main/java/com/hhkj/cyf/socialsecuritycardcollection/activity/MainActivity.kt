@@ -55,15 +55,15 @@ class MainActivity : BaseActivity() , RadioGroup.OnCheckedChangeListener {
         val childCount = group.childCount
         var checkedIndex = 0
         var btnButton: RadioButton? = null
-        for (i in 0..childCount - 1) {
+        for (i in 0 until childCount) {
             btnButton = group.getChildAt(i) as RadioButton
-            if (btnButton!!.isChecked()) {
+
+            if (btnButton.isChecked) {
                 checkedIndex = i
                 break
             }
         }
 
-        val manager = supportFragmentManager
         when (checkedIndex) {
             0 -> if (tab1Fragment == null) {
                 tab1Fragment = Tab1Fragment()
@@ -94,7 +94,7 @@ class MainActivity : BaseActivity() , RadioGroup.OnCheckedChangeListener {
                 addFragment(tab3Fragment!!)
                 showFragment(tab3Fragment!!)
             } else {
-                if (tab3Fragment!!.isHidden()) {
+                if (tab3Fragment!!.isHidden) {
                     showFragment(tab3Fragment!!)
                 }
             }

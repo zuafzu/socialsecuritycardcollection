@@ -27,7 +27,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/shape_register_gary"
+                    android:background="@drawable/shape_other_white"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -51,7 +51,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="+"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/colorPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                             android:layout_weight="1"
                             android:gravity="left"
                             android:text="+"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/colorPrimary" />
 
                         <ImageView
                             android:id="@+id/iv_arr1"
@@ -92,6 +92,7 @@
 
 
                         <LinearLayout
+                            android:id="@+id/ll_peopleState"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -117,6 +118,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="32dp"
                                 android:layout_weight="1"
+                                android:gravity="center_vertical"
                                 android:textSize="14sp" />
 
                             <ImageView
@@ -133,6 +135,7 @@
                             android:background="@color/hint" />
 
                         <LinearLayout
+                            android:id="@+id/ll_country"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -158,6 +161,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="32dp"
                                 android:layout_weight="1"
+                                android:gravity="center_vertical"
                                 android:textSize="14sp" />
 
                             <ImageView
@@ -173,8 +177,8 @@
                             android:layout_height="2px"
                             android:background="@color/hint" />
 
-
                         <LinearLayout
+                            android:id="@+id/ll_householdType"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -200,6 +204,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="32dp"
                                 android:layout_weight="1"
+                                android:gravity="center_vertical"
                                 android:textSize="14sp" />
 
                             <ImageView
@@ -315,6 +320,7 @@
                             android:background="@color/hint" />
 
                         <LinearLayout
+                            android:id="@+id/ll_bank"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -340,6 +346,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="32dp"
                                 android:layout_weight="1"
+                                android:gravity="center_vertical"
                                 android:textSize="14sp" />
 
                             <ImageView
@@ -356,6 +363,7 @@
                             android:background="@color/hint" />
 
                         <LinearLayout
+                            android:id="@+id/ll_profession"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -381,6 +389,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="32dp"
                                 android:layout_weight="1"
+                                android:gravity="center_vertical"
                                 android:textSize="14sp" />
 
                             <ImageView
@@ -397,6 +406,7 @@
                             android:background="@color/hint" />
 
                         <LinearLayout
+                            android:id="@+id/ll_industry"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -422,6 +432,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="32dp"
                                 android:layout_weight="1"
+                                android:gravity="center_vertical"
                                 android:textSize="14sp" />
 
                             <ImageView
@@ -461,10 +472,10 @@
 
                             <TextView
                                 android:id="@+id/tv_area"
-                                android:gravity="center_vertical"
                                 android:layout_width="0dp"
                                 android:layout_height="32dp"
                                 android:layout_weight="1"
+                                android:gravity="center_vertical"
                                 android:textSize="14sp" />
 
                             <ImageView

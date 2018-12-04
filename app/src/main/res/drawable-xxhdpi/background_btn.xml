@@ -7,7 +7,7 @@
         android:topLeftRadius="@dimen/radius"
         android:topRightRadius="@dimen/radius" />
 
-    <solid android:color="@color/colorAccent"></solid>
+    <solid android:color="@color/colorPrimary"/>
     <stroke
         android:width="0dp"
         android:color="@color/hint" />

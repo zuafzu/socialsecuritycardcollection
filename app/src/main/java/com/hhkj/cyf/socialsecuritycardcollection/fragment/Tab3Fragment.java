@@ -1,9 +1,12 @@
 package com.hhkj.cyf.socialsecuritycardcollection.fragment;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +19,11 @@ import com.hhkj.cyf.socialsecuritycardcollection.activity.ChangePwActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.FeedbackActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.UserInfoActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity;
+import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant;
 
 public class Tab3Fragment extends Fragment implements View.OnClickListener {
 
-    private LinearLayout ll_userinfo, ll_changepw, ll_feedback, ll_aboutus;
+    private LinearLayout ll_userinfo, ll_changepw, ll_feedback, ll_aboutus,ll_callus;
     private TextView tv_version;
 
     @Override
@@ -37,10 +41,12 @@ public class Tab3Fragment extends Fragment implements View.OnClickListener {
         ll_feedback = mView.findViewById(R.id.ll_feedback);
         ll_aboutus = mView.findViewById(R.id.ll_aboutus);
         tv_version = mView.findViewById(R.id.tv_version);
+        ll_callus = mView.findViewById(R.id.ll_callus);
         ll_userinfo.setOnClickListener(this);
         ll_changepw.setOnClickListener(this);
         ll_feedback.setOnClickListener(this);
         ll_aboutus.setOnClickListener(this);
+        ll_callus.setOnClickListener(this);
     }
 
     private void setData() {
@@ -62,6 +68,29 @@ public class Tab3Fragment extends Fragment implements View.OnClickListener {
             case R.id.ll_aboutus:
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));
                 break;
+            case R.id.ll_callus:
+                 AlertDialog.Builder normalDialog = new AlertDialog.Builder(getActivity());
+                normalDialog.setTitle("提示");
+                normalDialog.setMessage("确认拨打电话吗？");
+                normalDialog.setPositiveButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                ((BaseActivity)getActivity()).callPhone(Constant.phone);
+                            }
+                        });
+                normalDialog.setNegativeButton("取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                // 显示
+                normalDialog.show();
+                break;
         }
     }
+
 }

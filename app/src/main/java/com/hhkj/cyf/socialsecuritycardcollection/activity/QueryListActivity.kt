@@ -34,21 +34,25 @@ class QueryListActivity : BaseActivity() , QueryListAdapter.OnMyClickListener {
         listView.adapter = QueryListAdapter(queryList, this, this)
     }
 
-    override fun clickEdit(index: Int) {
-        val mIntent = Intent(this, Collect1Activity::class.java)
-        mIntent.putExtra("title", "个人办理")
-        mIntent.putExtra("type", 0)
-        startActivity(mIntent)
-    }
+    override fun clickBtn(index: Int) {
+        // 0保存成功，1上传成功，2上传失败，3异地
+        when(queryList!![index].state){
+            "0","2"->{
+                val mIntent = Intent(this, Collect1Activity::class.java)
+                mIntent.putExtra("title", "个人办理")
+                mIntent.putExtra("type", 0)
+                startActivity(mIntent)
+            }
+            "1","3"->{
+                // 生成本地html
 
-    override fun clickLook(index: Int) {
-        val builder = AlertDialog.Builder(this@QueryListActivity)
-        builder.setTitle("提示")
-        builder.setMessage("异地上报")
-        builder.setPositiveButton("确认") { p0, p1 ->
-            p0.dismiss()
+                // 加载本地html
+                val mIntent = Intent(this, WebActivity::class.java)
+                mIntent.putExtra("title", "查看详情")
+                mIntent.putExtra("url", "file:///android_asset/index.html")
+                startActivity(mIntent)
+            }
         }
-        builder.create().show()
     }
 
 }

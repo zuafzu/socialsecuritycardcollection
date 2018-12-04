@@ -48,11 +48,16 @@ class SelectItemActivity : BaseActivity() {
 
     private fun setData() {
         listView.adapter = SelectItemAdapter(list, this)
-        for (i in 0 until list!!.size) {
-            if (list!![i].id == id) {
-                name = list!![i].name
-                listView.setItemChecked(i, true)
-                break
+        if (list!!.size > 0) {
+            listView.setItemChecked(0, true)
+            name = list!![0].name
+            id = list!![0].id
+            for (i in 0 until list!!.size) {
+                if (list!![i].id == id) {
+                    name = list!![i].name
+                    listView.setItemChecked(i, true)
+                    break
+                }
             }
         }
     }

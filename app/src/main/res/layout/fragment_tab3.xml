@@ -112,9 +112,10 @@
                         android:text="完善个人信息" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="20dp"
                         android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
                         android:src="@mipmap/ic_rightarr" />
 
                 </LinearLayout>
@@ -148,9 +149,10 @@
                         android:text="修改密码" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="20dp"
                         android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
                         android:src="@mipmap/ic_rightarr" />
 
                 </LinearLayout>
@@ -198,9 +200,47 @@
                         android:text="意见反馈" />
 
                     <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:src="@mipmap/ic_rightarr" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="@color/hint" />
+
+                <LinearLayout
+                    android:id="@+id/ll_callus"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
+                        android:src="@mipmap/register_phone"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1"
+                        android:text="联系我们" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
                         android:src="@mipmap/ic_rightarr" />
 
                 </LinearLayout>
@@ -234,9 +274,10 @@
                         android:text="关于我们" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="20dp"
                         android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
                         android:src="@mipmap/ic_rightarr" />
 
                 </LinearLayout>

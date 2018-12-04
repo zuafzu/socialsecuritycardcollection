@@ -25,12 +25,12 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="64dp"
                     android:layout_marginRight="64dp"
                     android:adjustViewBounds="true"
                     android:src="@mipmap/ic_id_photo"
-                    android:tint="@color/colorPrimary" />
+                    android:tint="@android:color/darker_gray" />
 
                 <ImageView
                     android:id="@+id/iv_img"
