@@ -17,6 +17,8 @@ class ForgetPwActivity : BaseActivity() {
     private fun initView() {
         setTextTitle("找回密码")
         setLeftBtn(true)
+        setPwEt(et_pw1,switch0)
+        setPwEt(et_pw2,switch1)
     }
 
     private fun initClick() {

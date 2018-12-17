@@ -73,11 +73,13 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
+                            android:id="@+id/rl_img_z"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
 
                             <ImageView
+                                android:id="@+id/iv_img_z"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
@@ -86,6 +88,7 @@
                                 android:src="@mipmap/ic_id_camera_z" />
 
                             <TextView
+                                android:id="@+id/tv_z"
                                 android:layout_width="56dp"
                                 android:layout_height="56dp"
                                 android:layout_centerInParent="true"
@@ -107,11 +110,13 @@
                             android:layout_height="match_parent" />
 
                         <RelativeLayout
+                            android:id="@+id/rl_img_f"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
 
                             <ImageView
+                                android:id="@+id/iv_img_f"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
@@ -120,6 +125,7 @@
                                 android:src="@mipmap/ic_id_camera_f" />
 
                             <TextView
+                                android:id="@+id/tv_f"
                                 android:layout_width="56dp"
                                 android:layout_height="56dp"
                                 android:layout_centerInParent="true"

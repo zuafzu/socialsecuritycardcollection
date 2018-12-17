@@ -1,12 +1,12 @@
 package com.hhkj.cyf.socialsecuritycardcollection.activity
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.hhkj.cyf.socialsecuritycardcollection.R
+import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,7 +16,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-
+        setPwEt(et_pw, switch0)
     }
 
     private fun initClick() {

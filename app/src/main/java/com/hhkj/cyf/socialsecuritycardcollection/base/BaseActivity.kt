@@ -1,24 +1,29 @@
 package com.hhkj.cyf.socialsecuritycardcollection.base
 
 import android.app.ProgressDialog
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.hhkj.cyf.socialsecuritycardcollection.R
+import java.io.BufferedOutputStream
 import java.io.File
-import android.content.ContentResolver
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 open class BaseActivity : AppCompatActivity() {
@@ -27,6 +32,7 @@ open class BaseActivity : AppCompatActivity() {
     val requestCode_SysAlbum = 0
     val requestCode_SysCamera = 1
     val requestCode_CropPic = 2
+    var mStringphotoFile = ""
     var mUriphotoFile: Uri? = null
     var mUritempFile: Uri? = null
 
@@ -233,10 +239,62 @@ open class BaseActivity : AppCompatActivity() {
      * 打开系统相机
      */
     fun openSysCamera() {
-        mUriphotoFile = Uri.fromFile(File(Environment.getExternalStorageDirectory(), "small1.png"))
+        mStringphotoFile = Environment.getExternalStorageDirectory().absolutePath + "/small1.png"
+        mUriphotoFile = Uri.fromFile(File(mStringphotoFile))
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUriphotoFile)
         startActivityForResult(cameraIntent, requestCode_SysCamera)
+    }
+
+    /**
+     * 读取照片exif信息中的旋转角度
+     * @param path 照片路径
+     * @return角度
+     */
+    fun readPictureDegree(path: String): Int {
+        var degree = 0
+        try {
+            val exifInterface = ExifInterface(path)
+            val orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> degree = 90
+                ExifInterface.ORIENTATION_ROTATE_180 -> degree = 180
+                ExifInterface.ORIENTATION_ROTATE_270 -> degree = 270
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return degree
+    }
+
+    /**
+     * 旋转图片
+     */
+    fun toturn(img: Bitmap): Bitmap {
+        var img = img
+        val matrix = Matrix()
+        matrix.postRotate(+90f) /*翻转90度*/
+        val width = img.width
+        val height = img.height
+        img = Bitmap.createBitmap(img, 0, 0, width, height, matrix, true)
+        return img
+    }
+
+    /**
+     * bitmap保存图片
+     */
+    fun saveBitmapFile(filePath: String, bitmap: Bitmap) {
+        val file = File(filePath)
+        try {
+            val bos = BufferedOutputStream(FileOutputStream(file))
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)
+            bos.flush()
+            bos.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
     }
 
     /**
@@ -273,7 +331,7 @@ open class BaseActivity : AppCompatActivity() {
         mUritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().path + "/" + "small2.jpg")
         cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUritempFile)
         // 图片输出格式
-        cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString())
         // 头像识别 会启动系统的拍照时人脸识别
         //        cropIntent.putExtra("noFaceDetection", true);
         startActivityForResult(cropIntent, requestCode_CropPic)
@@ -326,6 +384,21 @@ open class BaseActivity : AppCompatActivity() {
         val data = Uri.parse("tel:$phoneNum")
         intent.data = data
         startActivity(intent)
+    }
+
+    /**
+     * 给密码框添加显示隐藏*号功能
+     */
+    fun setPwEt(et: EditText, switch: Switch) {
+        switch.setOnCheckedChangeListener { _, b ->
+            if (b) {
+                et.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                et.setSelection(et.text.toString().length)
+            } else {
+                et.transformationMethod = PasswordTransformationMethod.getInstance()
+                et.setSelection(et.text.toString().length)
+            }
+        }
     }
 
 }

@@ -37,11 +37,13 @@
                 android:src="@mipmap/register_pass" />
 
             <EditText
+                android:id="@+id/et_pw"
                 android:layout_width="0dp"
                 android:layout_height="44dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:hint="原密码"
+                android:inputType="textPassword"
                 android:textSize="14sp" />
 
             <Switch
@@ -70,11 +72,13 @@
                 android:src="@mipmap/register_pass" />
 
             <EditText
+                android:id="@+id/et_pw1"
                 android:layout_width="0dp"
                 android:layout_height="44dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:hint="设置新密码"
+                android:inputType="textPassword"
                 android:textSize="14sp" />
 
             <Switch
@@ -103,11 +107,13 @@
                 android:src="@mipmap/register_pass" />
 
             <EditText
+                android:id="@+id/et_pw2"
                 android:layout_width="0dp"
                 android:layout_height="44dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:hint="确认新密码"
+                android:inputType="textPassword"
                 android:textSize="14sp" />
 
             <Switch
@@ -127,8 +133,8 @@
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/shape_btn_blue"
             android:text="确认"
             android:textColor="@android:color/white"

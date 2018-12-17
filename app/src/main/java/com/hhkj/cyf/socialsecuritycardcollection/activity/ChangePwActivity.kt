@@ -1,6 +1,5 @@
 package com.hhkj.cyf.socialsecuritycardcollection.activity
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
@@ -18,6 +17,9 @@ class ChangePwActivity : BaseActivity() {
     private fun initView() {
         setTextTitle("修改密码")
         setLeftBtn(true)
+        setPwEt(et_pw,switch0)
+        setPwEt(et_pw1,switch1)
+        setPwEt(et_pw2,switch2)
     }
 
     private fun initClick() {

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
@@ -71,6 +72,12 @@ class UserInfoActivity : BaseActivity() {
                     cropPic(data!!.data, 1, 1, 512, 512)
                 }
                 requestCode_SysCamera -> {
+                    // 三星等手机拍照旋转90度
+                    if (readPictureDegree(mStringphotoFile) != 0) {
+                        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, mUriphotoFile)
+                        val bitmap2 = toturn(bitmap)
+                        saveBitmapFile(mStringphotoFile, bitmap2)
+                    }
                     cropPic(mUriphotoFile, 1, 1, 512, 512)
                 }
                 requestCode_CropPic -> {

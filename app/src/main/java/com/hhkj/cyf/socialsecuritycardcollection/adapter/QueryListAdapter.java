@@ -68,14 +68,14 @@ public class QueryListAdapter extends BaseAdapter {
         switch (queryList.get(position).getState()) {
             case "0":
                 holder.btn_edit.setVisibility(View.VISIBLE);
-                holder.btn_edit.setText("修改");
+                holder.btn_edit.setText("查看");
                 holder.tv_state.setText("保存成功");
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light));
                 break;
             case "1":
                 holder.btn_edit.setVisibility(View.VISIBLE);
                 holder.btn_edit.setText("查看");
-                holder.tv_state.setText("上传成功——请在主界面中点击“制卡进度查询”查看相关进度");
+                holder.tv_state.setText("上传成功——如需查询制卡进度，请您点击主界面中“制卡进度查询”");
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light));
                 break;
             case "2":
