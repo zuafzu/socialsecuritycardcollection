@@ -48,7 +48,8 @@ class UserInfoActivity : BaseActivity() {
                 }
             }
         }
-        builder.create().show()
+        dialog = builder.create()
+        dialog!!.show()
     }
 
     private fun getImg() {

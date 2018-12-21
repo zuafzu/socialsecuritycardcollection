@@ -38,7 +38,8 @@ class WebActivity : BaseActivity() {
                 builder.setNegativeButton("取消"){ p0, p1 ->
                     p0.dismiss()
                 }
-                builder.create().show()
+                dialog = builder.create()
+                dialog!!.show()
             })
         }
         //支持javascript

@@ -76,7 +76,8 @@ class Collect3Activity : BaseActivity() {
                 }
             }
         }
-        builder.create().show()
+        dialog = builder.create()
+        dialog!!.show()
     }
 
     private fun getImg() {
@@ -177,7 +178,8 @@ class Collect3Activity : BaseActivity() {
             iv_img.setImageResource(R.mipmap.ic_id_photo)
             p0.dismiss()
         }
-        builder.create().show()
+        dialog = builder.create()
+        dialog!!.show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

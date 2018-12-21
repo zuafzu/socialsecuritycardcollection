@@ -3,7 +3,6 @@ package com.hhkj.cyf.socialsecuritycardcollection.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -69,7 +68,7 @@ public class Tab3Fragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));
                 break;
             case R.id.ll_callus:
-                 AlertDialog.Builder normalDialog = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder normalDialog = new AlertDialog.Builder(getActivity());
                 normalDialog.setTitle("提示");
                 normalDialog.setMessage("确认拨打电话吗？");
                 normalDialog.setPositiveButton("确定",

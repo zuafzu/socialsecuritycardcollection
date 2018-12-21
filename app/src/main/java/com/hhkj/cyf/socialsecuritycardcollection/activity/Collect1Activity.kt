@@ -60,7 +60,9 @@ class Collect1Activity : BaseActivity() {
 
             override fun onError(error: OCRError) {
                 // 调用失败，返回OCRError子类SDKError对象
-                toast("licence方式获取token失败")
+                runOnUiThread {
+                    toast("licence方式获取token失败,errorCode：" + error.errorCode)
+                }
             }
         }, applicationContext)
         CameraNativeHelper.init(this, OCR.getInstance(this).license
@@ -143,7 +145,8 @@ class Collect1Activity : BaseActivity() {
             builder.setNegativeButton("取消") { p0, p1 ->
                 p0.dismiss()
             }
-            builder.create().show()
+            dialog = builder.create()
+            dialog!!.show()
         }
         ll_cardEndDate.setOnClickListener {
             val mView = layoutInflater.inflate(R.layout.dialog_date, null)
@@ -174,7 +177,8 @@ class Collect1Activity : BaseActivity() {
                 tv_cardEndDate.text = "长期"
                 p0.dismiss()
             }
-            builder.create().show()
+            dialog = builder.create()
+            dialog!!.show()
         }
         ll_nationality.setOnClickListener {
             SelectItemActivity.startSelectItem(this, Constant.getMz(this), "", object : SelectItemActivity.OnMySelectItemListener {

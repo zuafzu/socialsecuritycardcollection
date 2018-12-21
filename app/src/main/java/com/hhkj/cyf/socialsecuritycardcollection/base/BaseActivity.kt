@@ -1,5 +1,6 @@
 package com.hhkj.cyf.socialsecuritycardcollection.base
 
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.ContentResolver
 import android.content.Context
@@ -28,6 +29,7 @@ import java.io.IOException
 
 open class BaseActivity : AppCompatActivity() {
 
+    var dialog: Dialog? = null
     var progressDialog: ProgressDialog? = null
     val requestCode_SysAlbum = 0
     val requestCode_SysCamera = 1
@@ -43,6 +45,9 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        if (dialog != null && dialog!!.isShowing) {
+            dialog!!.dismiss()
+        }
     }
 
     /**
