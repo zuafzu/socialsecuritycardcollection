@@ -7,4 +7,7 @@
     <color name="windowBackground">#ecf1f5</color>
 
     <color name="hint">#22000000</color>
+    <color name="darker_gray">#aaa</color>
+    <color name="white">#ffffff</color>
+
 </resources>

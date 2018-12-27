@@ -1,32 +1,55 @@
 package com.hhkj.cyf.socialsecuritycardcollection.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.hhkj.cyf.socialsecuritycardcollection.R;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.SelectCollectActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.WebActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.adapter.HomeAdapter;
+import com.hhkj.cyf.socialsecuritycardcollection.bean.BaseBean;
 import com.hhkj.cyf.socialsecuritycardcollection.bean.HomeBean;
+import com.hhkj.cyf.socialsecuritycardcollection.bean.StatusBean;
+import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant;
+import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools;
+import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools;
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls;
 import com.hhkj.cyf.socialsecuritycardcollection.view.SlideShowView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Tab1Fragment extends Fragment implements View.OnClickListener {
 
     private SlideShowView slideShowView;
     private GridView gridView;
     private List<HomeBean> homeModel;
+    private LinearLayout ll_status;
+    private ImageView iv_status1;
+    private ImageView iv_status2;
+    private TextView tv_status1;
+    private TextView tv_status2;
+    private TextView tv_msg1;
+    private TextView tv_msg2;
+
+    private StatusBean statusBean;
 
     @Nullable
     @Override
@@ -34,11 +57,19 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
         View mView = inflater.inflate(R.layout.fragment_tab1, container, false);
         initView(mView);
         setData();
+        net_selfQuery();
         return mView;
     }
 
     private void initView(final View mView) {
         ((TextView) mView.findViewById(R.id.tv_toolsbar_title)).setText(getString(R.string.tab1_fragment));
+        ll_status = mView.findViewById(R.id.ll_status);
+        iv_status1 = mView.findViewById(R.id.iv_status1);
+        iv_status2 = mView.findViewById(R.id.iv_status2);
+        tv_status1 = mView.findViewById(R.id.tv_status1);
+        tv_status2 = mView.findViewById(R.id.tv_status2);
+        tv_msg1 = mView.findViewById(R.id.tv_msg1);
+        tv_msg2 = mView.findViewById(R.id.tv_msg2);
         slideShowView = (SlideShowView) mView.findViewById(R.id.slideShowView);
         // 轮播Banner
         slideShowView.setTimeInterval(5);
@@ -93,6 +124,48 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
         homeModel.add(homeBean3);
         homeModel.add(homeBean4);
         gridView.setAdapter(new HomeAdapter(homeModel, getActivity()));
+    }
+
+    private void net_selfQuery() {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("phone", "" + SPTools.INSTANCE.get(getActivity(), Constant.PHONE, ""));
+        NetTools.net(map, new Urls().selfQuery, getActivity(), new NetTools.MyCallBack() {
+            @Override
+            public void getData(BaseBean response) {
+                Log.e("zj", "net_selfQuery = " + response.getData());
+                statusBean = new Gson().fromJson(response.getData(), StatusBean.class);
+                statusBean.setStatus("2");
+                statusBean.setStatusMsg("1,2");
+                String [] temp = null;
+                temp = statusBean.getStatusMsg().split(",");
+                if (statusBean != null) {
+                    if ("0".equals(statusBean.getStatus())) {
+                        ll_status.setVisibility(View.GONE);
+                    } else if ("1".equals(statusBean.getStatus())) {
+                        ll_status.setVisibility(View.VISIBLE);
+                        iv_status1.setImageDrawable(getResources().getDrawable(R.drawable.shape_tab1_left));
+                        iv_status2.setImageDrawable(getResources().getDrawable(R.drawable.shape_tab1_right));
+                        tv_status1.setBackground(getResources().getDrawable(R.drawable.circle_tab1));
+                        tv_status2.setBackgroundColor(getResources().getColor(R.color.darker_gray));
+                        tv_status2.setBackground(getResources().getDrawable(R.drawable.circle_tab1));
+                        tv_msg1.setText(temp[0]);
+                        tv_msg2.setText(temp[1]);
+                    }else {
+                        ll_status.setVisibility(View.VISIBLE);
+                        iv_status1.setImageDrawable(getResources().getDrawable(R.drawable.shape_tab1_left));
+                        iv_status2.setImageDrawable(getResources().getDrawable(R.drawable.shape_tab1_right2));
+
+                        tv_status1.setBackground(getResources().getDrawable(R.drawable.circle_tab1));
+                        tv_status2.setBackground(getResources().getDrawable(R.drawable.circle_tab1));
+                        tv_status2.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        tv_status2.setBackgroundColor(getResources().getColor(R.color.white));
+                        tv_msg1.setText(temp[0]);
+                        tv_msg2.setText(temp[1]);
+                    }
+                }
+            }
+        });
     }
 
 

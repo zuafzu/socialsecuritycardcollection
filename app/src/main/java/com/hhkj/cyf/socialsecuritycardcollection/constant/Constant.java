@@ -10,6 +10,15 @@ import java.util.ArrayList;
 public class Constant {
 
     public static final String phone = "18743044258";//联系我们 帮助电话
+    public static final String HEADPHOTO = "headPhoto";//联系我们 帮助电话
+    public static final String PHONE = "phone";//
+    public static final String SHEBAOURL = "shebaoUrl";//联系我们 帮助电话
+    public static final String USERNAME = "username";//联系我们 帮助电话
+    public static final String YIBAOURL = "yibaourl";//联系我们 帮助电话
+    public static final String ZKJDURL = "zhikajinduUrl";//联系我们 帮助电话
+
+
+
 
     /**
      * 性别

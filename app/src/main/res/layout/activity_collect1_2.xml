@@ -154,6 +154,7 @@
                                 android:textColor="@android:color/black" />
 
                             <EditText
+                                android:id="@+id/et_jhrIdCard"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"
                                 android:background="@android:color/transparent"
@@ -187,6 +188,7 @@
                                 android:textColor="@android:color/black" />
 
                             <EditText
+                                android:id="@+id/et_jhrName"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"
                                 android:background="@android:color/transparent"

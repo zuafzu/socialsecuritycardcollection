@@ -14,6 +14,8 @@ import android.annotation.SuppressLint
 import com.google.gson.reflect.TypeToken
 import com.hhkj.cyf.socialsecuritycardcollection.view.jdaddress.MyTools.getCityJson
 import com.google.gson.Gson
+import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
+import org.jetbrains.anko.toast
 
 
 class Collect2Activity : BaseActivity() {
@@ -23,6 +25,7 @@ class Collect2Activity : BaseActivity() {
     private var areaPickerView: AreaPickerView? = null
     private var addressBeans: List<AddressBean>? = null
     private var myNum: IntArray? = null
+    private var dictionaryBean: DictionaryBean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +39,14 @@ class Collect2Activity : BaseActivity() {
         setLeftBtn(true)
         setTextTitle(intent.getStringExtra("title"))
         type = intent.getIntExtra("type", 0)
+        dictionaryBean = intent.getSerializableExtra("dictionaryBean") as DictionaryBean?
 
-        tv_peopleState.text = Constant.getRyzt(this)[0].name
-        tv_country.text = Constant.getGj(this)[0].name
-        tv_householdType.text = Constant.getHjxz(this)[0].name
-        tv_bank.text = Constant.getKlmyh(this)[0].name
-        tv_profession.text = Constant.getZszy(this)[0].name
-        tv_industry.text = Constant.getZshy(this)[0].name
+        tv_peopleState.text = dictionaryBean!!.ryztMap[0].name
+        tv_country.text = dictionaryBean!!.gjMap[0].name
+        tv_householdType.text =dictionaryBean!!.hjxzMap[0].name
+        tv_bank.text = dictionaryBean!!.klmyhMap[0].name
+        tv_profession.text = dictionaryBean!!.zszyMap[0].name
+        tv_industry.text = dictionaryBean!!.zshyMap[0].name
 
         addressBeans = Gson().fromJson<Any>(getCityJson(this), object : TypeToken<List<AddressBean>>() {}.type) as List<AddressBean>?
         areaPickerView = AreaPickerView(this, R.style.Dialog, addressBeans)
@@ -57,42 +61,42 @@ class Collect2Activity : BaseActivity() {
 
     private fun initClick() {
         ll_peopleState.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, Constant.getRyzt(this), "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.ryztMap, "", object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_peopleState.text = name
                 }
             })
         }
         ll_country.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, Constant.getGj(this), "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.gjMap, "", object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_country.text = name
                 }
             })
         }
         ll_householdType.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, Constant.getHjxz(this), "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.hjxzMap, "", object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_householdType.text = name
                 }
             })
         }
         ll_bank.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, Constant.getKlmyh(this), "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this,  dictionaryBean!!.klmyhMap, "", object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_bank.text = name
                 }
             })
         }
         ll_profession.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, Constant.getZszy(this), "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this,dictionaryBean!!.zszyMap, "", object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_profession.text = name
                 }
             })
         }
         ll_industry.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, Constant.getZshy(this), "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.zshyMap, "", object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_industry.text = name
                 }
@@ -111,6 +115,19 @@ class Collect2Activity : BaseActivity() {
             areaPickerView!!.show()
         }
         btn_next.setOnClickListener {
+            if (et_phone.text.toString() == "") {
+                toast("联系电话不能为空")
+                return@setOnClickListener
+            }
+            if (et_yb.text.toString() == "") {
+                toast("邮政编码不能为空")
+                return@setOnClickListener
+            }
+            if (et_address.text.toString() == "") {
+                toast("邮寄地址不能为空")
+                return@setOnClickListener
+            }
+
             val mIntent = Intent(this, Collect3Activity::class.java)
             mIntent.putExtra("title", intent.getStringExtra("title"))
             mIntent.putExtra("type", type)

@@ -21,6 +21,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.hhkj.cyf.socialsecuritycardcollection.R
+import com.hhkj.cyf.socialsecuritycardcollection.app.MyApplication
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -41,6 +42,8 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i("1221", javaClass.simpleName)
+        MyApplication.getActivies().add(this)
+
     }
 
     override fun onDestroy() {
@@ -48,6 +51,7 @@ open class BaseActivity : AppCompatActivity() {
         if (dialog != null && dialog!!.isShowing) {
             dialog!!.dismiss()
         }
+        MyApplication.getActivies().remove(this)
     }
 
     /**
@@ -307,7 +311,7 @@ open class BaseActivity : AppCompatActivity() {
      *
      * @param data
      */
-    fun cropPic(data: Uri?, aspectX: Int, aspectY: Int, outputX: Int, outputY: Int) {
+    fun cropPic(fileName: String?,data: Uri?, aspectX: Int, aspectY: Int, outputX: Int, outputY: Int) {
         if (data == null) {
             return
         }
@@ -333,7 +337,7 @@ open class BaseActivity : AppCompatActivity() {
         // cropIntent.putExtra("return-data", true)
         // 当 return-data 为 false 的时候需要设置这句
         cropIntent.putExtra("return-data", false)
-        mUritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().path + "/" + "small2.jpg")
+        mUritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().path + "/" + fileName+".jpg")
         cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUritempFile)
         // 图片输出格式
         cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString())

@@ -113,6 +113,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_status"
             android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,6 +133,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
+                        android:id="@+id/iv_status1"
                         android:layout_width="match_parent"
                         android:layout_height="10dp"
                         android:layout_centerVertical="true"
@@ -139,6 +141,7 @@
                         android:tint="@color/colorPrimary" />
 
                     <TextView
+                        android:id="@+id/tv_status1"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerInParent="true"
@@ -153,6 +156,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/tv_msg1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -174,6 +178,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
+                        android:id="@+id/iv_status2"
                         android:layout_width="match_parent"
                         android:layout_height="10dp"
                         android:layout_centerVertical="true"
@@ -181,6 +186,7 @@
                         android:tint="@color/hint" />
 
                     <TextView
+                        android:id="@+id/tv_status2"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerInParent="true"
@@ -195,6 +201,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/tv_msg2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"

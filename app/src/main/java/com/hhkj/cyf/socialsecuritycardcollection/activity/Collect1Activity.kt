@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import android.widget.ImageView
@@ -19,13 +20,21 @@ import com.baidu.ocr.sdk.model.IDCardResult
 import com.baidu.ocr.ui.camera.CameraActivity
 import com.baidu.ocr.ui.camera.CameraNativeHelper
 import com.baidu.ocr.ui.camera.CameraView
+import com.google.gson.Gson
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
+import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.FileUtil
+import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.Validator
+import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_collect.*
 import org.jetbrains.anko.toast
+import org.json.JSONObject
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 class Collect1Activity : BaseActivity() {
@@ -35,11 +44,16 @@ class Collect1Activity : BaseActivity() {
     private val REQUEST_CODE_CAMERA = 102
     private var imageView: ImageView? = null
 
+    private var dictionaryBean: DictionaryBean? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collect)
         initView()
         initClick()
+        net_getDictionary()
+        net_scanQuery()
+
     }
 
     private fun initView() {
@@ -102,14 +116,14 @@ class Collect1Activity : BaseActivity() {
             startActivityForResult(intent, REQUEST_CODE_CAMERA)
         }
         ll_sex.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, Constant.getXb(this), "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.xbMap, "", object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_sex.text = name
                 }
             })
         }
         ll_cardType.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, Constant.getZjlx(this), "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.zjlxMap, "", object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     if (name == "身份证") {
                         ll_id_photo.visibility = View.VISIBLE
@@ -181,52 +195,56 @@ class Collect1Activity : BaseActivity() {
             dialog!!.show()
         }
         ll_nationality.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, Constant.getMz(this), "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.mzMap, "", object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_nationality.text = name
                 }
             })
         }
         btn_next.setOnClickListener {
-            //            if (et_name.text.toString() == "") {
-//                toast("姓名不能为空")
-//                return@setOnClickListener
-//            }
-//            if (et_id.text.toString() == "") {
-//                toast("证件号码不能为空")
-//                return@setOnClickListener
-//            }
-//            if (tv_cardType.text == "身份证" && !Validator.isIDCard(et_id.text.toString())) {
-//                toast("身份证格式有误")
-//                return@setOnClickListener
-//            }
-//            if (tv_birth.text.toString() == "") {
-//                toast("出生日期不能为空")
-//                return@setOnClickListener
-//            }
-//            if (tv_cardEndDate.text.toString() == "") {
-//                toast("证件有效期不能为空")
-//                return@setOnClickListener
-//            }
-//            if (et_address.text.toString() == "") {
-//                toast("通信地址不能为空")
-//                return@setOnClickListener
-//            }
-//
-//            val calendar = Calendar.getInstance()
-//            calendar.time = SimpleDateFormat("yyyyMMdd").parse(tv_birth.text.toString())
-//            if ((tv_cardType.text == "户口本" && tv_cardEndDate.text == "长期") ||
-//                    (tv_cardType.text == "身份证" && getCurrentAge(Date(calendar.timeInMillis)) < 16)) {
-            val mIntent = Intent(this, Collect1_2Activity::class.java)
-            mIntent.putExtra("title", intent.getStringExtra("title"))
-            mIntent.putExtra("type", type)
-            startActivity(mIntent)
-//            } else {
-//                val mIntent = Intent(this, Collect2Activity::class.java)
-//                mIntent.putExtra("title", intent.getStringExtra("title"))
-//                mIntent.putExtra("type", type)
-//                startActivity(mIntent)
-//            }
+            if (et_name.text.toString() == "") {
+                toast("姓名不能为空")
+                return@setOnClickListener
+            }
+            if (et_id.text.toString() == "") {
+                toast("证件号码不能为空")
+                return@setOnClickListener
+            }
+            if (tv_cardType.text == "身份证" && !Validator.isIDCard(et_id.text.toString())) {
+                toast("身份证格式有误")
+                return@setOnClickListener
+            }
+            if (tv_birth.text.toString() == "") {
+                toast("出生日期不能为空")
+                return@setOnClickListener
+            }
+            if (tv_cardEndDate.text.toString() == "") {
+                toast("证件有效期不能为空")
+                return@setOnClickListener
+            }
+            if (et_address.text.toString() == "") {
+                toast("通信地址不能为空")
+                return@setOnClickListener
+            }
+
+            val calendar = Calendar.getInstance()
+            calendar.time = SimpleDateFormat("yyyyMMdd").parse(tv_birth.text.toString())
+            if ((tv_cardType.text == "户口本" && tv_cardEndDate.text == "长期") ||
+                    (tv_cardType.text == "身份证" && getCurrentAge(Date(calendar.timeInMillis)) < 16)) {
+                val mIntent = Intent(this, Collect1_2Activity::class.java)
+                mIntent.putExtra("title", intent.getStringExtra("title"))
+                mIntent.putExtra("dictionaryBean", dictionaryBean)
+                mIntent.putExtra("idCard", et_id.text.toString())
+                mIntent.putExtra("type", type)
+                startActivity(mIntent)
+            } else {
+                val mIntent = Intent(this, Collect2Activity::class.java)
+                mIntent.putExtra("title", intent.getStringExtra("title"))
+                mIntent.putExtra("dictionaryBean", dictionaryBean)
+
+                mIntent.putExtra("type", type)
+                startActivity(mIntent)
+            }
         }
     }
 
@@ -276,6 +294,7 @@ class Collect1Activity : BaseActivity() {
 
         OCR.getInstance(this).recognizeIDCard(param, object : OnResultListener<IDCardResult> {
             override fun onResult(result: IDCardResult?) {
+                net_scanCountQuery()
                 if (result != null) {
                     setID(result)
                 }
@@ -283,6 +302,7 @@ class Collect1Activity : BaseActivity() {
             }
 
             override fun onError(error: OCRError) {
+                net_scanCountQuery()
                 toast(error.message!!)
                 dismissProgressDialog()
             }
@@ -343,5 +363,37 @@ class Collect1Activity : BaseActivity() {
         CameraNativeHelper.release()
         super.onDestroy()
     }
+
+    private fun net_getDictionary() {
+        val map = hashMapOf<String, String>()
+        map["phone"] = "" + SPTools[this@Collect1Activity, Constant.PHONE, ""]
+        NetTools.net(map, Urls().getDictionary, this) { response ->
+            Log.e("zj", "getDictionary = " + response.data)
+            dictionaryBean = Gson().fromJson<DictionaryBean>(response.data, DictionaryBean::class.java)
+
+        }
+    }
+
+    private fun net_scanQuery() {
+        val map = hashMapOf<String, String>()
+        map["phone"] = "" + SPTools[this@Collect1Activity, Constant.PHONE, ""]
+        NetTools.net(map, Urls().scanQuery, this) { response ->
+            Log.e("zj", "scanQuery = " + response.data)
+            var jsonObj = JSONObject(response.data)
+            var isCan = jsonObj.getString("isCan")
+            if (isCan != "0") {
+                ll_id_photo.visibility = View.GONE
+            }
+
+        }
+    }
+
+    private fun net_scanCountQuery() {
+        val map = hashMapOf<String, String>()
+        map["phone"] = "" + SPTools[this@Collect1Activity, Constant.PHONE, ""]
+        NetTools.net(map, Urls().scanCountQuery, this) { _ ->
+        }
+    }
+
 
 }

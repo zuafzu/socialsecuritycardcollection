@@ -187,7 +187,7 @@ class Collect3Activity : BaseActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 requestCode_SysAlbum -> {
-                    cropPic(data!!.data, 358, 441, 358, 441)
+                    cropPic("a",data!!.data, 358, 441, 358, 441)
                 }
                 requestCode_SysCamera -> {
                     // 三星等手机拍照旋转90度
@@ -196,7 +196,7 @@ class Collect3Activity : BaseActivity() {
                         val bitmap2 = toturn(bitmap)
                         saveBitmapFile(mStringphotoFile, bitmap2)
                     }
-                    cropPic(mUriphotoFile, 358, 441, 358, 441)
+                    cropPic("a",mUriphotoFile, 358, 441, 358, 441)
                 }
                 requestCode_CropPic -> {
                     getImg()

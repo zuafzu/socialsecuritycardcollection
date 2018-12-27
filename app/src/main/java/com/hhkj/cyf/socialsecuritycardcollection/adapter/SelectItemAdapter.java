@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
 
 import com.hhkj.cyf.socialsecuritycardcollection.R;
+import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean;
 import com.hhkj.cyf.socialsecuritycardcollection.bean.SelectItemBean;
 
 import java.util.List;
@@ -19,10 +20,10 @@ import java.util.List;
 
 public class SelectItemAdapter extends BaseAdapter {
 
-    private List<SelectItemBean> selectItemBeanList;
+    private List<DictionaryBean.ListBean> selectItemBeanList;
     private Activity activity;
 
-    public SelectItemAdapter(List<SelectItemBean> selectItemBeanList, Activity activity) {
+    public SelectItemAdapter(List<DictionaryBean.ListBean> selectItemBeanList, Activity activity) {
 
         this.selectItemBeanList = selectItemBeanList;
         this.activity = activity;

@@ -45,7 +45,7 @@ class SelectCollectActivity : BaseActivity() {
     }
 
     private fun setData() {
-        homeModel = ArrayList<HomeBean>()
+        homeModel = ArrayList()
         val homeBean1 = HomeBean(R.mipmap.ic_launcher, "1", "个人办理")
         val homeBean2 = HomeBean(R.mipmap.ic_launcher, "2", "亲属代办")
         val homeBean3 = HomeBean(R.mipmap.ic_launcher, "3", "采集进度查询")

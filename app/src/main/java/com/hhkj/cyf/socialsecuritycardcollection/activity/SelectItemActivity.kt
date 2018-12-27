@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.adapter.SelectItemAdapter
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
+import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
 import com.hhkj.cyf.socialsecuritycardcollection.bean.SelectItemBean
 import kotlinx.android.synthetic.main.activity_select_item.*
 
@@ -17,9 +18,9 @@ class SelectItemActivity : BaseActivity() {
     companion object {
 
         var listener: OnMySelectItemListener? = null
-        var list: ArrayList<SelectItemBean>? = null
+        var list: ArrayList<DictionaryBean.ListBean>? = null
 
-        fun startSelectItem(activity: Activity, list: ArrayList<SelectItemBean>, id: String, listener: OnMySelectItemListener) {
+        fun startSelectItem(activity: Activity, list: ArrayList<DictionaryBean.ListBean>, id: String, listener: OnMySelectItemListener) {
             this.listener = listener
             this.list = list
             val mIntent = Intent(activity, SelectItemActivity::class.java)
