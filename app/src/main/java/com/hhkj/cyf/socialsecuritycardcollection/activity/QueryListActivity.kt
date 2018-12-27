@@ -2,10 +2,13 @@ package com.hhkj.cyf.socialsecuritycardcollection.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.adapter.QueryListAdapter
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.bean.QueryBean
+import com.hhkj.cyf.socialsecuritycardcollection.tools.AssetsTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import kotlinx.android.synthetic.main.activity_query_list.*
 
 class QueryListActivity : BaseActivity(), QueryListAdapter.OnMyClickListener {
@@ -43,14 +46,29 @@ class QueryListActivity : BaseActivity(), QueryListAdapter.OnMyClickListener {
                 startActivity(mIntent)
             }
             "0", "1", "3" -> {
-                // 生成本地html
-
-                // 加载本地html
-                val mIntent = Intent(this, CollectWebActivity::class.java)
-                mIntent.putExtra("title", "查看详情")
-                mIntent.putExtra("url", "file:///android_asset/index.html")
-                mIntent.putExtra("state", queryList!![index].state)
-                startActivity(mIntent)
+                // 下载头像证件照
+                NetTools.net_DownloadImg(
+                        Environment.getExternalStorageDirectory().absolutePath,
+                        "要保存成的图像名字",
+                        "下载图片的路径"
+                ) {
+                    // 不论下载头像证件照成功失败都调用这个方法
+                    // 需要替换的字符串
+                    val map = HashMap<String, String>()
+                    map["et0"] = "姓名"
+                    map["et1"] = "性别"
+                    map["et2"] = "国籍"
+                    // 保存到sd卡的路径
+                    var path = Environment.getExternalStorageDirectory().absolutePath + "/index_社保卡采集.html"
+                    // 复制assets里的html到sdcard根目录并替换默认值
+                    AssetsTools.copy("index.html", path, map, this)
+                    // 跳转加载html
+                    val mIntent = Intent(this, CollectWebActivity::class.java)
+                    mIntent.putExtra("title", "查看详情")
+                    mIntent.putExtra("url", "file:///$path")
+                    mIntent.putExtra("state", queryList!![index].state)
+                    startActivity(mIntent)
+                }
             }
         }
     }

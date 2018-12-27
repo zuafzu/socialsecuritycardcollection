@@ -11,10 +11,13 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class AssetsTools {
 
@@ -64,7 +67,7 @@ public class AssetsTools {
                             if (isAdd) {
                                 selectItemBean = new SelectItemBean();
                                 selectItemBean.setId(parser.getAttributeValue(0));
-                                selectItemBean.setName( parser.nextText());
+                                selectItemBean.setName(parser.nextText());
                                 selectItemBeans.add(selectItemBean);
                             }
                         }
@@ -81,6 +84,56 @@ public class AssetsTools {
             e.printStackTrace();
         }
         return selectItemBeans;
+    }
+
+    public static void copy(String name, String path, Map<String, String> map, Context context) {
+        String text;
+        try {
+            InputStream is = context.getAssets().open(name);
+            int size = is.available();
+            // Read the entire asset into a local byte buffer.
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            // Convert the buffer into a string.
+            text = new String(buffer, "UTF-8");
+            // Finally stick the string into the text view.
+            for (int i = 0; i < map.size(); i++) {
+                if (i < 9) {
+                    text = text.replaceAll("##0" + (i + 1), map.get("et" + i));
+                } else {
+                    text = text.replaceAll("##" + (i + 1), map.get("et" + i));
+                }
+            }
+        } catch (IOException e) {
+            // Should never happen!
+            throw new RuntimeException(e);
+        }
+        String filenameStr = path;
+        try {
+            save(filenameStr, text);
+        } catch (Exception e) {
+
+        }
+    }
+
+    /**
+     * 保存文件
+     *
+     * @param filenameStr    文件名称
+     * @param filecontentStr 文件内容
+     * @throws Exception
+     */
+    public static void save(String filenameStr, String filecontentStr)
+            throws Exception {
+        FileOutputStream fos = null;
+        File file = new File(filenameStr);
+        if (file.exists()) {
+            file.delete();
+        }
+        fos = new FileOutputStream(file, true);
+        fos.write(filecontentStr.getBytes());
+        fos.close();
     }
 
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.LoginActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.app.MyApplication;
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity;
@@ -15,6 +14,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.url.Urls;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.Callback;
+import com.zhy.http.okhttp.callback.FileCallBack;
 import com.zhy.http.okhttp.request.RequestCall;
 
 import org.json.JSONObject;
@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.Call;
-import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -146,13 +145,13 @@ public class NetTools {
      * @param context
      * @param myCallBack
      */
-    public static void netFile(String remark,Map<String, File> map, final Activity context, final MyCallBack myCallBack) {
+    public static void netFile(String remark, Map<String, File> map, final Activity context, final MyCallBack myCallBack) {
         PostFormBuilder builder = OkHttpUtils.post().url(new Urls().uploadPhoto);
 
         builder.addFile("file", map.get("file").getName(), map.get("file"));
 
-        Log.e("zj","name = "+map.get("file").getName());
-        builder.addParams("phone", ""+SPTools.INSTANCE.get(context,Constant.PHONE,""));
+        Log.e("zj", "name = " + map.get("file").getName());
+        builder.addParams("phone", "" + SPTools.INSTANCE.get(context, Constant.PHONE, ""));
         builder.addParams("remark", remark);
 
 
@@ -209,6 +208,26 @@ public class NetTools {
 
     public interface MyCallBack {
         void getData(BaseBean response);
+    }
+
+    // 下载图片
+    public static void net_DownloadImg(String filePath, String fileName, String url, final MyCallBack myCallBack) {
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new FileCallBack(filePath, fileName) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        myCallBack.getData(null);
+                    }
+
+                    @Override
+                    public void onResponse(File response, int id) {
+                        myCallBack.getData(null);
+                    }
+
+                });
     }
 
 }
