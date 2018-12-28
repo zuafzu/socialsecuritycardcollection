@@ -37,7 +37,6 @@ class Collect2Activity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun initView() {
-
         setLeftBtn(true)
         setTextTitle(intent.getStringExtra("title"))
         type = intent.getIntExtra("type", 0)
@@ -59,19 +58,20 @@ class Collect2Activity : BaseActivity() {
         for(i in 0 until addressBeans!!.size){
             if (addressBeans!![i].value == commitBean!!.provinceId){
                 num1 = i
-            }
-            for (j in 0 until addressBeans!![i].children.size){
-                if (addressBeans!![i].children[j].value == commitBean!!.cityId){
-                    num2 = j
-                }
-                for (k in 0 until addressBeans!![i].children[j].children.size){
-                    if (addressBeans!![i].children[j].children[k].value == commitBean!!.regionId){
-                        num3 = k
+                for (j in 0 until addressBeans!![i].children.size){
+                    if (addressBeans!![i].children[j].value == commitBean!!.cityId){
+                        num2 = j
+                        for (k in 0 until addressBeans!![i].children[j].children.size){
+                            if (addressBeans!![i].children[j].children[k].value == commitBean!!.regionId){
+                                num3 = k
+                                break
+                            }
+                        }
                         break
                     }
                 }
+                break
             }
-
         }
 
         Log.e("zj","num ===="+num1+","+num2+","+num3)
@@ -129,7 +129,6 @@ class Collect2Activity : BaseActivity() {
 //            et_address.setText(commitBean!!.yjdz)
 //        }
         areaPickerView = AreaPickerView(this, R.style.Dialog, addressBeans)
-
         areaPickerView!!.setAreaPickerViewCallback { value ->
             myNum = value
             if (value.size == 3)
@@ -137,6 +136,9 @@ class Collect2Activity : BaseActivity() {
             else
                 tv_area.text = addressBeans!![value[0]].label + "-" + addressBeans!![value[0]].children[value[1]].label
         }
+        areaPickerView!!.setSelect()
+        areaPickerView!!.show()
+        areaPickerView!!.dismiss()
     }
 
     private fun initClick() {
@@ -189,7 +191,6 @@ class Collect2Activity : BaseActivity() {
             })
         }
         ll_area.setOnClickListener {
-
             if (myNum == null) {
                 areaPickerView!!.setSelect()
             } else {
