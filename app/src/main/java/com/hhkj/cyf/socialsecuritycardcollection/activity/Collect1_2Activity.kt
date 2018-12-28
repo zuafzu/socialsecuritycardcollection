@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
+import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
 import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
+import com.hhkj.cyf.socialsecuritycardcollection.tools.Validator
 import kotlinx.android.synthetic.main.activity_collect1_2.*
 import org.jetbrains.anko.toast
 import java.util.ArrayList
@@ -13,8 +15,10 @@ import java.util.ArrayList
 class Collect1_2Activity : BaseActivity() {
 
     private var type = 0//0个人，1采集
+    private var isModify = 0//0录入，1修改
 
     private var dictionaryBean: DictionaryBean? = null
+    private var commitBean: CommitBean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,30 +31,53 @@ class Collect1_2Activity : BaseActivity() {
         setLeftBtn(true)
         setTextTitle(intent.getStringExtra("title"))
         type = intent.getIntExtra("type", 0)
+        isModify = intent.getIntExtra("isModify", 0)
+
         dictionaryBean = intent.getSerializableExtra("dictionaryBean") as DictionaryBean?
-        tv_cardType2.text =dictionaryBean!!.zhrlxMap[0].name
+        commitBean = intent.getSerializableExtra("commitBean") as CommitBean?
+
+        if (isModify == 0){
+            tv_cardType2.text =dictionaryBean!!.zjlxMap[0].name
+        }else{
+            tv_cardType2.text =commitBean!!.jhrzjlx
+            et_jhrIdCard.setText(commitBean!!.jhrzh)
+            et_jhrName.setText(commitBean!!.jhrxm)
+        }
+
     }
 
     private fun initClick() {
         ll_cardType2.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, dictionaryBean!!.zhrlxMap, "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.zjlxMap, "", object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_cardType2.text = name
+                    commitBean!!.jhrzjlx = id
                 }
             })
         }
         btn_next.setOnClickListener {
             if (et_jhrIdCard.text.isEmpty()){
-                toast("请输入监护人身份证号")
+                toast("请输入监护人证件号码")
+                return@setOnClickListener
+            }
+
+            if (tv_cardType2.text == "身份证" && !Validator.isIDCard(et_jhrIdCard.text.toString())) {
+                toast("身份证格式有误")
                 return@setOnClickListener
             }
             if (et_jhrName.text.isEmpty()){
-                toast("请输入监护人身份证号")
+                toast("请输入监护人姓名")
                 return@setOnClickListener
             }
+            commitBean!!.jhrzh = et_jhrIdCard.text.toString()
+            commitBean!!.jhrxm = et_jhrName.text.toString()
+
             val mIntent = Intent(this, Collect2Activity::class.java)
             mIntent.putExtra("title", intent.getStringExtra("title"))
             mIntent.putExtra("dictionaryBean", dictionaryBean)
+            mIntent.putExtra("commitBean", commitBean)
+            mIntent.putExtra("isModify", isModify)
+
             mIntent.putExtra("type", type)
             startActivity(mIntent)
         }

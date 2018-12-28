@@ -58,6 +58,7 @@ class LoginActivity : BaseActivity() {
             SPTools.put(this@LoginActivity, Constant.USERNAME, "" + loginBean.userName)
             SPTools.put(this@LoginActivity, Constant.YIBAOURL, "" + loginBean.yibaoUrl)
             SPTools.put(this@LoginActivity, Constant.ZKJDURL, "" + loginBean.zhikajinduUrl)
+            SPTools.put(this@LoginActivity, Constant.TOKEN, "" + loginBean.token)
 
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()

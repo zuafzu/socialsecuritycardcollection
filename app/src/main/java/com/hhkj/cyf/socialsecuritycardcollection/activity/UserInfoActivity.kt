@@ -122,16 +122,25 @@ class UserInfoActivity : BaseActivity() {
     }
 
     /**
-     * 上传头像文件
+     * 上传文件
      */
     private fun net_UploadPhoto() {
         val map = HashMap<String, File>()
         map["file"] = File(imgPath)
         NetTools.netFile("1", map, this) { response ->
-
             var jsonObj = JSONObject(response.data)
             var imageUrl = jsonObj.getString("imageUrl")
 
+            net_uploadHeadPhoto(imageUrl);
+        }
+    }
+
+
+    private fun net_uploadHeadPhoto(imageUrl: String) {
+        val map = hashMapOf<String, String>()
+        map["phone"] = "" + SPTools[this@UserInfoActivity, Constant.PHONE, ""]
+        map["imageUrl"] = "" + imageUrl
+        NetTools.net(map, Urls().uploadHeadPhoto, this) { response ->
             val requestOptions = RequestOptions()
             requestOptions.error(R.mipmap.ic_head)
             requestOptions.placeholder(R.mipmap.ic_head)

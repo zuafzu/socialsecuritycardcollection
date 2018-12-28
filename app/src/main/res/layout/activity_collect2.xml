@@ -244,6 +244,7 @@
                                 android:id="@+id/et_phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"
+                                android:inputType="phone"
                                 android:background="@android:color/transparent"
                                 android:textSize="14sp" />
 
@@ -275,9 +276,11 @@
                                 android:textColor="@android:color/black" />
 
                             <EditText
+                                android:maxLength="20"
                                 android:id="@+id/et_gdPhone"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"
+                                android:inputType="phone"
                                 android:background="@android:color/transparent"
                                 android:textSize="14sp" />
 
@@ -309,8 +312,10 @@
                                 android:textColor="@android:color/black" />
 
                             <EditText
+                                android:maxLength="6"
                                 android:id="@+id/et_yb"
                                 android:text=""
+                                android:inputType="number"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"
                                 android:background="@android:color/transparent"
@@ -518,6 +523,7 @@
                                 android:textColor="@android:color/black" />
 
                             <EditText
+                                android:maxLength="100"
                                 android:id="@+id/et_address"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"

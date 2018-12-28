@@ -111,6 +111,9 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+//
+
+
     }
 
     private void setData() {
@@ -135,11 +138,26 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
             public void getData(BaseBean response) {
                 Log.e("zj", "net_selfQuery = " + response.getData());
                 statusBean = new Gson().fromJson(response.getData(), StatusBean.class);
-                statusBean.setStatus("2");
-                statusBean.setStatusMsg("1,2");
-                String [] temp = null;
-                temp = statusBean.getStatusMsg().split(",");
+
+//                statusBean.setStatus("2");
+//                statusBean.setStatusMsg("1");
+
+                String msg1 = "";
+                String msg2 = "";
+                String[] temp = null;
+
+
+
                 if (statusBean != null) {
+                    if (statusBean.getStatusMsg() !=null){
+                        if (statusBean.getStatusMsg().contains(",")) {
+                            temp = statusBean.getStatusMsg().split(",");
+                            msg1 = temp[0];
+                            msg2 = temp[1];
+                        } else {
+                            msg1 = statusBean.getStatusMsg();
+                        }
+                    }
                     if ("0".equals(statusBean.getStatus())) {
                         ll_status.setVisibility(View.GONE);
                     } else if ("1".equals(statusBean.getStatus())) {
@@ -147,22 +165,23 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
                         iv_status1.setImageDrawable(getResources().getDrawable(R.drawable.shape_tab1_left));
                         iv_status2.setImageDrawable(getResources().getDrawable(R.drawable.shape_tab1_right));
                         tv_status1.setBackground(getResources().getDrawable(R.drawable.circle_tab1));
-                        tv_status2.setBackgroundColor(getResources().getColor(R.color.darker_gray));
-                        tv_status2.setBackground(getResources().getDrawable(R.drawable.circle_tab1));
-                        tv_msg1.setText(temp[0]);
-                        tv_msg2.setText(temp[1]);
-                    }else {
+                        tv_status2.setTextColor(getResources().getColor(R.color.white));
+                        tv_status2.setBackground(getResources().getDrawable(R.drawable.circle_tab2));
+                        tv_msg1.setText(msg1);
+                        tv_msg2.setText(msg2);
+                    } else {
                         ll_status.setVisibility(View.VISIBLE);
                         iv_status1.setImageDrawable(getResources().getDrawable(R.drawable.shape_tab1_left));
                         iv_status2.setImageDrawable(getResources().getDrawable(R.drawable.shape_tab1_right2));
 
                         tv_status1.setBackground(getResources().getDrawable(R.drawable.circle_tab1));
-                        tv_status2.setBackground(getResources().getDrawable(R.drawable.circle_tab1));
                         tv_status2.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        tv_status2.setBackgroundColor(getResources().getColor(R.color.white));
-                        tv_msg1.setText(temp[0]);
-                        tv_msg2.setText(temp[1]);
+                        tv_status2.setBackground(getResources().getDrawable(R.drawable.circle_tab1));
+
+                        tv_msg1.setText(msg1);
+                        tv_msg2.setText(msg2);
                     }
+
                 }
             }
         });

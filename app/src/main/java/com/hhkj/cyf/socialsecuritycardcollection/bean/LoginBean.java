@@ -19,6 +19,7 @@ public class LoginBean implements Serializable{
     private String userName;
     private String yibaoUrl;
     private String headPhoto;
+    private String token;
 
     public String getZhikajinduUrl() {
         return zhikajinduUrl;
@@ -68,6 +69,14 @@ public class LoginBean implements Serializable{
         this.headPhoto = headPhoto;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "LoginBean{" +
@@ -77,6 +86,7 @@ public class LoginBean implements Serializable{
                 ", userName='" + userName + '\'' +
                 ", yibaoUrl='" + yibaoUrl + '\'' +
                 ", headPhoto='" + headPhoto + '\'' +
+                ", token='" + token + '\'' +
                 '}';
     }
 }

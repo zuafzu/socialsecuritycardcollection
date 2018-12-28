@@ -10,6 +10,7 @@
     <include layout="@layout/view_actionbar" />
 
     <EditText
+        android:maxLength="25"
         android:id="@+id/et_nickName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

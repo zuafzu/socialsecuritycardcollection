@@ -7,6 +7,7 @@ import android.view.View
 import com.google.gson.Gson
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
+import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
@@ -19,6 +20,7 @@ import org.json.JSONObject
 class SearchIdActivity : BaseActivity() {
 
     private var type = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +43,16 @@ class SearchIdActivity : BaseActivity() {
 
     private fun initClick() {
         btn_check.setOnClickListener {
-            if (Validator.isIDCard(et_idCard.text.toString())){
-                net_getWriteCount()
-            }else{
-                toast("身份证格式不正确")
-            }
+
+            val mIntent = Intent(this, Collect2Activity::class.java)
+            mIntent.putExtra("type", type)
+            mIntent.putExtra("title", intent.getStringExtra("title"))
+            startActivity(mIntent)
+//            if (Validator.isIDCard(et_idCard.text.toString())){
+//                net_getWriteCount()
+//            }else{
+//                toast("身份证格式不正确")
+//            }
         }
     }
 
@@ -72,10 +79,10 @@ class SearchIdActivity : BaseActivity() {
         NetTools.net(map, Urls().idCardQuery, this) { response ->
             Log.e("zj", "net_idCardQuery = " + response.data)
 
-//            val mIntent = Intent(this, Collect1Activity::class.java)
-//            mIntent.putExtra("type", type)
-//            mIntent.putExtra("title", intent.getStringExtra("title"))
-//            startActivity(mIntent)
+            val mIntent = Intent(this, Collect1Activity::class.java)
+            mIntent.putExtra("type", type)
+            mIntent.putExtra("title", intent.getStringExtra("title"))
+            startActivity(mIntent)
 
         }
     }

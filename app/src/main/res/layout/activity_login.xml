@@ -50,7 +50,7 @@
                 android:layout_height="44dp"
                 android:background="@android:color/transparent"
                 android:hint="请输入账号"
-                android:text="13566664488"
+                android:text="13555555555"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:textSize="14sp" />

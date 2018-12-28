@@ -112,6 +112,7 @@
 
         </LinearLayout>
 
+
         <LinearLayout
             android:id="@+id/ll_status"
             android:background="@android:color/white"
@@ -137,8 +138,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="10dp"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/shape_tab1_left"
-                        android:tint="@color/colorPrimary" />
+                        android:src="@drawable/shape_tab1_left" />
 
                     <TextView
                         android:id="@+id/tv_status1"
@@ -190,8 +190,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/circle_tab1"
-                        android:backgroundTint="@android:color/darker_gray"
+                        android:background="@drawable/circle_tab2"
                         android:gravity="center"
                         android:text="2"
                         android:textColor="@android:color/white"

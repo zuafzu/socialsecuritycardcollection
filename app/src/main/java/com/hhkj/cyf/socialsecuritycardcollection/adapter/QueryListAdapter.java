@@ -61,7 +61,7 @@ public class QueryListAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
         holder.tv_name.setText(queryList.get(position).getName());
-        holder.tv_id.setText(queryList.get(position).getIdentity());
+        holder.tv_id.setText(queryList.get(position).getZhengjianNum());
         holder.tv_state.setText(queryList.get(position).getStateStr());
         holder.btn_edit.setVisibility(View.GONE);
         // 0保存成功，1上传成功，2上传失败，3异地

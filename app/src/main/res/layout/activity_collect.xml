@@ -358,6 +358,7 @@
                                         android:textColor="@android:color/black" />
 
                                     <EditText
+                                        android:maxLength="15"
                                         android:id="@+id/et_name"
                                         android:layout_width="match_parent"
                                         android:layout_height="32dp"
@@ -645,6 +646,7 @@
                                 android:textColor="@android:color/black" />
 
                             <EditText
+                                android:maxLength="100"
                                 android:id="@+id/et_address"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"

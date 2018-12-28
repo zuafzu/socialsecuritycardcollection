@@ -8,22 +8,36 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.view.View
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.google.gson.Gson
 import com.hhkj.cyf.socialsecuritycardcollection.R
+import com.hhkj.cyf.socialsecuritycardcollection.app.MyApplication
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
+import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
+import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
+import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
+import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_collect3.*
+import org.json.JSONObject
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
 import java.io.FileNotFoundException
+import java.util.HashMap
 
 
 class Collect3Activity : BaseActivity() {
 
     private var imgPath = ""
     private var type = 0//0个人，1采集
+    private var isModify = 0//0录入，1修改
 
     private val colorPixel = arrayOf(intArrayOf(0, 0), intArrayOf(1, 0), intArrayOf(2, 0), intArrayOf(0, 1), intArrayOf(1, 1), intArrayOf(0, 2), intArrayOf(355, 0), intArrayOf(356, 0), intArrayOf(357, 0), intArrayOf(356, 1), intArrayOf(357, 1), intArrayOf(357, 2))
+    private var commitBean: CommitBean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +50,24 @@ class Collect3Activity : BaseActivity() {
         setLeftBtn(true)
         setTextTitle(intent.getStringExtra("title"))
         type = intent.getIntExtra("type", 0)
+        isModify = intent.getIntExtra("isModify", 0)
+
+        commitBean = intent.getSerializableExtra("commitBean") as CommitBean?
+
         if (type == 0) {
             btn_next.text = "保存"
         } else {
             btn_next.text = "下一步"
+        }
+
+        if (isModify == 0){
+
+        }else{
+            val requestOptions = RequestOptions()
+            requestOptions.error(R.mipmap.ic_head)
+            requestOptions.placeholder(R.mipmap.ic_head)
+            Glide.with(this).load(Urls.fileAccessHost + commitBean!!.zp + "&" + System.currentTimeMillis()).apply(requestOptions).into(iv_img)
+
         }
     }
 
@@ -58,7 +86,10 @@ class Collect3Activity : BaseActivity() {
             } else {
                 val mIntent = Intent(this, Collect4Activity::class.java)
                 mIntent.putExtra("title", intent.getStringExtra("title"))
-                mIntent.putExtra("type", type)
+                mIntent.putExtra("isModify", isModify)
+
+                mIntent.putExtra("commitBean", commitBean)
+
                 startActivity(mIntent)
             }
         }
@@ -110,6 +141,7 @@ class Collect3Activity : BaseActivity() {
                         imgPath = file.absolutePath
                         getPixColor(imgPath)
                         checkPixColor(imgPath)
+                        net_UploadPhoto()
                     }
 
                     override fun onError(e: Throwable) {
@@ -187,7 +219,7 @@ class Collect3Activity : BaseActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 requestCode_SysAlbum -> {
-                    cropPic("a",data!!.data, 358, 441, 358, 441)
+                    cropPic(commitBean!!.zjhm, data!!.data, 358, 441, 358, 441)
                 }
                 requestCode_SysCamera -> {
                     // 三星等手机拍照旋转90度
@@ -196,12 +228,42 @@ class Collect3Activity : BaseActivity() {
                         val bitmap2 = toturn(bitmap)
                         saveBitmapFile(mStringphotoFile, bitmap2)
                     }
-                    cropPic("a",mUriphotoFile, 358, 441, 358, 441)
+                    cropPic(commitBean!!.zjhm, mUriphotoFile, 358, 441, 358, 441)
                 }
                 requestCode_CropPic -> {
                     getImg()
                 }
             }
+        }
+    }
+
+
+    /**
+     * 上传文件
+     */
+    private fun net_UploadPhoto() {
+        val map = HashMap<String, File>()
+        map["file"] = File(imgPath)
+        NetTools.netFile("0", map, this) { response ->
+            var file = File(imgPath)
+            file.delete()
+            var jsonObj = JSONObject(response.data)
+            var imageUrl = jsonObj.getString("imageUrl")
+            commitBean!!.zp = imageUrl
+            net_addOrUpdate(commitBean!!);
+        }
+    }
+
+    private fun net_addOrUpdate(commitBean: CommitBean) {
+        val jsonBean = Gson().toJson(commitBean)
+        Log.e("zj", "jsonBean = " + jsonBean)
+        NetTools.net(jsonBean, Urls().addOrUpdate, this) { response ->
+            Log.e("zj", "addOrUpdate = " + response.data)
+
+            for (i in 0 until MyApplication.getActivies().size) {
+                MyApplication.getActivies()[i].finish()
+            }
+            startActivity(Intent(this@Collect3Activity, MainActivity::class.java))
         }
     }
 

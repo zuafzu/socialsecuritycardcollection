@@ -23,6 +23,7 @@ import com.baidu.ocr.ui.camera.CameraView
 import com.google.gson.Gson
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
+import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
 import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.FileUtil
@@ -40,11 +41,14 @@ import java.util.*
 class Collect1Activity : BaseActivity() {
 
     private var type = 0//0个人，1代办
+    private var isModify = 0//0录入，1修改
     private var hasGotToken = false
     private val REQUEST_CODE_CAMERA = 102
     private var imageView: ImageView? = null
 
     private var dictionaryBean: DictionaryBean? = null
+
+    private var commitBean:CommitBean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,10 +64,23 @@ class Collect1Activity : BaseActivity() {
         setLeftBtn(true)
         setTextTitle(intent.getStringExtra("title"))
         type = intent.getIntExtra("type", 0)
+        isModify = intent.getIntExtra("isModify", 0)
 
-        tv_sex.text = Constant.getXb(this)[0].name
-        tv_cardType.text = Constant.getZjlx(this)[0].name
-        tv_nationality.text = Constant.getMz(this)[0].name
+        if (isModify == 0){
+            commitBean = CommitBean()
+        }else{
+            commitBean = intent.getSerializableExtra("commitBean") as CommitBean?
+
+            tv_sex.text = commitBean!!.xb
+            tv_cardType.text = commitBean!!.zjlx
+            tv_nationality.text = commitBean!!.mz
+
+            et_name.setText(commitBean!!.xm)
+            et_id.setText(commitBean!!.zjhm)
+            tv_birth.text = commitBean!!.csrq
+            tv_cardEndDate.text = commitBean!!.zjyxq
+            et_address.setText(commitBean!!.txdz)
+        }
 
         OCR.getInstance(this).initAccessToken(object : OnResultListener<AccessToken> {
             override fun onResult(result: AccessToken) {
@@ -116,14 +133,15 @@ class Collect1Activity : BaseActivity() {
             startActivityForResult(intent, REQUEST_CODE_CAMERA)
         }
         ll_sex.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, dictionaryBean!!.xbMap, "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.xbMap, commitBean!!.xb, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_sex.text = name
+                    commitBean!!.xb = id
                 }
             })
         }
         ll_cardType.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, dictionaryBean!!.zjlxMap, "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.zjlxMap, commitBean!!.zjlx, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     if (name == "身份证") {
                         ll_id_photo.visibility = View.VISIBLE
@@ -131,6 +149,8 @@ class Collect1Activity : BaseActivity() {
                         ll_id_photo.visibility = View.GONE
                     }
                     tv_cardType.text = name
+                    commitBean!!.zjlx = id
+
                 }
             })
         }
@@ -154,6 +174,8 @@ class Collect1Activity : BaseActivity() {
                     "" + view.dayOfMonth
                 }
                 tv_birth.text = "" + view.year + "" + month + "" + day
+                commitBean!!.csrq = "" + view.year + "" + month + "" + day
+
                 p0.dismiss()
             }
             builder.setNegativeButton("取消") { p0, p1 ->
@@ -182,6 +204,7 @@ class Collect1Activity : BaseActivity() {
                     "" + view.dayOfMonth
                 }
                 tv_cardEndDate.text = "" + view.year + "" + month + "" + day
+                commitBean!!.zjyxq = "" + view.year + "" + month + "" + day
                 p0.dismiss()
             }
             builder.setNegativeButton("取消") { p0, p1 ->
@@ -195,9 +218,10 @@ class Collect1Activity : BaseActivity() {
             dialog!!.show()
         }
         ll_nationality.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, dictionaryBean!!.mzMap, "", object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.mzMap, commitBean!!.mz, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_nationality.text = name
+                    commitBean!!.mz = id
                 }
             })
         }
@@ -231,18 +255,32 @@ class Collect1Activity : BaseActivity() {
             calendar.time = SimpleDateFormat("yyyyMMdd").parse(tv_birth.text.toString())
             if ((tv_cardType.text == "户口本" && tv_cardEndDate.text == "长期") ||
                     (tv_cardType.text == "身份证" && getCurrentAge(Date(calendar.timeInMillis)) < 16)) {
+
+                commitBean!!.xm = et_name.text.toString()
+                commitBean!!.zjhm = et_id.text.toString()
+                commitBean!!.txdz = et_address.text.toString()
                 val mIntent = Intent(this, Collect1_2Activity::class.java)
                 mIntent.putExtra("title", intent.getStringExtra("title"))
                 mIntent.putExtra("dictionaryBean", dictionaryBean)
+                mIntent.putExtra("commitBean", commitBean)
                 mIntent.putExtra("idCard", et_id.text.toString())
                 mIntent.putExtra("type", type)
+                mIntent.putExtra("isModify", isModify)
+
                 startActivity(mIntent)
             } else {
+
+                commitBean!!.xm = et_name.text.toString()
+                commitBean!!.zjhm = et_id.text.toString()
+                commitBean!!.txdz = et_address.text.toString()
+
                 val mIntent = Intent(this, Collect2Activity::class.java)
                 mIntent.putExtra("title", intent.getStringExtra("title"))
                 mIntent.putExtra("dictionaryBean", dictionaryBean)
-
+                mIntent.putExtra("commitBean", commitBean)
                 mIntent.putExtra("type", type)
+                mIntent.putExtra("isModify", isModify)
+
                 startActivity(mIntent)
             }
         }
@@ -371,6 +409,12 @@ class Collect1Activity : BaseActivity() {
             Log.e("zj", "getDictionary = " + response.data)
             dictionaryBean = Gson().fromJson<DictionaryBean>(response.data, DictionaryBean::class.java)
 
+            if (isModify == 0){
+                tv_sex.text = dictionaryBean!!.xbMap[0].name
+                tv_cardType.text = dictionaryBean!!.zjlxMap[0].name
+                tv_nationality.text = dictionaryBean!!.mzMap[0].name
+            }
+
         }
     }
 
@@ -379,6 +423,7 @@ class Collect1Activity : BaseActivity() {
         map["phone"] = "" + SPTools[this@Collect1Activity, Constant.PHONE, ""]
         NetTools.net(map, Urls().scanQuery, this) { response ->
             Log.e("zj", "scanQuery = " + response.data)
+
             var jsonObj = JSONObject(response.data)
             var isCan = jsonObj.getString("isCan")
             if (isCan != "0") {

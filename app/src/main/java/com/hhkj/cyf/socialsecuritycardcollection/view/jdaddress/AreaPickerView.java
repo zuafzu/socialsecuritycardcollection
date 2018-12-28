@@ -90,7 +90,6 @@ public class AreaPickerView extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_area_pickerview);
         Window window = this.getWindow();
-
         isCreate = true;
 
         /**
@@ -359,6 +358,7 @@ public class AreaPickerView extends Dialog {
             strings.add(addressBeans.get(value[0]).getLabel());
             strings.add(addressBeans.get(value[0]).getChildren().get(value[1]).getLabel());
             strings.add(addressBeans.get(value[0]).getChildren().get(value[1]).getChildren().get(value[2]).getLabel());
+
             tabLayout.setupWithViewPager(viewPager);
             viewPagerAdapter.notifyDataSetChanged();
             tabLayout.getTabAt(value.length - 1).select();
