@@ -74,7 +74,12 @@ class WelcomeActivity : BaseActivity() {
             builder.setCancel(true)
             // background_btn蓝色，background_btn2灰色
             builder.setPositiveButton("取消",
-                    { dialog, which -> dialog.dismiss() }, R.drawable.background_btn)
+                    { dialog, which ->
+                        dialog.dismiss()
+                        val intent = Intent(this@WelcomeActivity, BootPageActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }, R.drawable.background_btn)
             builder.setNegativeButton("更新",
                     { dialog, which ->
                         isUpdata = true
@@ -85,13 +90,14 @@ class WelcomeActivity : BaseActivity() {
         builder.setTitle("检查到更新：" + versionBean!!.versionName + "版本")
         builder.setMessage(versionBean!!.versionDesc)
         val dialog = builder.create()
-        if ("0" == versionBean!!.updateStatus) {
-            dialog.setOnDismissListener {
-                val intent = Intent(this@WelcomeActivity, BootPageActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }
+        // 问题出在这，不要这个逻辑代码了，放到setPositiveButton这个方法里了
+//        if ("0" == versionBean!!.updateStatus) {
+//            dialog.setOnDismissListener {
+//                val intent = Intent(this@WelcomeActivity, BootPageActivity::class.java)
+//                startActivity(intent)
+//                finish()
+//            }
+//        }
         dialog.show()
     }
 }
