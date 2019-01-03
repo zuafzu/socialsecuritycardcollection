@@ -136,9 +136,6 @@ class Collect2Activity : BaseActivity() {
             else
                 tv_area.text = addressBeans!![value[0]].label + "-" + addressBeans!![value[0]].children[value[1]].label
         }
-        areaPickerView!!.setSelect()
-        areaPickerView!!.show()
-        areaPickerView!!.dismiss()
     }
 
     private fun initClick() {

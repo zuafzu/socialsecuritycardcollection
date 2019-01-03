@@ -83,11 +83,20 @@ public class AreaPickerView extends Dialog {
         super(context, themeResId);
         this.addressBeans = addressBeans;
         this.context = context;
+        if (!isCreate) {
+            this.setSelect();
+            this.show();
+            this.dismiss();
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        onMyCreate();
+    }
+
+    private void onMyCreate() {
         setContentView(R.layout.dialog_area_pickerview);
         Window window = this.getWindow();
         isCreate = true;
@@ -285,7 +294,6 @@ public class AreaPickerView extends Dialog {
 
             }
         });
-
     }
 
     class ViewPagerAdapter extends PagerAdapter {
@@ -309,9 +317,12 @@ public class AreaPickerView extends Dialog {
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            container.addView(views.get(position));
-            Log.e("AreaPickView", "------------instantiateItem");
-            return views.get(position);
+            if (views.size() > position) {
+                container.addView(views.get(position));
+                Log.e("AreaPickView", "------------instantiateItem");
+                return views.get(position);
+            }
+            return null;
         }
 
         @Override
@@ -379,6 +390,10 @@ public class AreaPickerView extends Dialog {
             oldProvinceSelected = value[0];
             oldCitySelected = value[1];
             oldAreaSelected = value[2];
+            // 防止反选报错
+            provinceSelected = value[0];
+            citySelected = value[1];
+            areaSelected = value[2];
             areaRecyclerView.scrollToPosition(oldAreaSelected == -1 ? 0 : oldAreaSelected);
         }
 
@@ -399,6 +414,10 @@ public class AreaPickerView extends Dialog {
             oldProvinceSelected = value[0];
             oldCitySelected = value[1];
             oldAreaSelected = -1;
+            // 防止反选报错
+            provinceSelected = value[0];
+            citySelected = value[1];
+            areaSelected = -1;
             cityRecyclerView.scrollToPosition(oldCitySelected == -1 ? 0 : oldCitySelected);
         }
 
