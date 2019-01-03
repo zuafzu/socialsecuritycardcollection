@@ -5,6 +5,7 @@
     <color name="colorAccent">#005191</color>
 
     <color name="windowBackground">#ecf1f5</color>
+    <color name="red2">#Ff0000</color>
 
     <color name="hint">#22000000</color>
     <color name="darker_gray">#aaa</color>

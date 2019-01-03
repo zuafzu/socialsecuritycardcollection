@@ -1,6 +1,7 @@
 package com.hhkj.cyf.socialsecuritycardcollection.tools;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * Created by caoyingfu on 2017/10/9.
@@ -19,6 +20,7 @@ public class PhoneTools {
     总结起来就是第一位必定为1，第二位必定为3或5或8，其他位置的可以为0-9
     ^1[3|4|5|7|8][0-9]\d{4,8}$
     */
+        Log.e("zj","111");
         String num = "[1][3456789]\\d{9}";//"[1]"代表第1位为数字1，"[358]"代表第二位可以为3、5、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
         if (TextUtils.isEmpty(number)) {
             return false;

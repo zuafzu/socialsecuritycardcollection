@@ -44,15 +44,15 @@ class SearchIdActivity : BaseActivity() {
     private fun initClick() {
         btn_check.setOnClickListener {
 
-            val mIntent = Intent(this, Collect2Activity::class.java)
-            mIntent.putExtra("type", type)
-            mIntent.putExtra("title", intent.getStringExtra("title"))
-            startActivity(mIntent)
-//            if (Validator.isIDCard(et_idCard.text.toString())){
-//                net_getWriteCount()
-//            }else{
-//                toast("身份证格式不正确")
-//            }
+//            val mIntent = Intent(this, Collect1Activity::class.java)
+//            mIntent.putExtra("type", type)
+//            mIntent.putExtra("title", intent.getStringExtra("title"))
+//            startActivity(mIntent)
+            if (Validator.isIDCard(et_idCard.text.toString())){
+                net_getWriteCount()
+            }else{
+                toast("身份证格式不正确")
+            }
         }
     }
 

@@ -8,8 +8,10 @@ import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.app.MyApplication
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
+import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.PhoneTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.Validator
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_collect4.*
@@ -45,11 +47,11 @@ class Collect4Activity : BaseActivity() {
                 toast("姓名不能为空")
                 return@setOnClickListener
             }
-            if (Validator.isIDCard(et_idCard.text.toString().trim())){
+            if (!Validator.isIDCard(et_idCard.text.toString().trim())){
                 toast("身份证号格式错误")
                 return@setOnClickListener
             }
-            if (PhoneTools.isMobile(et_phone.text.toString())){
+            if (!PhoneTools.isMobile(et_phone.text.toString())){
                 toast("联系手机格式错误")
                 return@setOnClickListener
             }
@@ -63,15 +65,18 @@ class Collect4Activity : BaseActivity() {
 
     private fun net_addOrUpdate(commitBean: CommitBean) {
         val jsonBean = Gson().toJson(commitBean)
-        Log.e("zj", "jsonBean = $jsonBean")
-        NetTools.net(jsonBean, Urls().addOrUpdate, this) { response ->
-            Log.e("zj", "addOrUpdate = " + response.data)
+        val map = hashMapOf<String, String>()
+        map["phone"] = "" + SPTools[this@Collect4Activity, Constant.PHONE, ""]
+        map["cbInsured"] = ""+jsonBean
 
+        Log.e("zj", "jsonBean = " + jsonBean)
+        NetTools.net(map, Urls().addOrUpdate, this) { response ->
+            Log.e("zj", "addOrUpdate = " + response.data)
+            toast(response.msg.toString())
             for (i in 0 until MyApplication.getActivies().size) {
                 MyApplication.getActivies()[i].finish()
             }
             startActivity(Intent(this@Collect4Activity, MainActivity::class.java))
-
         }
     }
 

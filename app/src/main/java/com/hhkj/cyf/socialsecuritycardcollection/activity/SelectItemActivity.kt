@@ -3,6 +3,7 @@ package com.hhkj.cyf.socialsecuritycardcollection.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.adapter.SelectItemAdapter
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
@@ -41,6 +42,8 @@ class SelectItemActivity : BaseActivity() {
         setLeftBtn(true)
         setTextTitle("请选择")
         id = intent.getStringExtra("id")
+        Log.e("zj","id ="+id)
+        Log.e("zj","list ="+list.toString())
         listView.setOnItemClickListener { adapterView, view, i, l ->
             name = list!![i].name
             id = list!![i].id
@@ -50,9 +53,9 @@ class SelectItemActivity : BaseActivity() {
     private fun setData() {
         listView.adapter = SelectItemAdapter(list, this)
         if (list!!.size > 0) {
-            listView.setItemChecked(0, true)
-            name = list!![0].name
-            id = list!![0].id
+//            listView.setItemChecked(0, true)
+//            name = list!![0].name
+//            id = list!![0].id
             for (i in 0 until list!!.size) {
                 if (list!![i].id == id) {
                     name = list!![i].name

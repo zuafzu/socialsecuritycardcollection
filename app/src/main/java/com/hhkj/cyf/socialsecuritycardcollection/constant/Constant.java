@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Constant {
 
+    public static final String PRODUCTNAME = "sbkcj";
     public static final String phone = "18743044258";//联系我们 帮助电话
     public static final String TOKEN = "token";//
     public static final String HEADPHOTO = "headPhoto";//

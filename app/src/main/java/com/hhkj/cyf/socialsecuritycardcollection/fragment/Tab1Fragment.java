@@ -150,8 +150,8 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
 
                 if (statusBean != null) {
                     if (statusBean.getStatusMsg() !=null){
-                        if (statusBean.getStatusMsg().contains(",")) {
-                            temp = statusBean.getStatusMsg().split(",");
+                        if (statusBean.getStatusMsg().contains("，")) {
+                            temp = statusBean.getStatusMsg().split("，");
                             msg1 = temp[0];
                             msg2 = temp[1];
                         } else {
@@ -180,6 +180,7 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
 
                         tv_msg1.setText(msg1);
                         tv_msg2.setText(msg2);
+                        tv_msg2.setTextColor(getResources().getColor(R.color.colorPrimary));
                     }
 
                 }

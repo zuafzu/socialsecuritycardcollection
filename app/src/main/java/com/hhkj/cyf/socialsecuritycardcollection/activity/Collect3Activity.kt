@@ -22,6 +22,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_collect3.*
+import org.jetbrains.anko.toast
 import org.json.JSONObject
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
@@ -44,6 +45,7 @@ class Collect3Activity : BaseActivity() {
         setContentView(R.layout.activity_collect3)
         initView()
         initClick()
+
     }
 
     private fun initView() {
@@ -52,23 +54,27 @@ class Collect3Activity : BaseActivity() {
         type = intent.getIntExtra("type", 0)
         isModify = intent.getIntExtra("isModify", 0)
 
-        commitBean = intent.getSerializableExtra("commitBean") as CommitBean?
 
+        Log.e("zj","type  = "+type)
         if (type == 0) {
             btn_next.text = "保存"
         } else {
             btn_next.text = "下一步"
         }
+        commitBean = intent.getSerializableExtra("commitBean") as CommitBean?
 
         if (isModify == 0){
 
         }else{
+
             val requestOptions = RequestOptions()
             requestOptions.error(R.mipmap.ic_head)
             requestOptions.placeholder(R.mipmap.ic_head)
             Glide.with(this).load(Urls.fileAccessHost + commitBean!!.zp + "&" + System.currentTimeMillis()).apply(requestOptions).into(iv_img)
-
         }
+
+        val jsonBean = Gson().toJson(commitBean)
+        Log.e("zj", "jsonBean22222 = " + jsonBean)
     }
 
     private fun initClick() {
@@ -82,7 +88,7 @@ class Collect3Activity : BaseActivity() {
         }
         btn_next.setOnClickListener {
             if (type == 0) {
-
+                net_addOrUpdate(commitBean!!);
             } else {
                 val mIntent = Intent(this, Collect4Activity::class.java)
                 mIntent.putExtra("title", intent.getStringExtra("title"))
@@ -250,16 +256,20 @@ class Collect3Activity : BaseActivity() {
             var jsonObj = JSONObject(response.data)
             var imageUrl = jsonObj.getString("imageUrl")
             commitBean!!.zp = imageUrl
-            net_addOrUpdate(commitBean!!);
+
         }
     }
 
     private fun net_addOrUpdate(commitBean: CommitBean) {
         val jsonBean = Gson().toJson(commitBean)
-        Log.e("zj", "jsonBean = " + jsonBean)
-        NetTools.net(jsonBean, Urls().addOrUpdate, this) { response ->
-            Log.e("zj", "addOrUpdate = " + response.data)
+        val map = hashMapOf<String, String>()
+        map["phone"] = "" + SPTools[this@Collect3Activity, Constant.PHONE, ""]
+        map["cbInsured"] = ""+jsonBean
 
+        Log.e("zj", "jsonBean = " + jsonBean)
+        NetTools.net(map, Urls().addOrUpdate, this) { response ->
+            Log.e("zj", "addOrUpdate = " + response.data)
+            toast(response.msg.toString())
             for (i in 0 until MyApplication.getActivies().size) {
                 MyApplication.getActivies()[i].finish()
             }

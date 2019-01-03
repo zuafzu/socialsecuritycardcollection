@@ -2,9 +2,12 @@ package com.hhkj.cyf.socialsecuritycardcollection.url;
 
 public class Urls {
 
-    public final static String base_url = "http://192.168.1.53:8080/sjcj_web/phoneCon/";
+    public final static String file_url = "http://36.49.52.217:8081";
+    public final static String base_url = "http://36.49.52.217:8081/sjcj_web/phoneCon/";
+//    public final static String base_url = "http://192.168.1.53:8080/sjcj_web/phoneCon/";
 
-    public final static String fileAccessHost  = "http://192.168.1.53:8080/sjcj_web/kssh/getImg.do?cx=";
+    public final static String fileAccessHost  = "http://36.49.52.217:8081/sjcj_web/kssh/getImg.do?cx=";
+//    public final static String fileAccessHost  = "http://192.168.1.53:8080/sjcj_web/kssh/getImg.do?cx=";
 
 
     public static String url_help_register = "file:///android_asset/help.html";// 注册帮助
@@ -37,6 +40,7 @@ public class Urls {
 
     public final String allPeopleQuery = base_url + "allPeopleQuery.do";// 采集进度查询
     public final String queryDetail = base_url + "queryDetail.do";// 接口名称: 查看详情
+    public final String getNewVersion = base_url + "getNewVersion.do";// 接口名称: 查看详情
 
 
 

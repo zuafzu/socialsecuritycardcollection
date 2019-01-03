@@ -25,6 +25,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
 import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
+import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean.ListBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.FileUtil
 import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
@@ -46,9 +47,12 @@ class Collect1Activity : BaseActivity() {
     private val REQUEST_CODE_CAMERA = 102
     private var imageView: ImageView? = null
 
+    private var xbId = ""
+    private var zjlxId = ""
+    private var mzId = ""
     private var dictionaryBean: DictionaryBean? = null
 
-    private var commitBean:CommitBean? = null
+    private var commitBean: CommitBean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +60,14 @@ class Collect1Activity : BaseActivity() {
         initView()
         initClick()
         net_getDictionary()
-        net_scanQuery()
 
+//        setData1()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        net_scanQuery()
     }
 
     private fun initView() {
@@ -66,18 +76,23 @@ class Collect1Activity : BaseActivity() {
         type = intent.getIntExtra("type", 0)
         isModify = intent.getIntExtra("isModify", 0)
 
-        if (isModify == 0){
+        if (isModify == 0) {
             commitBean = CommitBean()
-        }else{
+        } else {
             commitBean = intent.getSerializableExtra("commitBean") as CommitBean?
 
-            tv_sex.text = commitBean!!.xb
-            tv_cardType.text = commitBean!!.zjlx
-            tv_nationality.text = commitBean!!.mz
+            tv_sex.text = commitBean!!.xbName
+            tv_cardType.text = commitBean!!.zjlxName
+            tv_nationality.text = commitBean!!.mzName
 
-            et_name.setText(commitBean!!.xm)
+            xbId = commitBean!!.xb
+            zjlxId = commitBean!!.zjlx
+            mzId = commitBean!!.mz
+
+            et_name.setText(commitBean!!.xmStr1)
             et_id.setText(commitBean!!.zjhm)
-            tv_birth.text = commitBean!!.csrq
+            commitBean!!.csrq = commitBean!!.csrqStr
+            tv_birth.text = commitBean!!.csrqStr
             tv_cardEndDate.text = commitBean!!.zjyxq
             et_address.setText(commitBean!!.txdz)
         }
@@ -108,7 +123,7 @@ class Collect1Activity : BaseActivity() {
         }
     }
 
-    @SuppressLint("SimpleDateFormat", "SetTextI18n")
+    @SuppressLint("SimpleDateFormat", "SetTextI18n", "NewApi")
     private fun initClick() {
         rl_img_z.setOnClickListener {
             if (!checkTokenStatus()) {
@@ -133,15 +148,16 @@ class Collect1Activity : BaseActivity() {
             startActivityForResult(intent, REQUEST_CODE_CAMERA)
         }
         ll_sex.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, dictionaryBean!!.xbMap, commitBean!!.xb, object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.xbMap, xbId, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_sex.text = name
-                    commitBean!!.xb = id
+                    xbId = id
+                    commitBean!!.xbName = name
                 }
             })
         }
         ll_cardType.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, dictionaryBean!!.zjlxMap, commitBean!!.zjlx, object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.zjlxMap, zjlxId, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     if (name == "身份证") {
                         ll_id_photo.visibility = View.VISIBLE
@@ -149,7 +165,8 @@ class Collect1Activity : BaseActivity() {
                         ll_id_photo.visibility = View.GONE
                     }
                     tv_cardType.text = name
-                    commitBean!!.zjlx = id
+                    zjlxId = id
+                    commitBean!!.zjlxName = name
 
                 }
             })
@@ -157,24 +174,41 @@ class Collect1Activity : BaseActivity() {
         ll_birth.setOnClickListener {
             val mView = layoutInflater.inflate(R.layout.dialog_date, null)
             val view = mView.findViewById<DatePicker>(R.id.datePicker)
+
+            if (!tv_birth.text.toString().isEmpty()) {
+
+                val calendar = Calendar.getInstance()
+                calendar.time = SimpleDateFormat("yyyy-MM-dd").parse(tv_birth.text.toString())                //获取年
+                val year = calendar.get(Calendar.YEAR)
+                //获取月份，0表示1月份
+                val month = calendar.get(Calendar.MONTH)
+                //获取当前天数
+                val day= calendar.get(Calendar.DAY_OF_MONTH)
+
+                view.init(year, month, day, null)
+            }
+
             val builder = AlertDialog.Builder(this@Collect1Activity)
             builder.setTitle("请选择")
             builder.setView(mView)
             builder.setPositiveButton("确认") { p0, p1 ->
                 var month = ""
+
                 month = if (view.month + 1 < 10) {
                     "0" + (view.month + 1)
                 } else {
                     "" + (view.month + 1)
                 }
                 var day = ""
+
                 day = if (view.dayOfMonth < 10) {
                     "0" + view.dayOfMonth
                 } else {
                     "" + view.dayOfMonth
                 }
-                tv_birth.text = "" + view.year + "" + month + "" + day
-                commitBean!!.csrq = "" + view.year + "" + month + "" + day
+                tv_birth.text = "" + view.year + "-" + month + "-" + day
+                commitBean!!.csrq = tv_birth.text.toString()
+                commitBean!!.csrqStr = tv_birth.text.toString()
 
                 p0.dismiss()
             }
@@ -187,6 +221,20 @@ class Collect1Activity : BaseActivity() {
         ll_cardEndDate.setOnClickListener {
             val mView = layoutInflater.inflate(R.layout.dialog_date, null)
             val view = mView.findViewById<DatePicker>(R.id.datePicker)
+
+
+            if (!tv_cardEndDate.text.toString().isEmpty()) {
+
+                val calendar = Calendar.getInstance()
+                calendar.time = SimpleDateFormat("yyyyMMdd").parse(tv_cardEndDate.text.toString())                //获取年
+                val year = calendar.get(Calendar.YEAR)
+                //获取月份，0表示1月份
+                val month = calendar.get(Calendar.MONTH)
+                //获取当前天数
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+                view.init(year, month, day, null)
+            }
             val builder = AlertDialog.Builder(this@Collect1Activity)
             builder.setTitle("请选择")
             builder.setView(mView)
@@ -218,10 +266,10 @@ class Collect1Activity : BaseActivity() {
             dialog!!.show()
         }
         ll_nationality.setOnClickListener {
-            SelectItemActivity.startSelectItem(this, dictionaryBean!!.mzMap, commitBean!!.mz, object : SelectItemActivity.OnMySelectItemListener {
+            SelectItemActivity.startSelectItem(this, dictionaryBean!!.mzMap, mzId, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_nationality.text = name
-                    commitBean!!.mz = id
+                    mzId = id
                 }
             })
         }
@@ -235,7 +283,7 @@ class Collect1Activity : BaseActivity() {
                 return@setOnClickListener
             }
             if (tv_cardType.text == "身份证" && !Validator.isIDCard(et_id.text.toString())) {
-                toast("身份证格式有误")
+                toast("身份证号格式错误")
                 return@setOnClickListener
             }
             if (tv_birth.text.toString() == "") {
@@ -252,11 +300,16 @@ class Collect1Activity : BaseActivity() {
             }
 
             val calendar = Calendar.getInstance()
-            calendar.time = SimpleDateFormat("yyyyMMdd").parse(tv_birth.text.toString())
+            calendar.time = SimpleDateFormat("yyyy-MM-dd").parse(tv_birth.text.toString())
             if ((tv_cardType.text == "户口本" && tv_cardEndDate.text == "长期") ||
                     (tv_cardType.text == "身份证" && getCurrentAge(Date(calendar.timeInMillis)) < 16)) {
 
-                commitBean!!.xm = et_name.text.toString()
+
+                commitBean!!.xb = xbId
+                commitBean!!.zjlx = zjlxId
+                commitBean!!.mz = mzId
+
+                commitBean!!.xmStr1 = et_name.text.toString()
                 commitBean!!.zjhm = et_id.text.toString()
                 commitBean!!.txdz = et_address.text.toString()
                 val mIntent = Intent(this, Collect1_2Activity::class.java)
@@ -270,9 +323,13 @@ class Collect1Activity : BaseActivity() {
                 startActivity(mIntent)
             } else {
 
-                commitBean!!.xm = et_name.text.toString()
+                commitBean!!.xmStr1 = et_name.text.toString()
                 commitBean!!.zjhm = et_id.text.toString()
                 commitBean!!.txdz = et_address.text.toString()
+
+                commitBean!!.xb = xbId
+                commitBean!!.zjlx = zjlxId
+                commitBean!!.mz = mzId
 
                 val mIntent = Intent(this, Collect2Activity::class.java)
                 mIntent.putExtra("title", intent.getStringExtra("title"))
@@ -409,10 +466,14 @@ class Collect1Activity : BaseActivity() {
             Log.e("zj", "getDictionary = " + response.data)
             dictionaryBean = Gson().fromJson<DictionaryBean>(response.data, DictionaryBean::class.java)
 
-            if (isModify == 0){
+            if (isModify == 0) {
                 tv_sex.text = dictionaryBean!!.xbMap[0].name
                 tv_cardType.text = dictionaryBean!!.zjlxMap[0].name
                 tv_nationality.text = dictionaryBean!!.mzMap[0].name
+
+                xbId = dictionaryBean!!.xbMap[0].id
+                zjlxId = dictionaryBean!!.zjlxMap[0].id
+                mzId = dictionaryBean!!.mzMap[0].id
             }
 
         }
@@ -441,4 +502,60 @@ class Collect1Activity : BaseActivity() {
     }
 
 
+    private fun setData1() {
+        var ryztMap = ArrayList<ListBean>()//人员状态
+        var hjxzMap = ArrayList<ListBean>()//户籍性质
+        var xbMap = ArrayList<ListBean>()//性别
+        var zjlxMap = ArrayList<ListBean>()//证件类型  监护人证件类型
+        var zszyMap = ArrayList<ListBean>()//专属职业
+        var gjMap = ArrayList<ListBean>()//国籍
+        var zshyMap = ArrayList<ListBean>()//专属行业
+        var mzMap = ArrayList<ListBean>()//民族
+        var klmyhMap = ArrayList<ListBean>()//卡联名银行
+
+        var bean1 = ListBean("1","11")
+        var bean2 = ListBean("2","22")
+        var bean3 = ListBean("3","33")
+        var bean4 = ListBean("4","44")
+        var bean5 = ListBean("5","55")
+        var bean6 = ListBean("6","66")
+        var bean7 = ListBean("7","77")
+
+        ryztMap.add(bean1)
+        ryztMap.add(bean2)
+
+        hjxzMap.add(bean3)
+        hjxzMap.add(bean4)
+
+        xbMap.add(bean5)
+        xbMap.add(bean6)
+
+        zjlxMap.add(bean7)
+        zjlxMap.add(bean1)
+
+        zszyMap.add(bean2)
+        zszyMap.add(bean3)
+
+        gjMap.add(bean2)
+        gjMap.add(bean2)
+
+        mzMap.add(bean3)
+        mzMap.add(bean2)
+
+        zshyMap.add(bean1)
+        zshyMap.add(bean2)
+
+        klmyhMap.add(bean1)
+        klmyhMap.add(bean2)
+
+        dictionaryBean = DictionaryBean(ryztMap,hjxzMap,xbMap,zjlxMap,zszyMap,gjMap,zshyMap,mzMap,klmyhMap)
+
+        tv_sex.text = dictionaryBean!!.xbMap[0].name
+        tv_cardType.text = dictionaryBean!!.zjlxMap[0].name
+        tv_nationality.text = dictionaryBean!!.mzMap[0].name
+
+        xbId = dictionaryBean!!.xbMap[0].id
+        zjlxId = dictionaryBean!!.zjlxMap[0].id
+        mzId = dictionaryBean!!.mzMap[0].id
+    }
 }

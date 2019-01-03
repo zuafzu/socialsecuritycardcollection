@@ -9,9 +9,12 @@ import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.bean.LoginBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.PhoneTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.Validator
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.toast
 
 class LoginActivity : BaseActivity() {
 
@@ -37,9 +40,20 @@ class LoginActivity : BaseActivity() {
         }
         // 登录
         btn_login.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-            finish()
-//            net_login()
+            if (et_username.text.toString().trim().isEmpty()){
+                toast("手机号不能为空")
+                return@setOnClickListener
+            }
+            if (!PhoneTools.isMobile(et_username.text.toString())){
+                toast("手机号格式不正确")
+            }
+            if (et_pw.text.toString().trim().isEmpty()){
+                toast("密码不能为空")
+                return@setOnClickListener
+            }
+//            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+//            finish()
+            net_login()
         }
     }
 
@@ -50,8 +64,6 @@ class LoginActivity : BaseActivity() {
         NetTools.net(map, Urls().auth_login, this) { response ->
             Log.e("zj", "net_login = " + response.data)
             val loginBean = Gson().fromJson<LoginBean>(response.data, LoginBean::class.java)
-            Log.e("zj", "net_login11 = " + loginBean.toString())
-
             SPTools.put(this@LoginActivity, Constant.HEADPHOTO, Urls.fileAccessHost + loginBean.headPhoto)
             SPTools.put(this@LoginActivity, Constant.PHONE, "" + loginBean.phone)
             SPTools.put(this@LoginActivity, Constant.SHEBAOURL, "" + loginBean.shebaoUrl)

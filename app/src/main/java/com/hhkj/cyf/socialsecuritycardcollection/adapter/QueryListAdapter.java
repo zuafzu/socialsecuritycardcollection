@@ -61,33 +61,33 @@ public class QueryListAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
         holder.tv_name.setText(queryList.get(position).getName());
-        holder.tv_id.setText(queryList.get(position).getZhengjianNum());
-        holder.tv_state.setText(queryList.get(position).getStateStr());
+        holder.tv_id.setText(queryList.get(position).getZjhm());
+        holder.tv_state.setText(queryList.get(position).getStatusMsg());
         holder.btn_edit.setVisibility(View.GONE);
         // 0保存成功，1上传成功，2上传失败，3异地
-        switch (queryList.get(position).getState()) {
+        switch (queryList.get(position).getStatus()) {
             case "0":
                 holder.btn_edit.setVisibility(View.VISIBLE);
                 holder.btn_edit.setText("查看");
-                holder.tv_state.setText("保存成功");
+                holder.tv_state.setText(queryList.get(position).getStatusMsg());
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light));
                 break;
             case "1":
                 holder.btn_edit.setVisibility(View.VISIBLE);
                 holder.btn_edit.setText("查看");
-                holder.tv_state.setText("上传成功——如需查询制卡进度，请您点击主界面中“制卡进度查询”");
+                holder.tv_state.setText(queryList.get(position).getStatusMsg());
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light));
                 break;
             case "2":
                 holder.btn_edit.setVisibility(View.VISIBLE);
                 holder.btn_edit.setText("修改");
-                holder.tv_state.setText("上传失败——失败原因");
+                holder.tv_state.setText(queryList.get(position).getStatusMsg());
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_light));
                 break;
             case "3":
                 holder.btn_edit.setVisibility(View.VISIBLE);
                 holder.btn_edit.setText("查看");
-                holder.tv_state.setText("异地上报——您已在XX地上报");
+                holder.tv_state.setText(queryList.get(position).getStatusMsg());
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_light));
                 break;
         }

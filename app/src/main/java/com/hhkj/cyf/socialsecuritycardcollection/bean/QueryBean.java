@@ -4,24 +4,14 @@ public class QueryBean {
 
     private String id;
     private String name;// 名字
-    private String zhengjianNum;//身份证号
-    private String state;// 状态
-    private String stateStr;// 状态描述
+    private String zjhm;//身份证号
+    private String status;// 状态
+    private String statusMsg;// 状态描述
     private String remark;// 状态描述
     private String type;// 状态描述
 
     public QueryBean() {
         super();
-    }
-
-    public QueryBean(String id, String name, String zhengjianNum, String state, String stateStr, String remark, String type) {
-        this.id = id;
-        this.name = name;
-        this.zhengjianNum = zhengjianNum;
-        this.state = state;
-        this.stateStr = stateStr;
-        this.remark = remark;
-        this.type = type;
     }
 
     public String getId() {
@@ -40,28 +30,28 @@ public class QueryBean {
         this.name = name;
     }
 
-    public String getZhengjianNum() {
-        return zhengjianNum;
+    public String getZjhm() {
+        return zjhm;
     }
 
-    public void setZhengjianNum(String zhengjianNum) {
-        this.zhengjianNum = zhengjianNum;
+    public void setZjhm(String zjhm) {
+        this.zjhm = zjhm;
     }
 
-    public String getState() {
-        return state;
+    public String getStatus() {
+        return status;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getStateStr() {
-        return stateStr;
+    public String getStatusMsg() {
+        return statusMsg;
     }
 
-    public void setStateStr(String stateStr) {
-        this.stateStr = stateStr;
+    public void setStatusMsg(String statusMsg) {
+        this.statusMsg = statusMsg;
     }
 
     public String getRemark() {
@@ -85,9 +75,9 @@ public class QueryBean {
         return "QueryBean{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", zhengjianNum='" + zhengjianNum + '\'' +
-                ", state='" + state + '\'' +
-                ", stateStr='" + stateStr + '\'' +
+                ", zjhm='" + zjhm + '\'' +
+                ", status='" + status + '\'' +
+                ", statusMsg='" + statusMsg + '\'' +
                 ", remark='" + remark + '\'' +
                 ", type='" + type + '\'' +
                 '}';

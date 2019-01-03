@@ -15,6 +15,21 @@ public class DictionaryBean implements Serializable {
     private ArrayList<ListBean> mzMap;//民族
     private ArrayList<ListBean> klmyhMap;//卡联名银行
 
+    public DictionaryBean() {
+    }
+
+    public DictionaryBean(ArrayList<ListBean> ryztMap, ArrayList<ListBean> hjxzMap, ArrayList<ListBean> xbMap, ArrayList<ListBean> zjlxMap, ArrayList<ListBean> zszyMap, ArrayList<ListBean> gjMap, ArrayList<ListBean> zshyMap, ArrayList<ListBean> mzMap, ArrayList<ListBean> klmyhMap) {
+        this.ryztMap = ryztMap;
+        this.hjxzMap = hjxzMap;
+        this.xbMap = xbMap;
+        this.zjlxMap = zjlxMap;
+        this.zszyMap = zszyMap;
+        this.gjMap = gjMap;
+        this.zshyMap = zshyMap;
+        this.mzMap = mzMap;
+        this.klmyhMap = klmyhMap;
+    }
+
     public ArrayList<ListBean> getRyztMap() {
         return ryztMap;
     }
@@ -87,9 +102,14 @@ public class DictionaryBean implements Serializable {
         this.klmyhMap = klmyhMap;
     }
 
-    public class ListBean implements Serializable{
+    public static class ListBean implements Serializable{
         private String id;
         private String name;
+
+        public ListBean(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
 
         public String getId() {
             return id;
