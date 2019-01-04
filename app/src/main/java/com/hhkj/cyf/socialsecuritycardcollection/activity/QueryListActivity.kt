@@ -17,7 +17,10 @@ import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_query_list.*
+import java.io.File
 import java.util.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.set
 
 class QueryListActivity : BaseActivity(), QueryListAdapter.OnMyClickListener {
 
@@ -53,7 +56,7 @@ class QueryListActivity : BaseActivity(), QueryListAdapter.OnMyClickListener {
         NetTools.net(map, Urls().allPeopleQuery, this) { response ->
             Log.e("zj", "allPeopleQuery = " + response.data)
             queryList = Gson().fromJson<ArrayList<QueryBean>>(response.data, object : TypeToken<ArrayList<QueryBean>>() {}.type)
-            Log.e("zj","queryList = "+queryList.toString())
+            Log.e("zj", "queryList = " + queryList.toString())
             setData()
         }
     }
@@ -82,17 +85,21 @@ class QueryListActivity : BaseActivity(), QueryListAdapter.OnMyClickListener {
                 mIntent.putExtra("commitBean", commitBean)
                 startActivity(mIntent)
             } else {
-                Log.e("zj","path = "+Environment.getExternalStorageDirectory().absolutePath + "/sbcj_cache")
-
+                val path = Environment.getExternalStorageDirectory().absolutePath + "/sbcj_cache"
+                Log.e("zj", "path = $path")
+                val file = File("$path/")
+                if (!file.exists()) {
+                    file.mkdirs()
+                }
                 // 下载头像证件照
                 NetTools.net_DownloadImg(this@QueryListActivity,
-                        Environment.getExternalStorageDirectory().absolutePath + "/sbcj_cache",
+                        path,
                         "index_社保卡采集.png",
-                        Urls.fileAccessHost+commitBean.zp//下载图片路径 "https://js.tuguaishou.com/start-design/20180326/28.jpg"
+                        Urls.fileAccessHost + commitBean.zp//下载图片路径 "https://js.tuguaishou.com/start-design/20180326/28.jpg"
                 ) {
                     // 不论下载头像证件照成功失败都调用这个方法
                     // 需要替换的字符串
-                    Log.e("zj","time = "+System.currentTimeMillis())
+                    Log.e("zj", "time = " + System.currentTimeMillis())
                     val map = HashMap<String, String>()
                     map["et0"] = commitBean.xmStr1
                     map["et1"] = commitBean.xbName
@@ -126,12 +133,12 @@ class QueryListActivity : BaseActivity(), QueryListAdapter.OnMyClickListener {
                     map["et29"] = commitBean.dbr_sfzhm
                     map["et30"] = commitBean.yjdz
                     // 保存到sd卡的路径
-                    var path = Environment.getExternalStorageDirectory().absolutePath + "/sbcj_cache/index_社保卡采集.html"
+                    var path = "$path/index_社保卡采集.html"
                     // 复制assets里的html到sdcard根目录并替换默认值
                     AssetsTools.copy("index.html", path, map, this)
                     // 跳转加载html
 
-                    Log.e("zj","time2 = "+System.currentTimeMillis())
+                    Log.e("zj", "time2 = " + System.currentTimeMillis())
 
                     val mIntent = Intent(this, CollectWebActivity::class.java)
                     mIntent.putExtra("title", "查看详情")
