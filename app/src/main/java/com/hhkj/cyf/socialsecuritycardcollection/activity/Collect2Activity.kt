@@ -16,8 +16,9 @@ import com.hhkj.cyf.socialsecuritycardcollection.view.jdaddress.AreaPickerView
 import com.hhkj.cyf.socialsecuritycardcollection.view.jdaddress.MyTools.getCityJson
 import kotlinx.android.synthetic.main.activity_collect2.*
 import org.jetbrains.anko.toast
-
-
+/**
+ * 其他信息
+ */
 class Collect2Activity : BaseActivity() {
 
     private var type = 0//0个人，1采集
@@ -149,7 +150,6 @@ class Collect2Activity : BaseActivity() {
                     tv_peopleState.text = name
 //                    commitBean!!.ryzt = id
                     ryztId = id
-                    commitBean!!.ryztName = name
 
                 }
             })
@@ -158,7 +158,6 @@ class Collect2Activity : BaseActivity() {
             SelectItemActivity.startSelectItem(this, dictionaryBean!!.gjMap, gjId, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_country.text = name
-                    commitBean!!.gjName = name
                     gjId = id
                 }
             })
@@ -167,7 +166,6 @@ class Collect2Activity : BaseActivity() {
             SelectItemActivity.startSelectItem(this, dictionaryBean!!.hjxzMap, hjxzId, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_householdType.text = name
-                    commitBean!!.hjxzName = name
                     hjxzId = id
                 }
             })
@@ -176,7 +174,6 @@ class Collect2Activity : BaseActivity() {
             SelectItemActivity.startSelectItem(this, dictionaryBean!!.klmyhMap, klmyhId, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_bank.text = name
-                    commitBean!!.klmyhName = name
                     klmyhId = id
                 }
             })
@@ -185,7 +182,6 @@ class Collect2Activity : BaseActivity() {
             SelectItemActivity.startSelectItem(this, dictionaryBean!!.zszyMap, zszyId, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_profession.text = name
-                    commitBean!!.zszyName = name
                     zszyId =id
                 }
             })
@@ -194,7 +190,6 @@ class Collect2Activity : BaseActivity() {
             SelectItemActivity.startSelectItem(this, dictionaryBean!!.zshyMap, zshyId, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
                     tv_industry.text = name
-                    commitBean!!.zshyName = name
                     zshyId = id
                 }
             })
@@ -231,6 +226,10 @@ class Collect2Activity : BaseActivity() {
                 toast("邮寄地址不能为空")
                 return@setOnClickListener
             }
+            if (et_address.text.length < 5) {
+                toast("邮寄地址不能少于5个字")
+                return@setOnClickListener
+            }
 
             commitBean!!.ryzt = ryztId
             commitBean!!.gj = gjId
@@ -243,6 +242,13 @@ class Collect2Activity : BaseActivity() {
             commitBean!!.lxsjStr1 = et_phone.text.toString()
             commitBean!!.lxdhStr1 = et_gdPhone.text.toString()
             commitBean!!.yzbm = et_yb.text.toString()
+
+            commitBean!!.ryztName = tv_peopleState.text.toString()
+            commitBean!!.gjName = tv_country.text.toString()
+            commitBean!!.hjxzName = tv_householdType.text.toString()
+            commitBean!!.klmyhName = tv_bank.text.toString()
+            commitBean!!.zszyName = tv_profession.text.toString()
+            commitBean!!.zshyName = tv_industry.text.toString()
 
             val mIntent = Intent(this, Collect3Activity::class.java)
             mIntent.putExtra("title", intent.getStringExtra("title"))

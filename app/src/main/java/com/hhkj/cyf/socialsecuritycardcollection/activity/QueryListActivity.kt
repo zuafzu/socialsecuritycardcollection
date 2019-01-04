@@ -82,14 +82,17 @@ class QueryListActivity : BaseActivity(), QueryListAdapter.OnMyClickListener {
                 mIntent.putExtra("commitBean", commitBean)
                 startActivity(mIntent)
             } else {
+                Log.e("zj","path = "+Environment.getExternalStorageDirectory().absolutePath + "/sbcj_cache")
+
                 // 下载头像证件照
-                NetTools.net_DownloadImg(
+                NetTools.net_DownloadImg(this@QueryListActivity,
                         Environment.getExternalStorageDirectory().absolutePath + "/sbcj_cache",
                         "index_社保卡采集.png",
                         Urls.fileAccessHost+commitBean.zp//下载图片路径 "https://js.tuguaishou.com/start-design/20180326/28.jpg"
                 ) {
                     // 不论下载头像证件照成功失败都调用这个方法
                     // 需要替换的字符串
+                    Log.e("zj","time = "+System.currentTimeMillis())
                     val map = HashMap<String, String>()
                     map["et0"] = commitBean.xmStr1
                     map["et1"] = commitBean.xbName
@@ -128,7 +131,7 @@ class QueryListActivity : BaseActivity(), QueryListAdapter.OnMyClickListener {
                     AssetsTools.copy("index.html", path, map, this)
                     // 跳转加载html
 
-                    Log.e("zj","bean.type  22 = "+bean.type)
+                    Log.e("zj","time2 = "+System.currentTimeMillis())
 
                     val mIntent = Intent(this, CollectWebActivity::class.java)
                     mIntent.putExtra("title", "查看详情")

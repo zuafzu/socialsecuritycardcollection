@@ -112,13 +112,13 @@ public class NetTools {
 //                        Toast.makeText(context, "返回data为null", Toast.LENGTH_SHORT).show();
 //                        return;
 //                    }
-
-                    if (myCallBack != null) {
-                        myCallBack.getData(baseBean);
-                    }
                     if (isDismiss) {
                         ((BaseActivity) context).dismissProgressDialog();
                     }
+                    if (myCallBack != null) {
+                        myCallBack.getData(baseBean);
+                    }
+
                 } else if ("100".equals(baseBean.getCode())) {//201
                     // 登录信息失效
                     Toast.makeText(context, baseBean.getMsg(), Toast.LENGTH_SHORT).show();
@@ -228,7 +228,7 @@ public class NetTools {
     }
 
     // 下载图片
-    public static void net_DownloadImg(String filePath, String fileName, String url, final MyCallBack myCallBack) {
+    public static void net_DownloadImg(final Activity context,String filePath, String fileName, String url, final MyCallBack myCallBack) {
         OkHttpUtils
                 .get()
                 .url(url)
@@ -237,11 +237,13 @@ public class NetTools {
 
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        ((BaseActivity) context).dismissProgressDialog();
                         myCallBack.getData(null);
                     }
 
                     @Override
                     public void onResponse(File response, int id) {
+                        ((BaseActivity) context).dismissProgressDialog();
                         myCallBack.getData(null);
                     }
 
@@ -249,106 +251,5 @@ public class NetTools {
     }
 
 
-    //----------------------
-    public static void net(String json, String url, final Activity context, final MyCallBack myCallBack) {
-        net(json, url, context, myCallBack, "正在加载...");
-    }
-
-    public static void net(String json, String url, final Activity context, final MyCallBack myCallBack, final String msg) {
-        net(json, url, context, myCallBack, msg, true, true);
-    }
-
-    public static void net(String json, final String url, final Activity context, final MyCallBack myCallBack, final String msg, final boolean isShow, final boolean isDismiss) {
-        Log.e("zj", "net json = " + json);
-        Log.e("zj", "net url = " + url);
-        Log.e("zj", "net token = " + SPTools.INSTANCE.get(context, Constant.TOKEN, ""));
-
-        RequestCall call = OkHttpUtils.postString().url(url)
-                .addHeader(Constant.TOKEN, (String) SPTools.INSTANCE.get(context, Constant.TOKEN, ""))
-                .mediaType(MediaType.parse("application/json"))
-                .content(json)
-                .build();
-
-        call.execute(new Callback<BaseBean>() {
-            @Override
-            public void onBefore(Request request, int id) {
-                if (context != null && isShow) {
-                    ((BaseActivity) context).showProgressDialog(msg);
-                }
-            }
-
-            @Override
-            public BaseBean parseNetworkResponse(Response response, int id) throws Exception {
-                String json = response.body().string();
-                Log.e("cyf7", "response : " + json);
-                JSONObject jsonObject = new JSONObject(json);
-                BaseBean bean = new BaseBean();
-                bean.setCode(jsonObject.optString("code"));
-                bean.setMsg(jsonObject.optString("msg"));
-                String json2 = jsonObject.optString("data");
-                if (!"".equals(json2) && !"{}".equals(json2) && !"{ }".equals(json2)) {
-                    bean.setData(json2);
-                }
-                return bean;
-            }
-
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                // 无数据布局隐藏(后期可做网络错误显示)
-//                ((BaseActivity) context).setListToastView(0, "", 0, false);
-                if (e.getClass().getSimpleName().equals("ConnectException")) {
-                    // 无法连接网络
-                    Toast.makeText(context, "无法连接服务器", Toast.LENGTH_SHORT).show();
-                } else if (e.getClass().getSimpleName().equals("SocketTimeoutException")) {
-                    // 网络连接超时
-                    Toast.makeText(context, "服务器连接超时", Toast.LENGTH_SHORT).show();
-                } else {
-                    // 其它异常
-                    Log.e("Exception gson：", e.toString());
-                }
-                ((BaseActivity) context).dismissProgressDialog();
-            }
-
-            @Override
-            public void onResponse(BaseBean baseBean, int id) {
-                // 无数据布局隐藏
-//                ((BaseActivity) context).setListToastView(0, "", 0, false);
-                Log.e("zj", "bean = " + baseBean.toString());
-                if ("0".equals(baseBean.getCode())) {
-
-//                    Log.e("zj", "url = " + url);
-//                    Log.e("zj", "baseBean = " + baseBean.toString());
-
-//                    if (null == baseBean.getData() || "".equals(baseBean.getData())) {
-//                        Toast.makeText(context, "返回data为null", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-
-                    if (myCallBack != null) {
-                        myCallBack.getData(baseBean);
-                    }
-                    if (isDismiss) {
-                        ((BaseActivity) context).dismissProgressDialog();
-                    }
-                } else if ("100".equals(baseBean.getCode())) {
-                    // 登录信息失效
-                    Toast.makeText(context, baseBean.getMsg(), Toast.LENGTH_SHORT).show();
-                    for (int i = 0; i < MyApplication.Companion.getActivies().size(); i++) {
-                        MyApplication.Companion.getActivies().get(i).finish();
-                    }
-                    context.startActivity(new Intent(context, LoginActivity.class));
-                } else {
-                    Toast.makeText(context, baseBean.getMsg(), Toast.LENGTH_SHORT).show();
-                    ((BaseActivity) context).dismissProgressDialog();
-                }
-            }
-
-            @Override
-            public void onAfter(int id) {
-
-            }
-
-        });
-    }
 
 }

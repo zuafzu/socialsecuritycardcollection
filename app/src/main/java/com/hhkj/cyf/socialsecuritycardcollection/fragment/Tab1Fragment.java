@@ -57,8 +57,22 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
         View mView = inflater.inflate(R.layout.fragment_tab1, container, false);
         initView(mView);
         setData();
-        net_selfQuery();
+//        net_selfQuery();
         return mView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        net_selfQuery();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            net_selfQuery();
+        }
     }
 
     private void initView(final View mView) {
@@ -185,7 +199,7 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
 
                 }
             }
-        });
+        },"",false,true);
     }
 
 

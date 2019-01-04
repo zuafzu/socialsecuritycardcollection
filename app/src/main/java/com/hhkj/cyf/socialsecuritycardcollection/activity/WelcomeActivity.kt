@@ -23,11 +23,11 @@ class WelcomeActivity : BaseActivity() {
 
         Handler().postDelayed({
 
-//            val intent = Intent(this@WelcomeActivity, BootPageActivity::class.java)
-//            startActivity(intent)
-//            finish()
+            val intent = Intent(this@WelcomeActivity, BootPageActivity::class.java)
+            startActivity(intent)
+            finish()
 
-            net_appCheckUpdate()
+//            net_appCheckUpdate()
 
         }, 500)
     }
@@ -90,14 +90,6 @@ class WelcomeActivity : BaseActivity() {
         builder.setTitle("检查到更新：" + versionBean!!.versionName + "版本")
         builder.setMessage(versionBean!!.versionDesc)
         val dialog = builder.create()
-        // 问题出在这，不要这个逻辑代码了，放到setPositiveButton这个方法里了
-//        if ("0" == versionBean!!.updateStatus) {
-//            dialog.setOnDismissListener {
-//                val intent = Intent(this@WelcomeActivity, BootPageActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            }
-//        }
         dialog.show()
     }
 }

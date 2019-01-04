@@ -256,7 +256,6 @@ class Collect3Activity : BaseActivity() {
             var jsonObj = JSONObject(response.data)
             var imageUrl = jsonObj.getString("imageUrl")
             commitBean!!.zp = imageUrl
-
         }
     }
 

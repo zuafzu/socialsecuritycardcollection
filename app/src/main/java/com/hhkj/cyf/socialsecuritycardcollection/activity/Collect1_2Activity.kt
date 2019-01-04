@@ -9,7 +9,9 @@ import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
 import com.hhkj.cyf.socialsecuritycardcollection.tools.Validator
 import kotlinx.android.synthetic.main.activity_collect1_2.*
 import org.jetbrains.anko.toast
-
+/**
+ * 监护人信息
+ */
 class Collect1_2Activity : BaseActivity() {
 
     private var type = 0//0个人，1采集
@@ -35,11 +37,9 @@ class Collect1_2Activity : BaseActivity() {
         commitBean = intent.getSerializableExtra("commitBean") as CommitBean?
 
         if (isModify == 0){
-
             tv_cardType2.text =dictionaryBean!!.zjlxMap[0].name
             jhrzjlxId = dictionaryBean!!.zjlxMap[0].id
         }else{
-
             tv_cardType2.text =commitBean!!.jhrzjlxName
             if (commitBean!!.jhrzjlx!= null){
                 jhrzjlxId = commitBean!!.jhrzjlx
@@ -47,7 +47,6 @@ class Collect1_2Activity : BaseActivity() {
             et_jhrIdCard.setText(commitBean!!.jhrzh)
             et_jhrName.setText(commitBean!!.jhrxm)
         }
-
     }
 
     private fun initClick() {
@@ -80,6 +79,7 @@ class Collect1_2Activity : BaseActivity() {
             commitBean!!.jhrzh = et_jhrIdCard.text.toString()
             commitBean!!.jhrxm = et_jhrName.text.toString()
 
+            commitBean!!.jhrzjlxName = tv_cardType2.text.toString()
             val mIntent = Intent(this, Collect2Activity::class.java)
             mIntent.putExtra("title", intent.getStringExtra("title"))
             mIntent.putExtra("dictionaryBean", dictionaryBean)

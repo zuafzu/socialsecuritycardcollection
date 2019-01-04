@@ -39,6 +39,9 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * 基本信息
+ */
 class Collect1Activity : BaseActivity() {
 
     private var type = 0//0个人，1代办
@@ -62,7 +65,6 @@ class Collect1Activity : BaseActivity() {
         net_getDictionary()
 
 //        setData1()
-
     }
 
     override fun onResume() {
@@ -90,7 +92,11 @@ class Collect1Activity : BaseActivity() {
             mzId = commitBean!!.mz
 
             et_name.setText(commitBean!!.xmStr1)
+            if (et_name.text.isNotEmpty()) {
+                et_name.setSelection(et_name.text.length)
+            }
             et_id.setText(commitBean!!.zjhm)
+            et_id.isEnabled = false;
             commitBean!!.csrq = commitBean!!.csrqStr
             tv_birth.text = commitBean!!.csrqStr
             tv_cardEndDate.text = commitBean!!.zjyxq
@@ -152,21 +158,19 @@ class Collect1Activity : BaseActivity() {
                 override fun setData(name: String, id: String) {
                     tv_sex.text = name
                     xbId = id
-                    commitBean!!.xbName = name
                 }
             })
         }
         ll_cardType.setOnClickListener {
             SelectItemActivity.startSelectItem(this, dictionaryBean!!.zjlxMap, zjlxId, object : SelectItemActivity.OnMySelectItemListener {
                 override fun setData(name: String, id: String) {
-                    if (name == "身份证") {
+                    if (name.contains("身份证")) {
                         ll_id_photo.visibility = View.VISIBLE
                     } else {
                         ll_id_photo.visibility = View.GONE
                     }
                     tv_cardType.text = name
                     zjlxId = id
-                    commitBean!!.zjlxName = name
 
                 }
             })
@@ -183,7 +187,7 @@ class Collect1Activity : BaseActivity() {
                 //获取月份，0表示1月份
                 val month = calendar.get(Calendar.MONTH)
                 //获取当前天数
-                val day= calendar.get(Calendar.DAY_OF_MONTH)
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
 
                 view.init(year, month, day, null)
             }
@@ -260,6 +264,7 @@ class Collect1Activity : BaseActivity() {
             }
             builder.setNeutralButton("长期") { p0, p1 ->
                 tv_cardEndDate.text = "长期"
+                commitBean!!.zjyxq = "长期"
                 p0.dismiss()
             }
             dialog = builder.create()
@@ -282,6 +287,10 @@ class Collect1Activity : BaseActivity() {
                 toast("证件号码不能为空")
                 return@setOnClickListener
             }
+            if (et_id.text.length < 12) {
+                toast("证件号码不能少于12位")
+                return@setOnClickListener
+            }
             if (tv_cardType.text == "身份证" && !Validator.isIDCard(et_id.text.toString())) {
                 toast("身份证号格式错误")
                 return@setOnClickListener
@@ -302,8 +311,7 @@ class Collect1Activity : BaseActivity() {
             val calendar = Calendar.getInstance()
             calendar.time = SimpleDateFormat("yyyy-MM-dd").parse(tv_birth.text.toString())
             if ((tv_cardType.text == "户口本" && tv_cardEndDate.text == "长期") ||
-                    (tv_cardType.text == "身份证" && getCurrentAge(Date(calendar.timeInMillis)) < 16)) {
-
+                    (tv_cardType.text.contains("身份证") && getCurrentAge(Date(calendar.timeInMillis)) < 16)) {
 
                 commitBean!!.xb = xbId
                 commitBean!!.zjlx = zjlxId
@@ -312,7 +320,12 @@ class Collect1Activity : BaseActivity() {
                 commitBean!!.xmStr1 = et_name.text.toString()
                 commitBean!!.zjhm = et_id.text.toString()
                 commitBean!!.txdz = et_address.text.toString()
-                val mIntent = Intent(this, Collect1_2Activity::class.java)
+
+                commitBean!!.xbName = tv_sex.text.toString()
+                commitBean!!.zjlxName = tv_cardType.text.toString()
+                commitBean!!.mzName = tv_nationality.text.toString()
+
+                val mIntent = Intent(this, Collect1_2Activity::class.java)//监护人
                 mIntent.putExtra("title", intent.getStringExtra("title"))
                 mIntent.putExtra("dictionaryBean", dictionaryBean)
                 mIntent.putExtra("commitBean", commitBean)
@@ -331,7 +344,11 @@ class Collect1Activity : BaseActivity() {
                 commitBean!!.zjlx = zjlxId
                 commitBean!!.mz = mzId
 
-                val mIntent = Intent(this, Collect2Activity::class.java)
+                commitBean!!.xbName = tv_sex.text.toString()
+                commitBean!!.zjlxName = tv_cardType.text.toString()
+                commitBean!!.mzName = tv_nationality.text.toString()
+
+                val mIntent = Intent(this, Collect2Activity::class.java)//其他信息
                 mIntent.putExtra("title", intent.getStringExtra("title"))
                 mIntent.putExtra("dictionaryBean", dictionaryBean)
                 mIntent.putExtra("commitBean", commitBean)
@@ -346,6 +363,29 @@ class Collect1Activity : BaseActivity() {
     /**
      * 根据生日计算当前周岁数
      */
+//    fun getCurrentAge(birthday: Date): Int {
+//        // 当前时间
+//        val curr = Calendar.getInstance()
+//        // 生日
+//        val born = Calendar.getInstance()
+//        born.time = birthday
+//        // 年龄 = 当前年 - 出生年
+//        val age = curr.get(Calendar.YEAR) - born.get(Calendar.YEAR)
+//        if (age <= 0) {
+//            return 0
+//        }
+//        // 如果当前月份小于出生月份: age-1
+//        // 如果当前月份等于出生月份, 且当前日小于出生日: age-1
+//        val currMonth = curr.get(Calendar.MONTH)
+//        val currDay = curr.get(Calendar.DAY_OF_MONTH)
+//        val bornMonth = born.get(Calendar.MONTH)
+//        val bornDay = born.get(Calendar.DAY_OF_MONTH)
+//        if (currMonth < bornMonth || currMonth == bornMonth && currDay <= bornDay) {
+//            age
+//        }
+//        return if (age < 0) 0 else age
+//    }
+
     fun getCurrentAge(birthday: Date): Int {
         // 当前时间
         val curr = Calendar.getInstance()
@@ -353,7 +393,7 @@ class Collect1Activity : BaseActivity() {
         val born = Calendar.getInstance()
         born.time = birthday
         // 年龄 = 当前年 - 出生年
-        val age = curr.get(Calendar.YEAR) - born.get(Calendar.YEAR)
+        var age = curr.get(Calendar.YEAR) - born.get(Calendar.YEAR)
         if (age <= 0) {
             return 0
         }
@@ -364,7 +404,7 @@ class Collect1Activity : BaseActivity() {
         val bornMonth = born.get(Calendar.MONTH)
         val bornDay = born.get(Calendar.DAY_OF_MONTH)
         if (currMonth < bornMonth || currMonth == bornMonth && currDay <= bornDay) {
-            age
+            age--
         }
         return if (age < 0) 0 else age
     }
@@ -513,13 +553,13 @@ class Collect1Activity : BaseActivity() {
         var mzMap = ArrayList<ListBean>()//民族
         var klmyhMap = ArrayList<ListBean>()//卡联名银行
 
-        var bean1 = ListBean("1","11")
-        var bean2 = ListBean("2","22")
-        var bean3 = ListBean("3","33")
-        var bean4 = ListBean("4","44")
-        var bean5 = ListBean("5","55")
-        var bean6 = ListBean("6","66")
-        var bean7 = ListBean("7","77")
+        var bean1 = ListBean("1", "11")
+        var bean2 = ListBean("2", "22")
+        var bean3 = ListBean("3", "33")
+        var bean4 = ListBean("4", "44")
+        var bean5 = ListBean("5", "55")
+        var bean6 = ListBean("6", "66")
+        var bean7 = ListBean("7", "77")
 
         ryztMap.add(bean1)
         ryztMap.add(bean2)
@@ -548,7 +588,7 @@ class Collect1Activity : BaseActivity() {
         klmyhMap.add(bean1)
         klmyhMap.add(bean2)
 
-        dictionaryBean = DictionaryBean(ryztMap,hjxzMap,xbMap,zjlxMap,zszyMap,gjMap,zshyMap,mzMap,klmyhMap)
+        dictionaryBean = DictionaryBean(ryztMap, hjxzMap, xbMap, zjlxMap, zszyMap, gjMap, zshyMap, mzMap, klmyhMap)
 
         tv_sex.text = dictionaryBean!!.xbMap[0].name
         tv_cardType.text = dictionaryBean!!.zjlxMap[0].name

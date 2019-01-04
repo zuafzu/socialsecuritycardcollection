@@ -38,7 +38,6 @@ public class Tab3Fragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_tab3, container, false);
         initView(mView);
-        setData();
         return mView;
     }
 
@@ -71,6 +70,7 @@ public class Tab3Fragment extends Fragment implements View.OnClickListener {
         requestOptions.placeholder(R.mipmap.ic_head);
 //        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);///不使用磁盘缓存
 //        requestOptions.skipMemoryCache(true); // 不使用内存缓存
+        Log.e("zj","url"+SPTools.INSTANCE.get(getActivity(),Constant.HEADPHOTO,"")+"&"+System.currentTimeMillis());
         Glide.with(getActivity()).load(SPTools.INSTANCE.get(getActivity(),Constant.HEADPHOTO,"")+"&"+System.currentTimeMillis()).apply(requestOptions).into(iv_img);
 
  }
@@ -79,7 +79,7 @@ public class Tab3Fragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
 
-
+        setData();
         tv_nickName.setText("" + SPTools.INSTANCE.get(getActivity(),Constant.USERNAME,""));
     }
 
