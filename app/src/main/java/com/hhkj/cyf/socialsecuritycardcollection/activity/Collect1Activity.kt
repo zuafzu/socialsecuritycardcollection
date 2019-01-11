@@ -333,6 +333,8 @@ class Collect1Activity : BaseActivity() {
                 mIntent.putExtra("type", type)
                 mIntent.putExtra("isModify", isModify)
 
+                val jsonBean = Gson().toJson(commitBean)
+                Log.e("zj", "jsonBeanqq = " + jsonBean)
                 startActivity(mIntent)
             } else {
 
@@ -355,6 +357,8 @@ class Collect1Activity : BaseActivity() {
                 mIntent.putExtra("type", type)
                 mIntent.putExtra("isModify", isModify)
 
+                val jsonBean = Gson().toJson(commitBean)
+                Log.e("zj", "jsonBeanpp = " + jsonBean)
                 startActivity(mIntent)
             }
         }
@@ -445,29 +449,78 @@ class Collect1Activity : BaseActivity() {
     }
 
     private fun setID(result: IDCardResult) {
+
+
         if (result.idCardSide == "front") {
+            if (dictionaryBean != null && dictionaryBean!!.zjlxMap.size > 0) {
+                for (i in 0 until dictionaryBean!!.zjlxMap.size) {
+                    if ("身份证" == dictionaryBean!!.zjlxMap[i].name) {
+                        zjlxId = dictionaryBean!!.zjlxMap[i].id
+                        break
+                    }
+                }
+            }
+
             if (result.name != null && result.name.toString() != "") {
                 et_name.setText(result.name.words)
             }
             if (result.gender != null && result.gender.toString() != "") {
                 tv_sex.text = result.gender.words
+
+                if (dictionaryBean != null && dictionaryBean!!.xbMap.size > 0) {
+                    for (i in 0 until dictionaryBean!!.xbMap.size) {
+                        if (tv_sex.text.toString() == dictionaryBean!!.xbMap[i].name) {
+                            xbId = dictionaryBean!!.xbMap[i].id
+                            break
+                        }
+                    }
+                }
+
             }
             if (result.idNumber != null && result.idNumber.toString() != "") {
                 et_id.setText(result.idNumber.words)
             }
             if (result.birthday != null && result.birthday.toString() != "") {
-                tv_birth.text = result.birthday.words
+                if (!result.birthday.words.isEmpty() && result.birthday.words.length == 8) {
+                    var date: Date = SimpleDateFormat("yyyyMMdd").parse(result.birthday.words)
+                    var format0 = SimpleDateFormat("yyyy-MM-dd");
+                    var time = format0.format(date);
+                    tv_birth.text = time
+
+                    commitBean!!.csrq = tv_birth.text.toString()
+                    commitBean!!.csrqStr = tv_birth.text.toString()
+
+                }
             }
             if (result.ethnic != null && result.ethnic.toString() != "") {
                 tv_nationality.text = result.ethnic.words
+
+                if (dictionaryBean != null && dictionaryBean!!.mzMap.size > 0) {
+                    for (i in 0 until dictionaryBean!!.mzMap.size) {
+                        if (tv_nationality.text.toString() == dictionaryBean!!.mzMap[i].name) {
+                            mzId = dictionaryBean!!.mzMap[i].id
+                            break
+                        }
+                    }
+                }
             }
             if (result.address != null && result.address.toString() != "") {
                 et_address.setText(result.address.words)
             }
             tv_z.visibility = View.GONE
         } else if (result.idCardSide == "back") {
+            if (dictionaryBean != null && dictionaryBean!!.zjlxMap.size > 0) {
+                for (i in 0 until dictionaryBean!!.zjlxMap.size) {
+                    if ("身份证" == dictionaryBean!!.zjlxMap[i].name) {
+                        zjlxId = dictionaryBean!!.zjlxMap[i].id
+                        break
+                    }
+                }
+            }
             if (result.expiryDate != null && result.expiryDate.toString() != "") {
                 tv_cardEndDate.text = result.expiryDate.words
+
+                commitBean!!.zjyxq = tv_cardEndDate.text.toString()
             }
             tv_f.visibility = View.GONE
         }

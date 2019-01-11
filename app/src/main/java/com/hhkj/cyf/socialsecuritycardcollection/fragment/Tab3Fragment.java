@@ -20,7 +20,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.hhkj.cyf.socialsecuritycardcollection.R;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.AboutUsActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.ChangePwActivity;
+import com.hhkj.cyf.socialsecuritycardcollection.activity.ConnectPhoneListActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.FeedbackActivity;
+import com.hhkj.cyf.socialsecuritycardcollection.activity.LoginActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.UserInfoActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant;
@@ -28,7 +30,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools;
 
 public class Tab3Fragment extends Fragment implements View.OnClickListener {
 
-    private LinearLayout ll_userinfo, ll_changepw, ll_feedback, ll_aboutus,ll_callus;
+    private LinearLayout ll_userinfo, ll_changepw, ll_feedback, ll_aboutus, ll_callus, ll_logout;
     private TextView tv_version;
     private TextView tv_nickName;
     private TextView tv_phone;
@@ -52,35 +54,37 @@ public class Tab3Fragment extends Fragment implements View.OnClickListener {
         ll_aboutus = mView.findViewById(R.id.ll_aboutus);
         tv_version = mView.findViewById(R.id.tv_version);
         ll_callus = mView.findViewById(R.id.ll_callus);
+        ll_logout = mView.findViewById(R.id.ll_logout);
         ll_userinfo.setOnClickListener(this);
         ll_changepw.setOnClickListener(this);
         ll_feedback.setOnClickListener(this);
         ll_aboutus.setOnClickListener(this);
         ll_callus.setOnClickListener(this);
+        ll_logout.setOnClickListener(this);
     }
 
     private void setData() {
 
-        tv_phone.setText("" + SPTools.INSTANCE.get(getActivity(),Constant.PHONE,""));
+        tv_phone.setText("" + SPTools.INSTANCE.get(getActivity(), Constant.PHONE, ""));
         tv_version.setText("当前版本：" + ((BaseActivity) getActivity()).getAppVersionName());
 
-        Log.e("zj","onResume");
+        Log.e("zj", "onResume");
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.error(R.mipmap.ic_head);
         requestOptions.placeholder(R.mipmap.ic_head);
 //        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);///不使用磁盘缓存
 //        requestOptions.skipMemoryCache(true); // 不使用内存缓存
-        Log.e("zj","url"+SPTools.INSTANCE.get(getActivity(),Constant.HEADPHOTO,"")+"&"+System.currentTimeMillis());
-        Glide.with(getActivity()).load(SPTools.INSTANCE.get(getActivity(),Constant.HEADPHOTO,"")+"&"+System.currentTimeMillis()).apply(requestOptions).into(iv_img);
+        Log.e("zj", "url" + SPTools.INSTANCE.get(getActivity(), Constant.HEADPHOTO, "") + "&" + System.currentTimeMillis());
+        Glide.with(getActivity()).load(SPTools.INSTANCE.get(getActivity(), Constant.HEADPHOTO, "") + "&" + System.currentTimeMillis()).apply(requestOptions).into(iv_img);
 
- }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
 
         setData();
-        tv_nickName.setText("" + SPTools.INSTANCE.get(getActivity(),Constant.USERNAME,""));
+        tv_nickName.setText("" + SPTools.INSTANCE.get(getActivity(), Constant.USERNAME, ""));
     }
 
     @Override
@@ -99,18 +103,45 @@ public class Tab3Fragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));
                 break;
             case R.id.ll_callus:
-                AlertDialog.Builder normalDialog = new AlertDialog.Builder(getActivity());
-                normalDialog.setTitle("提示");
-                normalDialog.setMessage("确认拨打电话吗？");
-                normalDialog.setPositiveButton("确定",
+              Intent intent =   new Intent(getActivity(), ConnectPhoneListActivity.class);
+                intent.putExtra("title","联系我们");
+                startActivity(intent);
+
+//                AlertDialog.Builder normalDialog = new AlertDialog.Builder(getActivity());
+//                normalDialog.setTitle("提示");
+//                normalDialog.setMessage("确认拨打电话吗？");
+//                normalDialog.setPositiveButton("确定",
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                                ((BaseActivity) getActivity()).callPhone(Constant.phone);
+//                            }
+//                        });
+//                normalDialog.setNegativeButton("取消",
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                // 显示
+//                normalDialog.show();
+                break;
+            case R.id.ll_logout:
+                AlertDialog.Builder logoutDialog = new AlertDialog.Builder(getActivity());
+                logoutDialog.setTitle("提示");
+                logoutDialog.setMessage("确认退出当前账号吗？");
+                logoutDialog.setPositiveButton("确定",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                ((BaseActivity)getActivity()).callPhone(Constant.phone);
+                                getActivity().finish();
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
                             }
                         });
-                normalDialog.setNegativeButton("取消",
+                logoutDialog.setNegativeButton("取消",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -118,7 +149,7 @@ public class Tab3Fragment extends Fragment implements View.OnClickListener {
                             }
                         });
                 // 显示
-                normalDialog.show();
+                logoutDialog.show();
                 break;
         }
     }

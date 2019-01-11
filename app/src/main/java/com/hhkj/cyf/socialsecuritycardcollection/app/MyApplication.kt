@@ -18,6 +18,5 @@ class MyApplication : Application() {
         super.onCreate()
         CrashReport.initCrashReport(applicationContext, "68da0e5c02", false)
         context = applicationContext
-
     }
 }

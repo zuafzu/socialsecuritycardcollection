@@ -7,7 +7,7 @@ public class QueryBean {
     private String zjhm;//身份证号
     private String status;// 状态
     private String statusMsg;// 状态描述
-    private String remark;// 状态描述
+    private String remake;// 状态描述
     private String type;// 状态描述
 
     public QueryBean() {
@@ -54,12 +54,12 @@ public class QueryBean {
         this.statusMsg = statusMsg;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getRemake() {
+        return remake;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setRemake(String remake) {
+        this.remake = remake;
     }
 
     public String getType() {
@@ -78,7 +78,7 @@ public class QueryBean {
                 ", zjhm='" + zjhm + '\'' +
                 ", status='" + status + '\'' +
                 ", statusMsg='" + statusMsg + '\'' +
-                ", remark='" + remark + '\'' +
+                ", remake='" + remake + '\'' +
                 ", type='" + type + '\'' +
                 '}';
     }

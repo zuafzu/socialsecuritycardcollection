@@ -40,7 +40,7 @@ class RegisterActivity : BaseActivity() {
                 toast("请输入合法手机号")
                 return@setOnClickListener
             }
-            timeCount!!.start()
+
             net_common_verCode()
         }
 
@@ -90,6 +90,7 @@ class RegisterActivity : BaseActivity() {
         map.put("phone", et_phone.text.toString())
         map.put("type", "0")
         NetTools.net(map, Urls().getCode, this) { response ->
+            timeCount!!.start()
             toast(response.msg!!)
         }
     }

@@ -41,15 +41,26 @@ class ForgetPwActivity : BaseActivity() {
                 toast("请输入合法手机号")
                 return@setOnClickListener
             }
-            if (et_code.text.toString() == "") {
-                toast("手机号不能为空")
-                return@setOnClickListener
-            }
-            timeCount!!.start()
             net_common_verCode()
         }
         btn_submit.setOnClickListener {
-            if (et_pw1.text.toString() != et_pw1.text.toString()){
+            if (et_phone.text.toString() == "") {
+                toast("手机号不能为空")
+                return@setOnClickListener
+            }
+            if (!PhoneTools.isMobile(et_phone.text.toString())) {
+                toast("请输入合法手机号")
+                return@setOnClickListener
+            }
+            if (et_code.text.toString() == "") {
+                toast("验证码不能为空")
+                return@setOnClickListener
+            }
+            if (et_pw1.text.toString() == "") {
+                toast("新密码不能为空")
+                return@setOnClickListener
+            }
+            if (et_pw1.text.toString() != et_pw2.text.toString()){
                 toast("两次输入的密码不一致")
                 return@setOnClickListener
             }
@@ -72,6 +83,7 @@ class ForgetPwActivity : BaseActivity() {
         map.put("phone", et_phone.text.toString())
         map.put("type", "1")
         NetTools.net(map, Urls().getCode, this) { response ->
+            timeCount!!.start()
             toast(response.msg!!)
         }
     }

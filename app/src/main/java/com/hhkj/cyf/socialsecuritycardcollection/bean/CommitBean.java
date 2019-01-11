@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class CommitBean implements Serializable {
 
+    private String id;//人员id
     private String xmStr1 = "";// 姓名
     private String xb = "";// 性别。type_value=XB
     private String xbName = "";// 性别。type_value=XB
@@ -95,6 +96,15 @@ public class CommitBean implements Serializable {
 //    private String xm1 = "";
 //    private String lxdh1 = "";
 //    private String lxsj1 = "";
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getSh() {
         return sh;
@@ -755,6 +765,7 @@ public class CommitBean implements Serializable {
     @Override
     public String toString() {
         return "CommitBean{" +
+                "id='" + id + '\'' +
                 "zjhm='" + zjhm + '\'' +
                 ", zjlx='" + zjlx + '\'' +
                 ", zjlxName='" + zjlxName + '\'' +

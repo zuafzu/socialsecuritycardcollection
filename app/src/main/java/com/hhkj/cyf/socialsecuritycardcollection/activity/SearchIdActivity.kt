@@ -21,7 +21,6 @@ class SearchIdActivity : BaseActivity() {
 
     private var type = 0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_id)
@@ -49,7 +48,8 @@ class SearchIdActivity : BaseActivity() {
 //            mIntent.putExtra("title", intent.getStringExtra("title"))
 //            startActivity(mIntent)
             if (Validator.isIDCard(et_idCard.text.toString())){
-                net_getWriteCount()
+//                net_getWriteCount()
+                net_idCardQuery()
             }else{
                 toast("身份证格式不正确")
             }

@@ -27,6 +27,7 @@ class LoginActivity : BaseActivity() {
 
     private fun initView() {
         setPwEt(et_pw, switch0)
+        et_username.setText(SPTools[this@LoginActivity,Constant.PHONE,""].toString())
     }
 
     private fun initClick() {

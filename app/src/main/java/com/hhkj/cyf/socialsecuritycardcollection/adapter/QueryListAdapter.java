@@ -2,6 +2,7 @@ package com.hhkj.cyf.socialsecuritycardcollection.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,32 +63,41 @@ public class QueryListAdapter extends BaseAdapter {
         }
         holder.tv_name.setText(queryList.get(position).getName());
         holder.tv_id.setText(queryList.get(position).getZjhm());
-        holder.tv_state.setText(queryList.get(position).getStatusMsg());
         holder.btn_edit.setVisibility(View.GONE);
+
+        String statusMsg = queryList.get(position).getStatusMsg();
+        if (statusMsg.equals("null")){
+            statusMsg = "";
+        }
+        String remake = queryList.get(position).getRemake();
+
+        if (remake.equals("null")){
+            remake = "";
+        }
         // 0保存成功，1上传成功，2上传失败，3异地
         switch (queryList.get(position).getStatus()) {
             case "0":
                 holder.btn_edit.setVisibility(View.VISIBLE);
                 holder.btn_edit.setText("查看");
-                holder.tv_state.setText(queryList.get(position).getStatusMsg());
+                holder.tv_state.setText(statusMsg);
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light));
                 break;
             case "1":
                 holder.btn_edit.setVisibility(View.VISIBLE);
                 holder.btn_edit.setText("查看");
-                holder.tv_state.setText(queryList.get(position).getStatusMsg());
+                holder.tv_state.setText(statusMsg + "--" + remake);
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_light));
                 break;
             case "2":
                 holder.btn_edit.setVisibility(View.VISIBLE);
                 holder.btn_edit.setText("修改");
-                holder.tv_state.setText(queryList.get(position).getStatusMsg());
+                holder.tv_state.setText(statusMsg + "--" + remake);
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_light));
                 break;
             case "3":
                 holder.btn_edit.setVisibility(View.VISIBLE);
                 holder.btn_edit.setText("查看");
-                holder.tv_state.setText(queryList.get(position).getStatusMsg());
+                holder.tv_state.setText(statusMsg + "--" + remake);
                 holder.tv_state.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_light));
                 break;
         }

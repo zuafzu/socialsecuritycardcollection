@@ -2,7 +2,6 @@ package com.hhkj.cyf.socialsecuritycardcollection.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class DictionaryBean implements Serializable {
     private ArrayList<ListBean> ryztMap;//人员状态
