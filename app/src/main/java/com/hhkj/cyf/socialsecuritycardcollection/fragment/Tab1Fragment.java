@@ -76,6 +76,8 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
     }
 
     private void initView(final View mView) {
+        int array[] = { 8, 7, 100, 88, 6, 4, 5, 33, 10 };
+
         ((TextView) mView.findViewById(R.id.tv_toolsbar_title)).setText(getString(R.string.tab1_fragment));
         ll_status = mView.findViewById(R.id.ll_status);
         iv_status1 = mView.findViewById(R.id.iv_status1);
@@ -93,7 +95,7 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
 
             }
         });
-        int[] imgs = {R.mipmap.baaner1, R.mipmap.baaner2, R.mipmap.baaner3};
+        int[] imgs = {R.mipmap.banner, R.mipmap.banner1};
         slideShowView.initUI(getActivity(), 2f, imgs);
         gridView = (GridView) mView.findViewById(R.id.gridView);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,24 +104,25 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
                 switch (i) {
                     case 0:
                         Intent intent1 = new Intent(getActivity(), SelectCollectActivity.class);
+                        intent1.putExtra("title", "社会保障卡信息采集");
                         startActivity(intent1);
                         break;
                     case 1:
                         Intent intent2 = new Intent(getActivity(), WebActivity.class);
                         intent2.putExtra("title", "制卡进度查询");
-                        intent2.putExtra("url", Urls.url_zkjdcx);
+                        intent2.putExtra("url",SPTools.INSTANCE.get(getActivity(),Constant.ZKJDURL,"").toString());
                         startActivity(intent2);
                         break;
                     case 2:
                         Intent intent3 = new Intent(getActivity(), WebActivity.class);
                         intent3.putExtra("title", "社保查询");
-                        intent3.putExtra("url", Urls.url_ccshbx);
+                        intent3.putExtra("url",SPTools.INSTANCE.get(getActivity(),Constant.SHEBAOURL,"").toString());
                         startActivity(intent3);
                         break;
                     case 3:
                         Intent intent4 = new Intent(getActivity(), WebActivity.class);
                         intent4.putExtra("title", "医保查询");
-                        intent4.putExtra("url", Urls.url_ccyb);
+                        intent4.putExtra("url",SPTools.INSTANCE.get(getActivity(),Constant.YIBAOURL,"").toString());
                         startActivity(intent4);
                         break;
                 }
@@ -132,10 +135,10 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
 
     private void setData() {
         homeModel = new ArrayList<>();
-        HomeBean homeBean1 = new HomeBean(R.mipmap.ic_launcher, "1", "社会保障卡信息采集");
-        HomeBean homeBean2 = new HomeBean(R.mipmap.ic_launcher, "2", "制卡进度查询");
-        HomeBean homeBean3 = new HomeBean(R.mipmap.ic_launcher, "3", "社保查询");
-        HomeBean homeBean4 = new HomeBean(R.mipmap.ic_launcher, "4", "医保查询");
+        HomeBean homeBean1 = new HomeBean(R.mipmap.xxcj, "1", "社会保障卡信息采集");
+        HomeBean homeBean2 = new HomeBean(R.mipmap.zkjd, "2", "制卡进度查询");
+        HomeBean homeBean3 = new HomeBean(R.mipmap.sbcx, "3", "社保查询");
+        HomeBean homeBean4 = new HomeBean(R.mipmap.ybcx, "4", "医保查询");
         homeModel.add(homeBean1);
         homeModel.add(homeBean2);
         homeModel.add(homeBean3);
@@ -153,14 +156,9 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
                 Log.e("zj", "net_selfQuery = " + response.getData());
                 statusBean = new Gson().fromJson(response.getData(), StatusBean.class);
 
-//                statusBean.setStatus("2");
-//                statusBean.setStatusMsg("1");
-
                 String msg1 = "";
                 String msg2 = "";
                 String[] temp = null;
-
-
 
                 if (statusBean != null) {
                     if (statusBean.getStatusMsg() !=null){

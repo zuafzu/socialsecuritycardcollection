@@ -55,23 +55,6 @@ class SearchIdActivity : BaseActivity() {
             }
         }
     }
-
-    private fun net_getWriteCount() {
-        val map = hashMapOf<String, String>()
-        map["phone"] = "" + SPTools[this@SearchIdActivity, Constant.PHONE, ""]
-        NetTools.net(map, Urls().getWriteCount, this) { response ->
-            Log.e("zj", "getWriteCount = " + response.data)
-
-            var jsonObj = JSONObject(response.data)
-            var nowCount = jsonObj.getString("nowCount")
-            var maxCount = jsonObj.getString("maxCount")
-            if (Integer.parseInt(nowCount) < Integer.parseInt(maxCount)) {
-                net_idCardQuery()
-            } else {
-                toast("录入次数已达最大限制 $maxCount")
-            }
-        }
-    }
     private fun net_idCardQuery() {
         val map = hashMapOf<String, String>()
         map["phone"] = "" + SPTools[this@SearchIdActivity, Constant.PHONE, ""]

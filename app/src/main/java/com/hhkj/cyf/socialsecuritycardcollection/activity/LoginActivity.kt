@@ -47,14 +47,17 @@ class LoginActivity : BaseActivity() {
             }
             if (!PhoneTools.isMobile(et_username.text.toString())){
                 toast("手机号格式不正确")
+                return@setOnClickListener
             }
             if (et_pw.text.toString().trim().isEmpty()){
                 toast("密码不能为空")
                 return@setOnClickListener
             }
+
+            net_login()
+
 //            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
 //            finish()
-            net_login()
         }
     }
 

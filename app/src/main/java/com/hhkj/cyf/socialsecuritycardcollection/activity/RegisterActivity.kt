@@ -68,9 +68,10 @@ class RegisterActivity : BaseActivity() {
             net_register()
         }
         tv_agreement.setOnClickListener {
+
             val mIntent = Intent(this,WebActivity::class.java)
             mIntent.putExtra("title","用户服务协议")
-            mIntent.putExtra("url", Urls.url_register_agreement)
+            mIntent.putExtra("url", Urls().url_register_agreement)
             startActivity(mIntent)
         }
     }

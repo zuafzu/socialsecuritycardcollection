@@ -29,7 +29,7 @@ class SelectCollectActivity : BaseActivity() {
 
     private fun initView() {
         setLeftBtn(true)
-        setTextTitle("社会保障卡信息采集")
+        setTextTitle(intent.getStringExtra("title"))
         gridView.setOnItemClickListener { adapterView, view, i, l ->
             when (i) {
                 0 -> {
@@ -42,16 +42,14 @@ class SelectCollectActivity : BaseActivity() {
                     startActivity(Intent(this, QueryListActivity::class.java))
                 }
             }
-
-
         }
     }
 
     private fun setData() {
         homeModel = ArrayList()
-        val homeBean1 = HomeBean(R.mipmap.ic_launcher, "1", "个人办理")
-        val homeBean2 = HomeBean(R.mipmap.ic_launcher, "2", "亲属代办")
-        val homeBean3 = HomeBean(R.mipmap.ic_launcher, "3", "采集进度查询")
+        val homeBean1 = HomeBean(R.mipmap.grbl, "1", "个人办理")
+        val homeBean2 = HomeBean(R.mipmap.qsdb, "2", "亲属代办")
+        val homeBean3 = HomeBean(R.mipmap.cjjd, "3", "采集进度查询")
         homeModel!!.add(homeBean1)
         homeModel!!.add(homeBean2)
         homeModel!!.add(homeBean3)

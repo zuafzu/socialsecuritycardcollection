@@ -1,25 +1,14 @@
 package com.hhkj.cyf.socialsecuritycardcollection.url;
 
 public class Urls {
-
-
-    public final static String ip = "124.235.218.4:8081";
+    public final static String ip = "124.235.218.86:8081";
     public final static String file_url = "http://"+ip;
     public final static String base_url = "http://"+ip+"/sjcj_web/phoneCon/";
 //    public final static String base_url = "http://192.168.1.53:8080/sjcj_web/phoneCon/";
 
     public final static String fileAccessHost  = "http://"+ip+"/sjcj_web/kssh/getImg.do?cx=";
-//    public final static String fileAccessHost  = "http://192.168.1.53:8080/sjcj_web/kssh/getImg.do?cx=";
 
-
-    public static String url_help_register = "file:///android_asset/help.html";// 注册帮助
     public static String url_help_collect = "file:///android_asset/help.html";// 采集帮助
-
-    public static String url_register_agreement = "https://www.baidu.com/";// 注册用户服务协议
-
-    public static String url_zkjdcx = "http://www.ccshbx.org.cn/";// 制卡进度查询
-    public static String url_ccshbx = "http://www.ccshbx.org.cn/";// 社保查询
-    public static String url_ccyb = "http://www.ccyb.gov.cn/ecdomain/framework/ccyb/index.jsp";// 医保查询
 
     public final String auth_login = base_url + "login.do";// 登录
     public final String selfQuery = base_url + "selfQuery.do";// 采集进度查询(查询自己)
@@ -43,8 +32,5 @@ public class Urls {
     public final String allPeopleQuery = base_url + "allPeopleQuery.do";// 采集进度查询
     public final String queryDetail = base_url + "queryDetail.do";// 接口名称: 查看详情
     public final String getNewVersion = base_url + "getNewVersion.do";// 接口名称: 查看详情
-
-
-
-
+    public final String url_register_agreement = base_url + "toAgreement.do";// 隐私协议
 }
