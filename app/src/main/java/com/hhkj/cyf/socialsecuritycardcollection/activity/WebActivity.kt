@@ -1,6 +1,7 @@
 package com.hhkj.cyf.socialsecuritycardcollection.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.view.View
@@ -28,18 +29,22 @@ class WebActivity : BaseActivity() {
         // 帮助界面右上角有联系我们
         if(intent.getStringExtra("title") == "操作指南"){
             setRightBtn(true,"联系我们", View.OnClickListener {
-                val builder = AlertDialog.Builder(this@WebActivity)
-                builder.setTitle("提示")
-                builder.setMessage("确认拨打电话吗？")
-                builder.setPositiveButton("确认") { p0, p1 ->
-                    p0.dismiss()
-                    callPhone(Constant.phone)
-                }
-                builder.setNegativeButton("取消"){ p0, p1 ->
-                    p0.dismiss()
-                }
-                dialog = builder.create()
-                dialog!!.show()
+//                val builder = AlertDialog.Builder(this@WebActivity)
+//                builder.setTitle("提示")
+//                builder.setMessage("确认拨打电话吗？")
+//                builder.setPositiveButton("确认") { p0, p1 ->
+//                    p0.dismiss()
+//                    callPhone(Constant.phone)
+//                }
+//                builder.setNegativeButton("取消"){ p0, p1 ->
+//                    p0.dismiss()
+//                }
+//                dialog = builder.create()
+//                dialog!!.show()
+
+                val intent = Intent(this@WebActivity, ConnectPhoneListActivity::class.java)
+                intent.putExtra("title", "联系我们")
+                startActivity(intent)
             })
         }
         //支持javascript

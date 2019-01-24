@@ -16,6 +16,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hhkj.cyf.socialsecuritycardcollection.R;
@@ -114,16 +115,20 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
                         startActivity(intent2);
                         break;
                     case 2:
-                        Intent intent3 = new Intent(getActivity(), WebActivity.class);
-                        intent3.putExtra("title", "社保查询");
-                        intent3.putExtra("url",SPTools.INSTANCE.get(getActivity(),Constant.SHEBAOURL,"").toString());
-                        startActivity(intent3);
+                        Toast.makeText(getActivity(),"调试中",Toast.LENGTH_SHORT).show();
+
+//                        Intent intent3 = new Intent(getActivity(), WebActivity.class);
+//                        intent3.putExtra("title", "社保查询");
+//                        intent3.putExtra("url",SPTools.INSTANCE.get(getActivity(),Constant.SHEBAOURL,"").toString());
+//                        startActivity(intent3);
                         break;
                     case 3:
-                        Intent intent4 = new Intent(getActivity(), WebActivity.class);
-                        intent4.putExtra("title", "医保查询");
-                        intent4.putExtra("url",SPTools.INSTANCE.get(getActivity(),Constant.YIBAOURL,"").toString());
-                        startActivity(intent4);
+                        Toast.makeText(getActivity(),"调试中",Toast.LENGTH_SHORT).show();
+
+//                        Intent intent4 = new Intent(getActivity(), WebActivity.class);
+//                        intent4.putExtra("title", "医保查询");
+//                        intent4.putExtra("url",SPTools.INSTANCE.get(getActivity(),Constant.YIBAOURL,"").toString());
+//                        startActivity(intent4);
                         break;
                 }
             }

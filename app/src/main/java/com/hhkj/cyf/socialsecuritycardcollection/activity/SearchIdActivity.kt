@@ -35,7 +35,12 @@ class SearchIdActivity : BaseActivity() {
         setRightBtn(true, "帮助", View.OnClickListener {
             val mIntent = Intent(this, WebActivity::class.java)
             mIntent.putExtra("title", "操作指南")
-            mIntent.putExtra("url", Urls.url_help_collect)
+            if (type == 0){
+                mIntent.putExtra("url", Urls.url_help_collect)
+            }else{
+                mIntent.putExtra("url", Urls.url_help_collect2)
+
+            }
             startActivity(mIntent)
         })
     }

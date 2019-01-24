@@ -34,9 +34,19 @@ class SelectCollectActivity : BaseActivity() {
             when (i) {
                 0 -> {
                     net_getWriteCount(0)
+
+//                    val mIntent = Intent(this, SearchIdActivity::class.java)
+//                    mIntent.putExtra("title", homeModel!![i].modelName)
+//                    mIntent.putExtra("type", 0)
+//                    startActivity(mIntent)
                 }
                 1 -> {
                     net_getWriteCount(1)
+
+//                    val mIntent = Intent(this, SearchIdActivity::class.java)
+//                    mIntent.putExtra("title", homeModel!![i].modelName)
+//                    mIntent.putExtra("type", 1)
+//                    startActivity(mIntent)
                 }
                 2 -> {
                     startActivity(Intent(this, QueryListActivity::class.java))

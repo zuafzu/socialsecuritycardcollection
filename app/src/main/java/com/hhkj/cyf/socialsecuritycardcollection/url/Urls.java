@@ -8,7 +8,8 @@ public class Urls {
 
     public final static String fileAccessHost  = "http://"+ip+"/sjcj_web/kssh/getImg.do?cx=";
 
-    public static String url_help_collect = "file:///android_asset/help.html";// 采集帮助
+    public static String url_help_collect = "file:///android_asset/个人帮助.html";// 采集帮助
+    public static String url_help_collect2 = "file:///android_asset/db.html";// 采集帮助
 
     public final String auth_login = base_url + "login.do";// 登录
     public final String selfQuery = base_url + "selfQuery.do";// 采集进度查询(查询自己)
