@@ -23,11 +23,11 @@ class WelcomeActivity : BaseActivity() {
 
         Handler().postDelayed({
 
-            val intent = Intent(this@WelcomeActivity, BootPageActivity::class.java)
-            startActivity(intent)
-            finish()
+//            val intent = Intent(this@WelcomeActivity, BootPageActivity::class.java)
+//            startActivity(intent)
+//            finish()
 
-//            net_appCheckUpdate()
+            net_appCheckUpdate()
 
         }, 500)
     }

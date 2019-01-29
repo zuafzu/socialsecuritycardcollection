@@ -215,7 +215,10 @@ public class NetTools {
                     }
                     context.startActivity(new Intent(context, LoginActivity.class));
                 } else {
-                    Toast.makeText(context, baseBean.getMsg(), Toast.LENGTH_SHORT).show();
+                    if (myCallBack != null) {
+                        myCallBack.getData(baseBean);
+                    }
+//                    Toast.makeText(context, baseBean.getMsg(), Toast.LENGTH_SHORT).show();
                     ((BaseActivity) context).dismissProgressDialog();
                 }
             }

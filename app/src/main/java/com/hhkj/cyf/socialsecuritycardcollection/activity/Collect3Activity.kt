@@ -87,6 +87,8 @@ class Collect3Activity : BaseActivity() {
             iv_img.setImageResource(R.mipmap.ic_id_photo)
         }
         btn_next.setOnClickListener {
+            Log.e("zj","zp = "+commitBean!!.zp)
+            commitBean!!.zp
             if (type == 0) {
                 net_addOrUpdate(commitBean!!);
             } else {
@@ -171,7 +173,7 @@ class Collect3Activity : BaseActivity() {
             G = Color.green(pixelColor)
             B = Color.blue(pixelColor)
             // 判断不能有透明，色值在200以上，rgb三个值上下浮动在10以内
-            if (A != 255 || R < 200 || G < 200 || B < 200 ||
+            if (A != 255 || R < 180 || G < 180 || B < 180 ||
                     ((R - B) > 10 || (B - R) > 10) ||
                     ((R - G) > 10 || (G - R) > 10) ||
                     ((G - B) > 10 || (B - G) > 10)) {
@@ -251,11 +253,16 @@ class Collect3Activity : BaseActivity() {
         val map = HashMap<String, File>()
         map["file"] = File(imgPath)
         NetTools.netFile("0", map, this) { response ->
-            var file = File(imgPath)
-            file.delete()
-            var jsonObj = JSONObject(response.data)
-            var imageUrl = jsonObj.getString("imageUrl")
-            commitBean!!.zp = imageUrl
+            if (response.code == "2"){
+                showErrDialog(""+response.msg)
+            }else if (response.code == "0"){
+                var file = File(imgPath)
+                file.delete()
+                var jsonObj = JSONObject(response.data)
+                var imageUrl = jsonObj.getString("imageUrl")
+                commitBean!!.zp = imageUrl
+            }
+
         }
     }
 

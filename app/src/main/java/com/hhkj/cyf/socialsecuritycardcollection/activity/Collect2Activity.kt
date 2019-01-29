@@ -10,7 +10,9 @@ import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
 import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
+import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.PhoneTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
 import com.hhkj.cyf.socialsecuritycardcollection.view.jdaddress.AddressBean
 import com.hhkj.cyf.socialsecuritycardcollection.view.jdaddress.AreaPickerView
 import com.hhkj.cyf.socialsecuritycardcollection.view.jdaddress.MyTools.getCityJson
@@ -70,6 +72,10 @@ class Collect2Activity : BaseActivity() {
             klmyhId = dictionaryBean!!.klmyhMap[0].id
             zszyId = dictionaryBean!!.zszyMap[0].id
             zshyId = dictionaryBean!!.zshyMap[0].id
+
+            et_phone.setText(""+SPTools[this,Constant.PHONE,""])
+
+            et_yb.setText("130000")
 
         } else {
 

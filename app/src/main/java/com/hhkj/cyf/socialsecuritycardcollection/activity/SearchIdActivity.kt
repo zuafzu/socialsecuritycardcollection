@@ -39,7 +39,6 @@ class SearchIdActivity : BaseActivity() {
                 mIntent.putExtra("url", Urls.url_help_collect)
             }else{
                 mIntent.putExtra("url", Urls.url_help_collect2)
-
             }
             startActivity(mIntent)
         })
