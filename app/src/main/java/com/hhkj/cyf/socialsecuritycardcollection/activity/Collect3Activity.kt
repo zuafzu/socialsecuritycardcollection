@@ -178,10 +178,15 @@ class Collect3Activity : BaseActivity() {
             G = Color.green(pixelColor)
             B = Color.blue(pixelColor)
             // 判断不能有透明，色值在200以上，rgb三个值上下浮动在10以内
-            if (A != 255 || R < 180 || G < 180 || B < 180 ||
-                    ((R - B) > 10 || (B - R) > 10) ||
-                    ((R - G) > 10 || (G - R) > 10) ||
-                    ((G - B) > 10 || (B - G) > 10)) {
+//            if (A != 255 || R < 200 || G < 200 || B < 200 ||
+//                    ((R - B) > 15 || (B - R) > 15) ||
+//                    ((R - G) > 15 || (G - R) > 15) ||
+//                    ((G - B) > 15 || (B - G) > 15)) {
+//                showErrDialog("图片背景不是白色")
+//                break
+//            }
+
+            if(R < 230 || G < 230 || B < 230){
                 showErrDialog("图片背景不是白色")
                 break
             }
