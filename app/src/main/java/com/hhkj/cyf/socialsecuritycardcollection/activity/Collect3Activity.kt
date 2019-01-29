@@ -28,6 +28,7 @@ import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.IOException
 import java.util.HashMap
 
 
@@ -234,6 +235,18 @@ class Collect3Activity : BaseActivity() {
                     cropPic(commitBean!!.zjhm, data!!.data, 358, 441, 358, 441)
                 }
                 requestCode_SysCamera -> {
+                    try {
+                        // 刷新在系统相册中显示
+                        MediaStore.Images.Media.insertImage(contentResolver,
+                                MediaStore.Images.Media.getBitmap(this.contentResolver, mUriphotoFile),
+                                resources.getString(R.string.app_name), "")
+                        val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                        intent.data = mUriphotoFile
+                        sendBroadcast(intent)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
                     // 三星等手机拍照旋转90度
                     if (readPictureDegree(mStringphotoFile) != 0) {
                         val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, mUriphotoFile)
