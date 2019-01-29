@@ -88,7 +88,11 @@ class Collect3Activity : BaseActivity() {
         }
         btn_next.setOnClickListener {
             Log.e("zj","zp = "+commitBean!!.zp)
-            commitBean!!.zp
+            if(commitBean!!.zp.isEmpty()) {
+                toast("请上传证件照")
+                return@setOnClickListener
+            }
+
             if (type == 0) {
                 net_addOrUpdate(commitBean!!);
             } else {
