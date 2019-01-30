@@ -152,9 +152,12 @@ class Collect3Activity : BaseActivity() {
 
                     override fun onSuccess(file: File) {
                         imgPath = file.absolutePath
-                        getPixColor(imgPath)
-                        checkPixColor(imgPath)
-                        net_UploadPhoto()
+                        if (getPixColor(imgPath) && checkPixColor(imgPath)){
+                            net_UploadPhoto()
+                        }
+//                        getPixColor(imgPath)
+//                        checkPixColor(imgPath)
+//                        net_UploadPhoto()
                     }
 
                     override fun onError(e: Throwable) {
@@ -164,7 +167,7 @@ class Collect3Activity : BaseActivity() {
     }
 
     // 测试获取像素点色值
-    private fun getPixColor(path: String) {
+    private fun getPixColor(path: String) :Boolean{
         val src = BitmapFactory.decodeFile(path)
         var A: Int
         var R: Int
@@ -188,13 +191,14 @@ class Collect3Activity : BaseActivity() {
 
             if(R < 230 || G < 230 || B < 230){
                 showErrDialog("图片背景不是白色")
-                break
+                return false
             }
         }
+        return false
     }
 
     // 判断颜色是否黑白
-    private fun checkPixColor(path: String) {
+    private fun checkPixColor(path: String) :Boolean{
         val src = BitmapFactory.decodeFile(path)
         var A: Int
         var R: Int
@@ -211,11 +215,12 @@ class Collect3Activity : BaseActivity() {
                 G = Color.green(pixelColor)
                 B = Color.blue(pixelColor)
                 if (R != B || G != B || R != G) {
-                    return
+                    return true
                 }
             }
         }
         showErrDialog("照片不能是黑白照片")
+        return false
     }
 
     private fun showErrDialog(msg: String) {

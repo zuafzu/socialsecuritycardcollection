@@ -137,6 +137,9 @@ public class Tab3Fragment extends Fragment implements View.OnClickListener {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                String username =""+ SPTools.INSTANCE.get(getActivity(),Constant.PHONE,"");
+                                SPTools.INSTANCE.clear(getActivity());
+                                SPTools.INSTANCE.put(getActivity(),Constant.PHONE,username);
                                 getActivity().finish();
                                 startActivity(new Intent(getActivity(), LoginActivity.class));
                             }

@@ -12,7 +12,7 @@ class BootPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_boot_page)
-        if (SPTools[this,Constant.PHONE,""] == ""){
+        if (SPTools[this,Constant.TOKEN,""] == ""){
             startActivity(Intent(this,LoginActivity::class.java))
             finish()
         }else{
