@@ -141,10 +141,13 @@ class Collect3Activity : BaseActivity() {
 
     // 压缩图片
     private fun compressImg() {
+
+        Log.e("zj","imgPath = "+imgPath)
         Luban.with(this)
                 .load(imgPath)
                 .ignoreBy(50)
                 .setTargetDir(Environment.getExternalStorageDirectory().absolutePath)
+//                .setTargetDir(Environment.getExternalStorageDirectory().path)
                 .setCompressListener(object : OnCompressListener {
                     override fun onStart() {
 
@@ -161,6 +164,7 @@ class Collect3Activity : BaseActivity() {
                     }
 
                     override fun onError(e: Throwable) {
+                        Log.e("zj", "file e = " + e.toString())
 
                     }
                 }).launch()

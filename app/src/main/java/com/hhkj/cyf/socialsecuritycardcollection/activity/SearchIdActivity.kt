@@ -66,6 +66,11 @@ class SearchIdActivity : BaseActivity() {
         NetTools.net(map, Urls().idCardQuery, this) { response ->
             Log.e("zj", "net_idCardQuery = " + response.data)
 
+//            val mIntent = Intent(this, Collect3Activity::class.java)
+//            mIntent.putExtra("type", type)
+//            mIntent.putExtra("title", intent.getStringExtra("title"))
+//            startActivity(mIntent)
+
             val mIntent = Intent(this, Collect1Activity::class.java)
             mIntent.putExtra("type", type)
             mIntent.putExtra("title", intent.getStringExtra("title"))

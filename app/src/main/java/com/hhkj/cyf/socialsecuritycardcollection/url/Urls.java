@@ -1,7 +1,8 @@
 package com.hhkj.cyf.socialsecuritycardcollection.url;
 
 public class Urls {
-    public final static String ip = "124.235.218.86:8081";
+    public final static String ip = "124.235.218.193:8081";
+//    public final static String ip = "124.235.218.86:8081";
     public final static String file_url = "http://"+ip;
     public final static String base_url = "http://"+ip+"/sjcj_web/phoneCon/";
 //    public final static String base_url = "http://192.168.1.53:8080/sjcj_web/phoneCon/";
