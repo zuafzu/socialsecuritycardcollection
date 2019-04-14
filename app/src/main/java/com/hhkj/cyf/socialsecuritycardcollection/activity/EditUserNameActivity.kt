@@ -6,6 +6,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.ToastUtil
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_edit_user_name.*
 import kotlinx.android.synthetic.main.activity_feedback.*
@@ -25,7 +26,8 @@ class EditUserNameActivity : BaseActivity() {
 
         btn_save.setOnClickListener {
             if (et_nickName.text.toString().isEmpty()){
-                toast("请输入要修改的昵称")
+//                toast("请输入要修改的昵称")
+                ToastUtil.showToastMessage(this@EditUserNameActivity, "请输入要修改的昵称",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
             net_updateNickName()
@@ -38,7 +40,8 @@ class EditUserNameActivity : BaseActivity() {
         map["nickName"] = et_nickName.text.toString()
         NetTools.net(map, Urls().updateNickName, this) { response ->
             SPTools.put(this@EditUserNameActivity, Constant.USERNAME, et_nickName.text.toString())
-            toast("" + response.msg)
+//            toast("" + response.msg)
+            ToastUtil.showToastMessage(this@EditUserNameActivity, response.msg,R.mipmap.toast_ok)
             hideSoftInput()
             finish()
         }

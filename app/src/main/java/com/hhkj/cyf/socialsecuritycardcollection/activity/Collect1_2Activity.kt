@@ -6,6 +6,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
 import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
+import com.hhkj.cyf.socialsecuritycardcollection.tools.ToastUtil
 import com.hhkj.cyf.socialsecuritycardcollection.tools.Validator
 import kotlinx.android.synthetic.main.activity_collect1_2.*
 import org.jetbrains.anko.toast
@@ -61,16 +62,19 @@ class Collect1_2Activity : BaseActivity() {
         }
         btn_next.setOnClickListener {
             if (et_jhrIdCard.text.isEmpty()){
-                toast("监护人证件号码不能为空")
+                ToastUtil.showToastMessage(this@Collect1_2Activity, "监护人证件号码不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
 
             if (tv_cardType2.text == "身份证" && !Validator.isIDCard(et_jhrIdCard.text.toString())) {
-                toast("身份证号格式错误")
+                ToastUtil.showToastMessage(this@Collect1_2Activity, "身份证号格式错误",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (et_jhrName.text.isEmpty()){
-                toast("监护人姓名不能为空")
+                ToastUtil.showToastMessage(this@Collect1_2Activity, "监护人姓名不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
 

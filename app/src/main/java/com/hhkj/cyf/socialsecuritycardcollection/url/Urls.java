@@ -1,7 +1,8 @@
 package com.hhkj.cyf.socialsecuritycardcollection.url;
 
 public class Urls {
-    public final static String ip = "124.235.218.193:8081";
+    public final static String ip = "218.27.84.59:18085";
+//    public final static String ip = "124.235.218.193:8081";
 //    public final static String ip = "124.235.218.86:8081";
     public final static String file_url = "http://"+ip;
     public final static String base_url = "http://"+ip+"/sjcj_web/phoneCon/";
@@ -9,11 +10,12 @@ public class Urls {
 
     public final static String fileAccessHost  = "http://"+ip+"/sjcj_web/kssh/getImg.do?cx=";
 
-    public static String url_help_collect = "file:///android_asset/个人帮助.html";// 采集帮助
+    public static String url_help_collect = "file:///android_asset/gr.html";// 个人帮助
     public static String url_help_collect2 = "file:///android_asset/db.html";// 采集帮助
 
     public final String auth_login = base_url + "login.do";// 登录
     public final String selfQuery = base_url + "selfQuery.do";// 采集进度查询(查询自己)
+    public final String getUrls = base_url + "getUrls.do";// 网址
     public final String getWriteCount = base_url + "getWriteCount.do";// 接口名称: 获取已经录入数量
     public final String updateNickName = base_url + "updateNickName.do";// 更改昵称
     public final String suggest = base_url + "suggest.do";// 意见反馈

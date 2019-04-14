@@ -27,13 +27,9 @@ import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
 import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
 import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean.ListBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
-import com.hhkj.cyf.socialsecuritycardcollection.tools.FileUtil
-import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
-import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
-import com.hhkj.cyf.socialsecuritycardcollection.tools.Validator
+import com.hhkj.cyf.socialsecuritycardcollection.tools.*
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_collect.*
-import org.jetbrains.anko.toast
 import org.json.JSONObject
 import java.io.File
 import java.text.SimpleDateFormat
@@ -69,6 +65,7 @@ class Collect1Activity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        Log.e("zj","net_scanQuery")
         net_scanQuery()
     }
 
@@ -113,7 +110,8 @@ class Collect1Activity : BaseActivity() {
             override fun onError(error: OCRError) {
                 // 调用失败，返回OCRError子类SDKError对象
                 runOnUiThread {
-                    toast("licence方式获取token失败,errorCode：" + error.errorCode)
+                    ToastUtil.showToastMessage(this@Collect1Activity,"licence方式获取token失败,errorCode：" + error.errorCode,R.mipmap.toast_notice)
+//                    toast("licence方式获取token失败,errorCode：" + error.errorCode)
                 }
             }
         }, applicationContext)
@@ -125,7 +123,8 @@ class Collect1Activity : BaseActivity() {
                 CameraView.NATIVE_INIT_FAIL -> "本地质量控制"
                 else -> errorCode.toString()
             }
-            toast("本地质量控制初始化错误，错误原因： $msg")
+//            toast("本地质量控制初始化错误，错误原因： $msg")
+            ToastUtil.showToastMessage(this@Collect1Activity,"本地质量控制初始化错误，错误原因： $msg",R.mipmap.toast_notice)
         }
     }
 
@@ -280,31 +279,43 @@ class Collect1Activity : BaseActivity() {
         }
         btn_next.setOnClickListener {
             if (et_name.text.toString() == "") {
-                toast("姓名不能为空")
+//                toast("姓名不能为空")
+                ToastUtil.showToastMessage(this@Collect1Activity,"姓名不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (et_id.text.toString() == "") {
-                toast("证件号码不能为空")
+//                toast("证件号码不能为空")
+                ToastUtil.showToastMessage(this@Collect1Activity,"证件号码不能为空",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
             if (et_id.text.length < 12) {
-                toast("证件号码不能少于12位")
+//                toast("证件号码不能少于12位")
+                ToastUtil.showToastMessage(this@Collect1Activity,"证件号码不能少于12位",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (tv_cardType.text == "身份证" && !Validator.isIDCard(et_id.text.toString())) {
-                toast("身份证号格式错误")
+//                toast("身份证号格式错误")
+                ToastUtil.showToastMessage(this@Collect1Activity,"身份证号格式错误",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (tv_birth.text.toString() == "") {
-                toast("出生日期不能为空")
+//                toast("出生日期不能为空")
+                ToastUtil.showToastMessage(this@Collect1Activity,"身份证号格式错误",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (tv_cardEndDate.text.toString() == "") {
-                toast("证件有效期不能为空")
+//                toast("证件有效期不能为空")
+                ToastUtil.showToastMessage(this@Collect1Activity,"证件有效期不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (et_address.text.toString() == "") {
-                toast("通信地址不能为空")
+//                toast("通信地址不能为空")
+                ToastUtil.showToastMessage(this@Collect1Activity,"通信地址不能为空",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
 
@@ -325,8 +336,10 @@ class Collect1Activity : BaseActivity() {
                 commitBean!!.zjlxName = tv_cardType.text.toString()
                 commitBean!!.mzName = tv_nationality.text.toString()
 
-                val mIntent = Intent(this, Collect1_2Activity::class.java)//监护人
+//                val mIntent = Intent(this, Collect1_2Activity::class.java)//监护人
+                val mIntent = Intent(this, Collect3Activity::class.java)//监护人
                 mIntent.putExtra("title", intent.getStringExtra("title"))
+                mIntent.putExtra("hasGuardian", 1)
                 mIntent.putExtra("dictionaryBean", dictionaryBean)
                 mIntent.putExtra("commitBean", commitBean)
                 mIntent.putExtra("idCard", et_id.text.toString())
@@ -350,8 +363,13 @@ class Collect1Activity : BaseActivity() {
                 commitBean!!.zjlxName = tv_cardType.text.toString()
                 commitBean!!.mzName = tv_nationality.text.toString()
 
-                val mIntent = Intent(this, Collect2Activity::class.java)//其他信息
+
+
+//                val mIntent = Intent(this, Collect2Activity::class.java)//其他信息
+                val mIntent = Intent(this, Collect3Activity::class.java)//其他信息
                 mIntent.putExtra("title", intent.getStringExtra("title"))
+                mIntent.putExtra("hasGuardian", 0)
+
                 mIntent.putExtra("dictionaryBean", dictionaryBean)
                 mIntent.putExtra("commitBean", commitBean)
                 mIntent.putExtra("type", type)
@@ -367,28 +385,6 @@ class Collect1Activity : BaseActivity() {
     /**
      * 根据生日计算当前周岁数
      */
-//    fun getCurrentAge(birthday: Date): Int {
-//        // 当前时间
-//        val curr = Calendar.getInstance()
-//        // 生日
-//        val born = Calendar.getInstance()
-//        born.time = birthday
-//        // 年龄 = 当前年 - 出生年
-//        val age = curr.get(Calendar.YEAR) - born.get(Calendar.YEAR)
-//        if (age <= 0) {
-//            return 0
-//        }
-//        // 如果当前月份小于出生月份: age-1
-//        // 如果当前月份等于出生月份, 且当前日小于出生日: age-1
-//        val currMonth = curr.get(Calendar.MONTH)
-//        val currDay = curr.get(Calendar.DAY_OF_MONTH)
-//        val bornMonth = born.get(Calendar.MONTH)
-//        val bornDay = born.get(Calendar.DAY_OF_MONTH)
-//        if (currMonth < bornMonth || currMonth == bornMonth && currDay <= bornDay) {
-//            age
-//        }
-//        return if (age < 0) 0 else age
-//    }
 
     fun getCurrentAge(birthday: Date): Int {
         // 当前时间
@@ -415,7 +411,9 @@ class Collect1Activity : BaseActivity() {
 
     private fun checkTokenStatus(): Boolean {
         if (!hasGotToken) {
-            toast("token还未成功获取")
+//            toast("token还未成功获取")
+            ToastUtil.showToastMessage(this@Collect1Activity,"token还未成功获取",R.mipmap.toast_notice)
+
         }
         return hasGotToken
     }
@@ -442,7 +440,9 @@ class Collect1Activity : BaseActivity() {
 
             override fun onError(error: OCRError) {
                 net_scanCountQuery()
-                toast(error.message!!)
+                ToastUtil.showToastMessage(this@Collect1Activity,error.message!!,R.mipmap.toast_notice)
+
+//                toast(error.message!!)
                 dismissProgressDialog()
             }
         })

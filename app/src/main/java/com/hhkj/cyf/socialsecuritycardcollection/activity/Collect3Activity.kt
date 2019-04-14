@@ -17,9 +17,11 @@ import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.app.MyApplication
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
+import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.ToastUtil
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_collect3.*
 import org.jetbrains.anko.toast
@@ -40,6 +42,7 @@ class Collect3Activity : BaseActivity() {
 
     private val colorPixel = arrayOf(intArrayOf(0, 0), intArrayOf(1, 0), intArrayOf(2, 0), intArrayOf(0, 1), intArrayOf(1, 1), intArrayOf(0, 2), intArrayOf(355, 0), intArrayOf(356, 0), intArrayOf(357, 0), intArrayOf(356, 1), intArrayOf(357, 1), intArrayOf(357, 2))
     private var commitBean: CommitBean? = null
+    private var dictionaryBean: DictionaryBean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,18 +58,19 @@ class Collect3Activity : BaseActivity() {
         type = intent.getIntExtra("type", 0)
         isModify = intent.getIntExtra("isModify", 0)
 
+        dictionaryBean = intent.getSerializableExtra("dictionaryBean") as DictionaryBean?
 
-        Log.e("zj","type  = "+type)
-        if (type == 0) {
-            btn_next.text = "保存"
-        } else {
-            btn_next.text = "下一步"
-        }
+        Log.e("zj", "type  = " + type)
+//        if (type == 0) {
+//            btn_next.text = "保存"
+//        } else {
+//            btn_next.text = "下一步"
+//        }
         commitBean = intent.getSerializableExtra("commitBean") as CommitBean?
 
-        if (isModify == 0){
+        if (isModify == 0) {
 
-        }else{
+        } else {
 
             val requestOptions = RequestOptions()
             requestOptions.error(R.mipmap.ic_head)
@@ -88,23 +92,50 @@ class Collect3Activity : BaseActivity() {
             iv_img.setImageResource(R.mipmap.ic_id_photo)
         }
         btn_next.setOnClickListener {
-            Log.e("zj","zp = "+commitBean!!.zp)
-            if(commitBean!!.zp.isEmpty()) {
-                toast("请上传证件照")
+            Log.e("zj", "zp = " + commitBean!!.zp)
+            if (commitBean!!.zp.isEmpty()) {
+//                toast("请上传证件照")
+                ToastUtil.showToastMessage(this@Collect3Activity, "请上传证件照",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
 
-            if (type == 0) {
-                net_addOrUpdate(commitBean!!);
-            } else {
-                val mIntent = Intent(this, Collect4Activity::class.java)
-                mIntent.putExtra("title", intent.getStringExtra("title"))
-                mIntent.putExtra("isModify", isModify)
+            if (intent.hasExtra("hasGuardian")) {
 
-                mIntent.putExtra("commitBean", commitBean)
+                var hasGuardian = intent.getIntExtra("hasGuardian", 0)
+                if (hasGuardian == 1) {
+                    val mIntent = Intent(this, Collect1_2Activity::class.java)
+                    mIntent.putExtra("title", intent.getStringExtra("title"))
+                    mIntent.putExtra("isModify", isModify)
+                    mIntent.putExtra("dictionaryBean", dictionaryBean)
 
-                startActivity(mIntent)
+                    mIntent.putExtra("commitBean", commitBean)
+                    mIntent.putExtra("type", type)
+
+                    startActivity(mIntent)
+                } else {
+                    val mIntent = Intent(this, Collect2Activity::class.java)
+                    mIntent.putExtra("title", intent.getStringExtra("title"))
+                    mIntent.putExtra("isModify", isModify)
+                    mIntent.putExtra("dictionaryBean", dictionaryBean)
+                    mIntent.putExtra("type", type)
+
+                    mIntent.putExtra("commitBean", commitBean)
+
+                    startActivity(mIntent)
+                }
             }
+
+//            if (type == 0) {
+//                net_addOrUpdate(commitBean!!);
+//            } else {
+//                val mIntent = Intent(this, Collect4Activity::class.java)
+//                mIntent.putExtra("title", intent.getStringExtra("title"))
+//                mIntent.putExtra("isModify", isModify)
+//
+//                mIntent.putExtra("commitBean", commitBean)
+//
+//                startActivity(mIntent)
+//            }
         }
     }
 
@@ -142,7 +173,7 @@ class Collect3Activity : BaseActivity() {
     // 压缩图片
     private fun compressImg() {
 
-        Log.e("zj","imgPath = "+imgPath)
+        Log.e("zj", "imgPath = " + imgPath)
         Luban.with(this)
                 .load(imgPath)
                 .ignoreBy(50)
@@ -155,7 +186,7 @@ class Collect3Activity : BaseActivity() {
 
                     override fun onSuccess(file: File) {
                         imgPath = file.absolutePath
-                        if (getPixColor(imgPath) && checkPixColor(imgPath)){
+                        if (getPixColor(imgPath) && checkPixColor(imgPath)) {
                             net_UploadPhoto()
                         }
 //                        getPixColor(imgPath)
@@ -171,7 +202,7 @@ class Collect3Activity : BaseActivity() {
     }
 
     // 测试获取像素点色值
-    private fun getPixColor(path: String) :Boolean{
+    private fun getPixColor(path: String): Boolean {
         val src = BitmapFactory.decodeFile(path)
         var A: Int
         var R: Int
@@ -192,17 +223,17 @@ class Collect3Activity : BaseActivity() {
 //                showErrDialog("图片背景不是白色")
 //                break
 //            }
-
-            if(R < 230 || G < 230 || B < 230){
+            Log.e("zj", "R = " + R + ",G =" + G + ",B = " + B)
+            if (R < 100 || G < 100 || B < 100) {
                 showErrDialog("图片背景不是白色")
                 return false
             }
         }
-        return false
+        return true
     }
 
     // 判断颜色是否黑白
-    private fun checkPixColor(path: String) :Boolean{
+    private fun checkPixColor(path: String): Boolean {
         val src = BitmapFactory.decodeFile(path)
         var A: Int
         var R: Int
@@ -284,9 +315,9 @@ class Collect3Activity : BaseActivity() {
         val map = HashMap<String, File>()
         map["file"] = File(imgPath)
         NetTools.netFile("0", map, this) { response ->
-            if (response.code == "2"){
-                showErrDialog(""+response.msg)
-            }else if (response.code == "0"){
+            if (response.code == "2") {
+                showErrDialog("" + response.msg)
+            } else if (response.code == "0") {
                 var file = File(imgPath)
                 file.delete()
                 var jsonObj = JSONObject(response.data)
@@ -301,12 +332,13 @@ class Collect3Activity : BaseActivity() {
         val jsonBean = Gson().toJson(commitBean)
         val map = hashMapOf<String, String>()
         map["phone"] = "" + SPTools[this@Collect3Activity, Constant.PHONE, ""]
-        map["cbInsured"] = ""+jsonBean
+        map["cbInsured"] = "" + jsonBean
 
         Log.e("zj", "jsonBean = " + jsonBean)
         NetTools.net(map, Urls().addOrUpdate, this) { response ->
             Log.e("zj", "addOrUpdate = " + response.data)
-            toast(response.msg.toString())
+            ToastUtil.showToastMessage(this@Collect3Activity, response.msg.toString(),R.mipmap.toast_notice)
+
             for (i in 0 until MyApplication.getActivies().size) {
                 MyApplication.getActivies()[i].finish()
             }

@@ -8,10 +8,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.bean.LoginBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
-import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
-import com.hhkj.cyf.socialsecuritycardcollection.tools.PhoneTools
-import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
-import com.hhkj.cyf.socialsecuritycardcollection.tools.Validator
+import com.hhkj.cyf.socialsecuritycardcollection.tools.*
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.toast
@@ -27,7 +24,16 @@ class LoginActivity : BaseActivity() {
 
     private fun initView() {
         setPwEt(et_pw, switch0)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("zj","onResume")
         et_username.setText(SPTools[this@LoginActivity,Constant.PHONE,""].toString())
+        if (!et_username.text.isEmpty()){
+            et_username.setSelection(et_username.text.length)
+        }
     }
 
     private fun initClick() {
@@ -42,15 +48,19 @@ class LoginActivity : BaseActivity() {
         // 登录
         btn_login.setOnClickListener {
             if (et_username.text.toString().trim().isEmpty()){
-                toast("手机号不能为空")
+//                toast("手机号不能为空")
+                ToastUtil.showToastMessage(this@LoginActivity,"手机号不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (!PhoneTools.isMobile(et_username.text.toString())){
-                toast("手机号格式不正确")
+//                toast("手机号格式不正确")
+                ToastUtil.showToastMessage(this@LoginActivity,"手机号格式不正确",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
             if (et_pw.text.toString().trim().isEmpty()){
-                toast("密码不能为空")
+//                toast("密码不能为空")
+                ToastUtil.showToastMessage(this@LoginActivity,"密码不能为空",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
 

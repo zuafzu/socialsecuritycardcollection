@@ -4,10 +4,7 @@ import android.os.Bundle
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
-import com.hhkj.cyf.socialsecuritycardcollection.tools.MyCountTimer
-import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
-import com.hhkj.cyf.socialsecuritycardcollection.tools.PhoneTools
-import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.*
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_forget_pw.*
 import org.jetbrains.anko.toast
@@ -34,34 +31,40 @@ class ForgetPwActivity : BaseActivity() {
     private fun initClick() {
         tv_code.setOnClickListener {
             if (et_phone.text.toString() == "") {
-                toast("手机号不能为空")
+                ToastUtil.showToastMessage(this@ForgetPwActivity, "手机号不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (!PhoneTools.isMobile(et_phone.text.toString())) {
-                toast("请输入合法手机号")
+                ToastUtil.showToastMessage(this@ForgetPwActivity, "请输入合法手机号",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
             net_common_verCode()
         }
         btn_submit.setOnClickListener {
             if (et_phone.text.toString() == "") {
-                toast("手机号不能为空")
+                ToastUtil.showToastMessage(this@ForgetPwActivity, "手机号不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (!PhoneTools.isMobile(et_phone.text.toString())) {
-                toast("请输入合法手机号")
+                ToastUtil.showToastMessage(this@ForgetPwActivity, "请输入合法手机号",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (et_code.text.toString() == "") {
-                toast("验证码不能为空")
+                ToastUtil.showToastMessage(this@ForgetPwActivity, "验证码不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (et_pw1.text.toString() == "") {
-                toast("新密码不能为空")
+                ToastUtil.showToastMessage(this@ForgetPwActivity, "新密码不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (et_pw1.text.toString() != et_pw2.text.toString()){
-                toast("两次输入的密码不一致")
+                ToastUtil.showToastMessage(this@ForgetPwActivity, "两次输入的密码不一致",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             net_forgetPassword()
@@ -84,7 +87,8 @@ class ForgetPwActivity : BaseActivity() {
         map.put("type", "1")
         NetTools.net(map, Urls().getCode, this) { response ->
             timeCount!!.start()
-            toast(response.msg!!)
+            ToastUtil.showToastMessage(this@ForgetPwActivity, response.msg!!,R.mipmap.toast_ok)
+
         }
     }
 }

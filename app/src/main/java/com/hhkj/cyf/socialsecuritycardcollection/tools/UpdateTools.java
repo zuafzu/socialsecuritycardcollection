@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hhkj.cyf.socialsecuritycardcollection.R;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.BootPageActivity;
@@ -82,16 +81,18 @@ public class UpdateTools {
                 public void onError(Call call, Exception e, int id) {
                     dialog.dismiss();
                     if ((boolean) view.getTag()) {
-                        Toast.makeText(cotext, "取消下载！", Toast.LENGTH_SHORT).show();
+                        ToastUtil.showToastMessage(cotext,"取消下载！",R.mipmap.toast_notice);
                     } else {
-                        Toast.makeText(cotext, "下载失败！", Toast.LENGTH_SHORT).show();
+                        ToastUtil.showToastMessage(cotext,"下载失败！",R.mipmap.toast_notice);
+//                        Toast.makeText(cotext, "下载失败！", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onResponse(File file, int id) {
                     dialog.dismiss();
-                    Toast.makeText(cotext, "下载完成！", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showToastMessage(cotext,"下载完成！",R.mipmap.toast_ok);
+//                    Toast.makeText(cotext, "下载完成！", Toast.LENGTH_SHORT).show();
                     try {
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

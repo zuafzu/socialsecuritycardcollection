@@ -4,9 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import com.hhkj.cyf.socialsecuritycardcollection.R
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
-import com.hhkj.cyf.socialsecuritycardcollection.tools.MyCountTimer
-import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
-import com.hhkj.cyf.socialsecuritycardcollection.tools.PhoneTools
+import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
+import com.hhkj.cyf.socialsecuritycardcollection.tools.*
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_register.*
 import org.jetbrains.anko.toast
@@ -33,11 +32,14 @@ class RegisterActivity : BaseActivity() {
     private fun initClick() {
         tv_code.setOnClickListener {
             if (et_phone.text.toString() == "") {
-                toast("手机号不能为空")
+//                toast("手机号不能为空")
+                ToastUtil.showToastMessage(this@RegisterActivity, "手机号不能为空！",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (!PhoneTools.isMobile(et_phone.text.toString())) {
-                toast("请输入合法手机号")
+//                toast("请输入合法手机号")
+                ToastUtil.showToastMessage(this@RegisterActivity, "请输入合法手机号！",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
 
@@ -46,23 +48,28 @@ class RegisterActivity : BaseActivity() {
 
         btn_register.setOnClickListener {
             if (et_phone.text.toString() == "") {
-                toast("手机号不能为空")
+//                toast("手机号不能为空")
+                ToastUtil.showToastMessage(this@RegisterActivity,"手机号不能为空",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
             if (!PhoneTools.isMobile(et_phone.text.toString())) {
-                toast("请输入合法手机号")
+//                toast("请输入合法手机号")
+                ToastUtil.showToastMessage(this@RegisterActivity,"请输入合法手机号",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
             if (et_code.text.toString() == "") {
-                toast("验证码不能为空")
+//                toast("验证码不能为空")
+                ToastUtil.showToastMessage(this@RegisterActivity,"验证码不能为空",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
             if (et_pw.text.toString() == "") {
-                toast("密码不能为空")
+//                toast("密码不能为空")
+                ToastUtil.showToastMessage(this@RegisterActivity,"密码不能为空",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
             if (!checkbox.isChecked) {
-                toast("请阅读用户服务协议")
+//                toast("请阅读用户服务协议")
+                ToastUtil.showToastMessage(this@RegisterActivity,"请阅读用户服务协议",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
             net_register()
@@ -82,7 +89,9 @@ class RegisterActivity : BaseActivity() {
         map["password"] = et_pw.text.toString()
         map["code"] = "" + et_code.text.toString()
         NetTools.net(map, Urls().register, this) { response ->
-            toast(response.msg!!)
+            SPTools.put(this@RegisterActivity,Constant.PHONE,"" + et_phone.text.toString())
+//            toast(response.msg!!)
+            ToastUtil.showToastMessage(this@RegisterActivity,response.msg!!,R.mipmap.toast_ok)
             finish()
         }
     }
@@ -92,7 +101,9 @@ class RegisterActivity : BaseActivity() {
         map.put("type", "0")
         NetTools.net(map, Urls().getCode, this) { response ->
             timeCount!!.start()
-            toast(response.msg!!)
+//            toast(response.msg!!)
+            ToastUtil.showToastMessage(this@RegisterActivity,response.msg!!,R.mipmap.toast_ok)
+
         }
     }
 }

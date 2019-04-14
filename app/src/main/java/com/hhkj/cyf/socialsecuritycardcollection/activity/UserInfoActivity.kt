@@ -20,6 +20,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.bean.BaseBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.ToastUtil
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_user_info.*
 import org.jetbrains.anko.toast
@@ -49,6 +50,7 @@ class UserInfoActivity : BaseActivity() {
         requestOptions.placeholder(R.mipmap.ic_head)
 //        requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);///不使用磁盘缓存
 //        requestOptions.skipMemoryCache(true); // 不使用内存缓存
+
         Glide.with(this@UserInfoActivity).load(SPTools[this@UserInfoActivity, Constant.HEADPHOTO, ""].toString() + "&" + System.currentTimeMillis()).apply(requestOptions).into(iv_img)
 
     }
@@ -130,7 +132,7 @@ class UserInfoActivity : BaseActivity() {
         NetTools.netFile("1", map, this) { response ->
             var jsonObj = JSONObject(response.data)
             var imageUrl = jsonObj.getString("imageUrl")
-
+            Log.e("zj","imageUrl = "+imageUrl)
             net_uploadHeadPhoto(imageUrl);
         }
     }
@@ -141,15 +143,17 @@ class UserInfoActivity : BaseActivity() {
         map["phone"] = "" + SPTools[this@UserInfoActivity, Constant.PHONE, ""]
         map["imageUrl"] = "" + imageUrl
         NetTools.net(map, Urls().uploadHeadPhoto, this) { response ->
+            Log.e("zj","uploadHeadPhoto = "+response)
             val requestOptions = RequestOptions()
             requestOptions.error(R.mipmap.ic_head)
             requestOptions.placeholder(R.mipmap.ic_head)
 //            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);///不使用磁盘缓存
 //            requestOptions.skipMemoryCache(true); // 不使用内存缓存
+            SPTools.put(this@UserInfoActivity, Constant.HEADPHOTO, Urls.fileAccessHost + imageUrl)
 
-            Glide.with(this).load(Urls.fileAccessHost + imageUrl + "&" + System.currentTimeMillis()).apply(requestOptions).into(iv_img)
-
-            toast("" + response.msg)
+            Glide.with(this).load(SPTools[this@UserInfoActivity,Constant.HEADPHOTO,""].toString() + "&" + System.currentTimeMillis()).apply(requestOptions).into(iv_img)
+            ToastUtil.showToastMessage(this@UserInfoActivity,"" + response.msg,R.mipmap.toast_ok)
+//            toast("" + response.msg)
         }
     }
 

@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.hhkj.cyf.socialsecuritycardcollection.R;
-import com.hhkj.cyf.socialsecuritycardcollection.bean.LawsListBean;
 
 import java.util.List;
 

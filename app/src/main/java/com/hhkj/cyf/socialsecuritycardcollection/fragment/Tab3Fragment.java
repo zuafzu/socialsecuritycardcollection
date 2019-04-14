@@ -1,6 +1,5 @@
 package com.hhkj.cyf.socialsecuritycardcollection.fragment;
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;

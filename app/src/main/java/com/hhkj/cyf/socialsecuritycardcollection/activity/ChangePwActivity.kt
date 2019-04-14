@@ -6,6 +6,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.ToastUtil
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_change_pw.*
 import kotlinx.android.synthetic.main.activity_edit_user_name.*
@@ -30,8 +31,9 @@ class ChangePwActivity : BaseActivity() {
 
     private fun initClick() {
         btn_submit.setOnClickListener {
-            if (et_pw.text.toString() != et_pw1.text.toString()) {
-                toast("新密码与确认密码不一致")
+            if (et_pw2.text.toString() != et_pw1.text.toString()) {
+//                toast("新密码与确认密码不一致")
+                ToastUtil.showToastMessage(this@ChangePwActivity,"新密码与确认密码不一致",R.mipmap.toast_notice)
                 return@setOnClickListener
             }
             net_updatePassword()
@@ -44,7 +46,9 @@ class ChangePwActivity : BaseActivity() {
         map["oldPassword"] = et_pw.text.toString()
         map["newPassword"] = et_pw1.text.toString()
         NetTools.net(map, Urls().updatePassword, this) { response ->
-            toast("" + response.msg)
+//            toast("" + response.msg)
+            ToastUtil.showToastMessage(this@ChangePwActivity,"" + response.msg,R.mipmap.toast_ok)
+
             finish()
 
         }

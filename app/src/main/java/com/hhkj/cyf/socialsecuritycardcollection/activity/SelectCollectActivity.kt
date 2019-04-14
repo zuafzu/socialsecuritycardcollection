@@ -10,6 +10,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.bean.HomeBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.ToastUtil
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_select_collect.*
 import org.jetbrains.anko.toast
@@ -84,7 +85,7 @@ class SelectCollectActivity : BaseActivity() {
                             mIntent.putExtra("type", 0)
                             startActivity(mIntent)
                         }else{
-                            toast("您已办理过个人办理，无法再次办理")
+                            ToastUtil.showToastMessage(this@SelectCollectActivity, "您已办理过个人办理，无法再次办理",R.mipmap.toast_notice)
                         }
                     }
                     1 -> {
@@ -94,12 +95,12 @@ class SelectCollectActivity : BaseActivity() {
                             mIntent.putExtra("type", 1)
                             startActivity(mIntent)
                         }else{
-                            toast("请先进行个人办理")
+                            ToastUtil.showToastMessage(this@SelectCollectActivity, "请先进行个人办理",R.mipmap.toast_notice)
                         }
                     }
                 }
             } else {
-                toast("录入次数已达最大限制 $maxCount")
+                ToastUtil.showToastMessage(this@SelectCollectActivity, "录入次数已达最大限制 $maxCount",R.mipmap.toast_notice)
             }
         }
     }

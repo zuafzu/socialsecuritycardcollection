@@ -11,6 +11,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
 import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.ToastUtil
 import com.hhkj.cyf.socialsecuritycardcollection.tools.Validator
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_search_id.*
@@ -55,7 +56,8 @@ class SearchIdActivity : BaseActivity() {
 //                net_getWriteCount()
                 net_idCardQuery()
             }else{
-                toast("身份证格式不正确")
+//                toast("身份证格式不正确")
+                ToastUtil.showToastMessage(this@SearchIdActivity,"身份证格式不正确",R.mipmap.toast_notice)
             }
         }
     }

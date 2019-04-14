@@ -10,7 +10,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.fragment.Tab1Fragment
 import com.hhkj.cyf.socialsecuritycardcollection.fragment.Tab2Fragment
 import com.hhkj.cyf.socialsecuritycardcollection.fragment.Tab3Fragment
-import org.jetbrains.anko.toast
+import com.hhkj.cyf.socialsecuritycardcollection.tools.ToastUtil
 
 class MainActivity : BaseActivity() , RadioGroup.OnCheckedChangeListener {
 
@@ -134,7 +134,8 @@ class MainActivity : BaseActivity() , RadioGroup.OnCheckedChangeListener {
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (System.currentTimeMillis() - mExitTime > 2000) {
-                toast("再按一次退出程序")
+                ToastUtil.showToastMessage(this@MainActivity,"再按一次退出程序",R.mipmap.toast_notice)
+//                toast("再按一次退出程序")
                 mExitTime = System.currentTimeMillis()
             } else {
                 finish()

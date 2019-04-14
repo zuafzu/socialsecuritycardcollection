@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.hhkj.cyf.socialsecuritycardcollection.R;
 import com.hhkj.cyf.socialsecuritycardcollection.activity.LoginActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.app.MyApplication;
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity;
@@ -87,10 +88,11 @@ public class NetTools {
 //                ((BaseActivity) context).setListToastView(0, "", 0, false);
                 if (e.getClass().getSimpleName().equals("ConnectException")) {
                     // 无法连接网络
-                    Toast.makeText(context, "无法连接服务器", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showToastMessage(context,"无法连接服务器", R.mipmap.toast_notice);
+//                    Toast.makeText(context, "无法连接服务器", Toast.LENGTH_SHORT).show();
                 } else if (e.getClass().getSimpleName().equals("SocketTimeoutException")) {
                     // 网络连接超时
-                    Toast.makeText(context, "服务器连接超时", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showToastMessage(context,"服务器连接超时",R.mipmap.toast_notice);
                 } else {
                     // 其它异常
                     Log.e("Exception gson：", e.toString());
@@ -121,14 +123,15 @@ public class NetTools {
 
                 } else if ("100".equals(baseBean.getCode())) {//201
                     // 登录信息失效
-                    Toast.makeText(context, baseBean.getMsg(), Toast.LENGTH_SHORT).show();
+                    ToastUtil.showToastMessage(context,baseBean.getMsg(),R.mipmap.toast_notice);
 
                     for (int i = 0; i < MyApplication.Companion.getActivies().size(); i++) {
                         MyApplication.Companion.getActivies().get(i).finish();
                     }
                     context.startActivity(new Intent(context, LoginActivity.class));
                 } else {
-                    Toast.makeText(context, baseBean.getMsg(), Toast.LENGTH_SHORT).show();
+                    ToastUtil.showToastMessage(context,baseBean.getMsg(),R.mipmap.toast_notice);
+//                    Toast.makeText(context, baseBean.getMsg(), Toast.LENGTH_SHORT).show();
                     ((BaseActivity) context).dismissProgressDialog();
                 }
             }
@@ -185,11 +188,19 @@ public class NetTools {
             public void onError(Call call, Exception e, int id) {
                 if (e.getClass().getSimpleName().equals("ConnectException")) {
                     // 无法连接网络
+                    ToastUtil.showToastMessage(context,"服务器连接超时",R.mipmap.toast_notice);
+
                     Toast.makeText(context, "无法连接服务器", Toast.LENGTH_SHORT).show();
                 } else if (e.getClass().getSimpleName().equals("SocketTimeoutException")) {
                     // 网络连接超时
+                    ToastUtil.showToastMessage(context,"服务器连接超时",R.mipmap.toast_notice);
+
                     Toast.makeText(context, "服务器连接超时", Toast.LENGTH_SHORT).show();
                 } else {
+                    BaseBean baseBean  = new BaseBean();
+                    baseBean.setCode("2");
+                    baseBean.setMsg("文件上传失败");
+                    myCallBack.getData(baseBean);
                     // 其它异常
                     Log.e("Exception gson：", e.toString());
                 }

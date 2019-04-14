@@ -7,12 +7,16 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hhkj.cyf.socialsecuritycardcollection.R
+import com.hhkj.cyf.socialsecuritycardcollection.app.MyApplication
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
 import com.hhkj.cyf.socialsecuritycardcollection.bean.DictionaryBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
+import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.PhoneTools
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
+import com.hhkj.cyf.socialsecuritycardcollection.tools.ToastUtil
+import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import com.hhkj.cyf.socialsecuritycardcollection.view.jdaddress.AddressBean
 import com.hhkj.cyf.socialsecuritycardcollection.view.jdaddress.AreaPickerView
 import com.hhkj.cyf.socialsecuritycardcollection.view.jdaddress.MyTools.getCityJson
@@ -52,6 +56,12 @@ class Collect2Activity : BaseActivity() {
         setTextTitle(intent.getStringExtra("title"))
         type = intent.getIntExtra("type", 0)
         isModify = intent.getIntExtra("isModify", 0)
+
+        if (type == 0) {
+            btn_next.text = "保存"
+        } else {
+            btn_next.text = "下一步"
+        }
 
         addressBeans = Gson().fromJson<Any>(getCityJson(this), object : TypeToken<List<AddressBean>>() {}.type) as List<AddressBean>?
         dictionaryBean = intent.getSerializableExtra("dictionaryBean") as DictionaryBean?
@@ -217,23 +227,28 @@ class Collect2Activity : BaseActivity() {
         }
         btn_next.setOnClickListener {
             if (et_phone.text.toString() == "") {
-                toast("联系手机不能为空")
+                ToastUtil.showToastMessage(this@Collect2Activity, "联系手机不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (!PhoneTools.isMobile(et_phone.text.toString())) {
-                toast("联系手机格式不正确")
+                ToastUtil.showToastMessage(this@Collect2Activity, "联系手机格式不正确",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (et_yb.text.toString() == "") {
-                toast("邮政编码不能为空")
+                ToastUtil.showToastMessage(this@Collect2Activity, "邮政编码不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (et_address.text.toString() == "") {
-                toast("邮寄地址不能为空")
+                ToastUtil.showToastMessage(this@Collect2Activity, "邮寄地址不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (et_address.text.length < 5) {
-                toast("邮寄地址不能少于5个字")
+                ToastUtil.showToastMessage(this@Collect2Activity, "邮寄地址不能少于5个字",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
 
@@ -256,13 +271,45 @@ class Collect2Activity : BaseActivity() {
             commitBean!!.zszyName = tv_profession.text.toString()
             commitBean!!.zshyName = tv_industry.text.toString()
 
-            val mIntent = Intent(this, Collect3Activity::class.java)
-            mIntent.putExtra("title", intent.getStringExtra("title"))
-            mIntent.putExtra("commitBean", commitBean)
-            mIntent.putExtra("isModify", isModify)
 
-            mIntent.putExtra("type", type)
-            startActivity(mIntent)
+            if (type == 0) {
+                net_addOrUpdate(commitBean!!);
+            } else {
+                val mIntent = Intent(this, Collect4Activity::class.java)
+                mIntent.putExtra("title", intent.getStringExtra("title"))
+                mIntent.putExtra("isModify", isModify)
+
+                mIntent.putExtra("commitBean", commitBean)
+
+                startActivity(mIntent)
+            }
+
+
+//            val mIntent = Intent(this, Collect3Activity::class.java)
+//            mIntent.putExtra("title", intent.getStringExtra("title"))
+//            mIntent.putExtra("commitBean", commitBean)
+//            mIntent.putExtra("isModify", isModify)
+//
+//            mIntent.putExtra("type", type)
+//            startActivity(mIntent)
+        }
+    }
+
+    private fun net_addOrUpdate(commitBean: CommitBean) {
+        val jsonBean = Gson().toJson(commitBean)
+        val map = hashMapOf<String, String>()
+        map["phone"] = "" + SPTools[this@Collect2Activity, Constant.PHONE, ""]
+        map["cbInsured"] = ""+jsonBean
+
+        Log.e("zj", "jsonBean = " + jsonBean)
+        NetTools.net(map, Urls().addOrUpdate, this) { response ->
+            Log.e("zj", "addOrUpdate = " + response.data)
+            ToastUtil.showToastMessage(this@Collect2Activity, response.msg.toString(),R.mipmap.toast_ok)
+
+            for (i in 0 until MyApplication.getActivies().size) {
+                MyApplication.getActivies()[i].finish()
+            }
+            startActivity(Intent(this@Collect2Activity, MainActivity::class.java))
         }
     }
 

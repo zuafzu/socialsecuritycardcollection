@@ -9,10 +9,7 @@ import com.hhkj.cyf.socialsecuritycardcollection.app.MyApplication
 import com.hhkj.cyf.socialsecuritycardcollection.base.BaseActivity
 import com.hhkj.cyf.socialsecuritycardcollection.bean.CommitBean
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant
-import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools
-import com.hhkj.cyf.socialsecuritycardcollection.tools.PhoneTools
-import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools
-import com.hhkj.cyf.socialsecuritycardcollection.tools.Validator
+import com.hhkj.cyf.socialsecuritycardcollection.tools.*
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls
 import kotlinx.android.synthetic.main.activity_collect4.*
 import org.jetbrains.anko.toast
@@ -44,15 +41,18 @@ class Collect4Activity : BaseActivity() {
 
         btn_submit.setOnClickListener {
             if (et_name.text.toString().trim().isEmpty()){
-                toast("姓名不能为空")
+                ToastUtil.showToastMessage(this@Collect4Activity, "姓名不能为空",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (!Validator.isIDCard(et_idCard.text.toString().trim())){
-                toast("身份证号格式错误")
+                ToastUtil.showToastMessage(this@Collect4Activity, "身份证号格式错误",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             if (!PhoneTools.isMobile(et_phone.text.toString())){
-                toast("联系手机格式错误")
+                ToastUtil.showToastMessage(this@Collect4Activity, "联系手机格式错误",R.mipmap.toast_notice)
+
                 return@setOnClickListener
             }
             commitBean!!.dbr_xm = et_name.text.toString()
@@ -72,7 +72,8 @@ class Collect4Activity : BaseActivity() {
         Log.e("zj", "jsonBean = " + jsonBean)
         NetTools.net(map, Urls().addOrUpdate, this) { response ->
             Log.e("zj", "addOrUpdate = " + response.data)
-            toast(response.msg.toString())
+            ToastUtil.showToastMessage(this@Collect4Activity, response.msg.toString(),R.mipmap.toast_ok)
+
             for (i in 0 until MyApplication.getActivies().size) {
                 MyApplication.getActivies()[i].finish()
             }

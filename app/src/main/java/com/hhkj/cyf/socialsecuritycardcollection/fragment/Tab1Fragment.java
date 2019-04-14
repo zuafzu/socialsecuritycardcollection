@@ -25,10 +25,12 @@ import com.hhkj.cyf.socialsecuritycardcollection.activity.WebActivity;
 import com.hhkj.cyf.socialsecuritycardcollection.adapter.HomeAdapter;
 import com.hhkj.cyf.socialsecuritycardcollection.bean.BaseBean;
 import com.hhkj.cyf.socialsecuritycardcollection.bean.HomeBean;
+import com.hhkj.cyf.socialsecuritycardcollection.bean.LoginBean;
 import com.hhkj.cyf.socialsecuritycardcollection.bean.StatusBean;
 import com.hhkj.cyf.socialsecuritycardcollection.constant.Constant;
 import com.hhkj.cyf.socialsecuritycardcollection.tools.NetTools;
 import com.hhkj.cyf.socialsecuritycardcollection.tools.SPTools;
+import com.hhkj.cyf.socialsecuritycardcollection.tools.ToastUtil;
 import com.hhkj.cyf.socialsecuritycardcollection.url.Urls;
 import com.hhkj.cyf.socialsecuritycardcollection.view.SlideShowView;
 
@@ -58,7 +60,7 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
         View mView = inflater.inflate(R.layout.fragment_tab1, container, false);
         initView(mView);
         setData();
-//        net_selfQuery();
+        net_getUrls();
         return mView;
     }
 
@@ -115,7 +117,8 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
                         startActivity(intent2);
                         break;
                     case 2:
-                        Toast.makeText(getActivity(),"调试中",Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),"暂未开发，敬请期待",Toast.LENGTH_SHORT).show();
+                        ToastUtil.showToastMessage(getActivity(),"敬请期待" ,R.mipmap.toast_notice);
 
 //                        Intent intent3 = new Intent(getActivity(), WebActivity.class);
 //                        intent3.putExtra("title", "社保查询");
@@ -123,8 +126,8 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
 //                        startActivity(intent3);
                         break;
                     case 3:
-                        Toast.makeText(getActivity(),"调试中",Toast.LENGTH_SHORT).show();
-
+//                        Toast.makeText(getActivity(),"暂未开发，敬请期待",Toast.LENGTH_SHORT).show();
+                        ToastUtil.showToastMessage(getActivity(),"敬请期待" ,R.mipmap.toast_notice);
 //                        Intent intent4 = new Intent(getActivity(), WebActivity.class);
 //                        intent4.putExtra("title", "医保查询");
 //                        intent4.putExtra("url",SPTools.INSTANCE.get(getActivity(),Constant.YIBAOURL,"").toString());
@@ -203,6 +206,23 @@ public class Tab1Fragment extends Fragment implements View.OnClickListener {
                 }
             }
         },"",false,true);
+    }
+
+    private void net_getUrls() {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("phone", "" + SPTools.INSTANCE.get(getActivity(), Constant.PHONE, ""));
+        NetTools.net(map, new Urls().getUrls, getActivity(), new NetTools.MyCallBack() {
+            @Override
+            public void getData(BaseBean response) {
+                Log.e("zj", "net_getUrls = " + response.getData());
+//                {"zhikajinduUrl":"http:\/\/sbk.ccrs.gov.cn:8081\/","shebaoUrl":"1","yibaoUrl":"1"}
+                LoginBean loginBean =new Gson().fromJson(response.getData(), LoginBean.class);
+                SPTools.INSTANCE.put(getActivity(), Constant.SHEBAOURL, "" + loginBean.getShebaoUrl());
+                SPTools.INSTANCE.put(getActivity(), Constant.YIBAOURL, "" + loginBean.getYibaoUrl());
+                SPTools.INSTANCE.put(getActivity(), Constant.ZKJDURL, "" + loginBean.getZhikajinduUrl());
+            }
+        },"",true,true);
     }
 
 
